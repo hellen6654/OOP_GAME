@@ -173,4 +173,48 @@
       <Filter>MFC</Filter>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="RES\clock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\p.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Comp 4_00000.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Comp 4_00020.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Comp 4_00042.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Comp 4_00062.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Comp 4_00084.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Comp 4_00104.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Comp 4_00124.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Comp 4_00144.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Comp 4_00167.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Comp 4_00187.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Comp 4_00207.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Comp 4_00230.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

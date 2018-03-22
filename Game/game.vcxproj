@@ -325,6 +325,22 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="RES\clock.bmp" />
+    <Image Include="RES\Comp 4_00000.bmp" />
+    <Image Include="RES\Comp 4_00020.bmp" />
+    <Image Include="RES\Comp 4_00042.bmp" />
+    <Image Include="RES\Comp 4_00062.bmp" />
+    <Image Include="RES\Comp 4_00084.bmp" />
+    <Image Include="RES\Comp 4_00104.bmp" />
+    <Image Include="RES\Comp 4_00124.bmp" />
+    <Image Include="RES\Comp 4_00144.bmp" />
+    <Image Include="RES\Comp 4_00167.bmp" />
+    <Image Include="RES\Comp 4_00187.bmp" />
+    <Image Include="RES\Comp 4_00207.bmp" />
+    <Image Include="RES\Comp 4_00230.bmp" />
+    <Image Include="RES\p.bmp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
