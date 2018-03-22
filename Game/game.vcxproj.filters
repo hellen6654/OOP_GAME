@@ -129,6 +129,9 @@
     <ClCompile Include="Source\CBouncingBall.cpp">
       <Filter>MyGame</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Station.cpp">
+      <Filter>MyGame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\audio.h">
@@ -165,6 +168,9 @@
       <Filter>MyGame</Filter>
     </ClInclude>
     <ClInclude Include="Source\CBouncingBall.h">
+      <Filter>MyGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Station.h">
       <Filter>MyGame</Filter>
     </ClInclude>
   </ItemGroup>
@@ -214,6 +220,27 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="RES\Comp 4_00230.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Station\Station_Circle.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Station\Station_Diamond.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Station\Station_Hexagon.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Station\Station_Pentagon.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Station\Station_Rectangle.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Station\Station_Square.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\Station\Station_Triangle.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

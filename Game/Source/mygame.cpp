@@ -57,6 +57,9 @@
 #include <ddraw.h>
 #include "audio.h"
 #include "gamelib.h"
+#include <cstdlib>
+#include <ctime>
+#include <vector>
 #include "mygame.h"
 
 namespace game_framework
@@ -220,10 +223,24 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     //
     // 開始載入資料
     clock.LoadBitmap();
-    //
-    //
-    // 完成部分Loading動作，提高進度
-    //
+    
+	srand((unsigned)time(NULL));
+	int station_y = 0,station_x = 0,station_type = 0;
+	Station buffer;
+
+	for (int i = 0; i < MAXIUM_STATION; i++)
+	{
+		station_type = rand() % MAXIUM_STATION_TYPE;
+		station_x = rand() % (SIZE_X-100) ;
+		station_y = rand() % (SIZE_Y-100) ;
+		buffer.SetType(station_type);
+		buffer.SetXY(station_x, station_y);
+		station_list.push_back(buffer);
+		station_list[i].LoadBitmap();
+	}
+	//for (int i = 0; i < MAXIUM_STATION; i++)
+		
+
     ShowInitProgress(50);
     //Sleep(300); // 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
     //
@@ -281,6 +298,8 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 void CGameStateRun::OnShow()
 {
     clock.OnShow();
+	for (int i = 0; i < MAXIUM_STATION; i++)
+		station_list[i].OnShow();
     //
     //  注意：Show裡面千萬不要移動任何物件的座標，移動座標的工作應由Move做才對，
     //        否則當視窗重新繪圖時(OnDraw)，物件就會移動，看起來會很怪。換個術語

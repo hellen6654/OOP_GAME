@@ -47,7 +47,7 @@ bool CBall::IsAlive()
 
 void CBall::LoadBitmap()
 {
-    p.LoadBitmap(IDB_BITMAP4, RGB(255, 255, 255));			// 載入球的圖形
+    p.LoadBitmap(IDB_BALL, RGB(255, 255, 255));			// 載入球的圖形
     bmp_center.LoadBitmap(IDB_CENTER, RGB(0, 0, 0));	// 載入球圓心的圖形
 }
 

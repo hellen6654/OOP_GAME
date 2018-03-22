@@ -283,6 +283,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="Source\Station.cpp" />
     <ClCompile Include="Source\StdAfx.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -314,6 +315,7 @@
     <ClInclude Include="Source\gameView.h" />
     <ClInclude Include="Source\MainFrm.h" />
     <ClInclude Include="Source\Resource.h" />
+    <ClInclude Include="Source\Station.h" />
     <ClInclude Include="Source\StdAfx.h" />
     <ClInclude Include="Source\gamelib.h" />
     <ClInclude Include="Source\mygame.h" />
@@ -340,6 +342,13 @@
     <Image Include="RES\Comp 4_00207.bmp" />
     <Image Include="RES\Comp 4_00230.bmp" />
     <Image Include="RES\p.bmp" />
+    <Image Include="RES\Station\Station_Circle.bmp" />
+    <Image Include="RES\Station\Station_Diamond.bmp" />
+    <Image Include="RES\Station\Station_Hexagon.bmp" />
+    <Image Include="RES\Station\Station_Pentagon.bmp" />
+    <Image Include="RES\Station\Station_Rectangle.bmp" />
+    <Image Include="RES\Station\Station_Square.bmp" />
+    <Image Include="RES\Station\Station_Triangle.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

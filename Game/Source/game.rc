@@ -104,6 +104,20 @@ IDB_HELP                BITMAP                  "..\\res\\help.bmp"
 
 IDB_LOADING             BITMAP                  "..\\res\\loading.bmp"
 
+IDB_STAT00_CIRCLE       BITMAP                  "C:\\Users\\YEE\\Desktop\\Game\\RES\\Station\\Station_Circle.bmp"
+
+IDB_STAT03_DIAMOND      BITMAP                  "C:\\Users\\YEE\\Desktop\\Game\\RES\\Station\\Station_Diamond.bmp"
+
+IDB_STAT06_HEXAGON      BITMAP                  "C:\\Users\\YEE\\Desktop\\Game\\RES\\Station\\Station_Hexagon.bmp"
+
+IDB_STAT05_PENTAGON     BITMAP                  "C:\\Users\\YEE\\Desktop\\Game\\RES\\Station\\Station_Pentagon.bmp"
+
+IDB_STAT04_RETANGLE     BITMAP                  "C:\\Users\\YEE\\Desktop\\Game\\RES\\Station\\Station_Rectangle.bmp"
+
+IDB_STAT02_SQUARE       BITMAP                  "C:\\Users\\YEE\\Desktop\\Game\\RES\\Station\\Station_Square.bmp"
+
+IDB_STAT01_TRIANGLE     BITMAP                  "C:\\Users\\YEE\\Desktop\\Game\\RES\\Station\\Station_Triangle.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
