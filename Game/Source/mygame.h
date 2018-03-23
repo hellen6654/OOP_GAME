@@ -40,7 +40,8 @@
 
 #include "CEraser.h"
 #include "CBall.h"
-#include "CBouncingBall.h"
+#include "Clock.h"
+#include "Week.h"
 
 namespace game_framework
 {
@@ -104,9 +105,9 @@ class CGameStateRun : public CGameState
         CMovingBitmap	corner;		// 角落圖
         CEraser			eraser;		// 拍子
         CInteger		hits_left;	// 剩下的撞擊數
-        CBouncingBall   clock;		// 反覆彈跳的球
-
-
+        Clock   clock;		// 時鐘
+        Week week;
+        int time;
 };
 
 /////////////////////////////////////////////////////////////////////////////

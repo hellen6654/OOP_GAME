@@ -203,11 +203,19 @@ CGameStateRun::~CGameStateRun()
 
 void CGameStateRun::OnBeginState()
 {
+    time = 0;
 }
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
     clock.OnMove();
+    time++;
+
+    if (time == 500)
+    {
+        week.OnMove();
+        time = 0;
+    }
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -220,6 +228,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     //
     // 開始載入資料
     clock.LoadBitmap();
+    week.LoadBitmap();
     //
     //
     // 完成部分Loading動作，提高進度
@@ -281,6 +290,7 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 void CGameStateRun::OnShow()
 {
     clock.OnShow();
+    week.OnShow();
     //
     //  注意：Show裡面千萬不要移動任何物件的座標，移動座標的工作應由Move做才對，
     //        否則當視窗重新繪圖時(OnDraw)，物件就會移動，看起來會很怪。換個術語

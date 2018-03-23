@@ -71,7 +71,7 @@ void CBouncingBall::OnMove()
             velocity = initial_velocity; // 重設上升初始速度
         }
     }*/
-    animation.OnMove();		// 執行一次animation.OnMove()，animation才會換圖
+    //animation.OnMove();		// 執行一次animation.OnMove()，animation才會換圖
 }
 
 void CBouncingBall::OnShow()
