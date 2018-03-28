@@ -80,7 +80,8 @@ void CGameStateInit::OnInit()
     //
     // 開始載入資料
     //
-    logo.LoadBitmap(IDB_BACKGROUND);
+    title.LoadBitmap(IDB_TITLE, RGB(255, 255, 255));
+    buttonStar.LoadBitmap(IDB_STAR, RGB(255, 255, 255));
     Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
     //
     // 此OnInit動作會接到CGameStaterRun::OnInit()，所以進度還沒到100%
@@ -101,7 +102,11 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
     else if (nChar == KEY_ESC)								// Demo 關閉遊戲的方法
         PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
 }
-
+void CGameStateInit::OnMouseMove(UINT nFlags, CPoint point)	// 處理滑鼠的動作
+{
+    // 沒事。如果需要處理滑鼠移動的話，寫code在這裡
+    // GotoGameState(GAME_STATE_RUN);
+}
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
 {
     GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
@@ -112,8 +117,10 @@ void CGameStateInit::OnShow()
     //
     // 貼上logo
     //
-    logo.SetTopLeft((SIZE_X - logo.Width()) / 2, SIZE_Y / 8);
-    logo.ShowBitmap();
+    title.SetTopLeft((SIZE_X - title.Width()) / 2, SIZE_Y / 8);
+    title.ShowBitmap();
+    buttonStar.SetTopLeft((SIZE_X - title.Width()) / 2 - 54, SIZE_Y / 8 + 120);
+    buttonStar.ShowBitmap();
     //
     // Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好
     //
@@ -229,6 +236,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     // 開始載入資料
     clock.LoadBitmap();
     week.LoadBitmap();
+    background.LoadBitmap(IDB_MAP);
     //
     //
     // 完成部分Loading動作，提高進度
@@ -289,6 +297,7 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 
 void CGameStateRun::OnShow()
 {
+    background.ShowBitmap();
     clock.OnShow();
     week.OnShow();
     //

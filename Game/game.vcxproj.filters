@@ -186,46 +186,19 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="RES\clock.bmp">
+    <Image Include="RES\title.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="RES\p.bmp">
+    <Image Include="res\bitmap3.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="RES\Comp 4_00000.bmp">
+    <Image Include="RES\map.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="RES\Comp 4_00020.bmp">
+    <Image Include="RES\button\button.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="RES\Comp 4_00042.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\Comp 4_00062.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\Comp 4_00084.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\Comp 4_00104.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\Comp 4_00124.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\Comp 4_00144.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\Comp 4_00167.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\Comp 4_00187.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\Comp 4_00207.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\Comp 4_00230.bmp">
+    <Image Include="RES\button\star.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

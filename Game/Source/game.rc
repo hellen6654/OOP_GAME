@@ -104,6 +104,12 @@ IDB_HELP                BITMAP                  "..\\res\\help.bmp"
 
 IDB_LOADING             BITMAP                  "..\\res\\loading.bmp"
 
+IDB_TITLE               BITMAP                  "C:\\Users\\uxiang\\Desktop\\Game\\RES\\title.bmp"
+
+IDB_MAP                 BITMAP                  "C:\\Users\\uxiang\\Desktop\\Game\\RES\\map.bmp"
+
+IDB_STAR                BITMAP                  "C:\\Users\\uxiang\\Desktop\\Game\\RES\\button\\star.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
