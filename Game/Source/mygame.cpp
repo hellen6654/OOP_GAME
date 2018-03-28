@@ -238,7 +238,6 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 		station_list.push_back(buffer);
 		station_list[i].LoadBitmap();
 	}
-	//for (int i = 0; i < MAXIUM_STATION; i++)
 		
 
     ShowInitProgress(50);
