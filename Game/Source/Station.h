@@ -8,6 +8,8 @@ namespace game_framework
 		Station(int,int,int);
 		void LoadBitmap();			//載入圖形
 		void SetXY(int, int);		//設定座標
+		int GetX();
+		int GetY();
 		void SetType(int);
 		void OnShow();				//將圖形貼到畫面
 		~Station();

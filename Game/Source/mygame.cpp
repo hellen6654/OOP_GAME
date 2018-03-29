@@ -227,12 +227,23 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	srand((unsigned)time(NULL));
 	int station_y = 0,station_x = 0,station_type = 0;
 	Station buffer;
-
 	for (int i = 0; i < MAXIUM_STATION; i++)
 	{
+		int j = 0;
 		station_type = rand() % MAXIUM_STATION_TYPE;
-		station_x = rand() % (SIZE_X-100) ;
-		station_y = rand() % (SIZE_Y-100) ;
+		station_x = rand() % (SIZE_X - 100);
+		station_y = rand() % (SIZE_Y - 100);
+		while (i>j)   // 確保車站不會重疊
+		{
+			if ((station_x > station_list[j].GetX() && station_x < station_list[j].GetX() + 100) &&
+				(station_y > station_list[j].GetY() && station_y < station_list[j].GetY() + 100))
+			{
+				station_x = rand() % (SIZE_X - 100);
+				station_y = rand() % (SIZE_Y - 100);
+			}
+			else
+				j++;
+		}
 		buffer.SetType(station_type);
 		buffer.SetXY(station_x, station_y);
 		station_list.push_back(buffer);

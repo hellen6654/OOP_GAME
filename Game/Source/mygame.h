@@ -42,6 +42,8 @@
 #include "CBall.h"
 #include "CBouncingBall.h"
 #include "Station.h"
+#include "Clock.h"
+#include "Timer.h"
 
 namespace game_framework
 {
@@ -99,15 +101,16 @@ class CGameStateRun : public CGameState
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
         //const int		NUMBALLS;						// 球的總數
-		const int MAXIUM_STATION = 20;					//會出現在地圖上的只有20個車站
+		const int MAXIUM_STATION = 10;					//會出現在地圖上的只有10個車站
 		const int MAXIUM_STATION_TYPE = 7;				//車站樣式總共有7個 00~06
-        CMovingBitmap	background;						// 背景圖
+        /*CMovingBitmap	background;						// 背景圖
         CMovingBitmap	help;							// 說明圖
         CBall*			ball;							// 球的陣列
         CMovingBitmap	corner;							// 角落圖
         CEraser			eraser;							// 拍子
-        CInteger		hits_left;						// 剩下的撞擊數
-        CBouncingBall   clock;							// 反覆彈跳的球
+        CInteger		hits_left;						// 剩下的撞擊數*/
+        Clock   clock;									// 會動的時鐘跟周次
+		Timer   t;										//計時器
 		vector<Station> station_list;
 };
 

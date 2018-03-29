@@ -5,22 +5,16 @@ namespace game_framework
 	// 看懂就可以改寫成自己的程式了
 	/////////////////////////////////////////////////////////////////////////////
 
-	class CBouncingBall
+	class Clock
 	{
 	public:
-		CBouncingBall();
+		Clock();
 		void LoadBitmap();		// 載入圖形
 		void OnMove();			// 移動
 		void OnShow();			// 將圖形貼到畫面
 	private:
-		int day;
-		int j;
-		int x, y;				// 圖形座標
-		int floor;				// 地板的Y座標
-		bool rising;			// true表上升、false表下降
-		int initial_velocity;	// 初始速度
-		int velocity;			// 目前的速度(點/次)
-		CAnimation animation;	// 利用動畫作圖形
-		CAnimation animation2;	// 利用動畫作圖形
+		int clk_x, clk_y,week_x,week_y;				// 圖形座標
+		CAnimation clock_animation;	// 利用動畫作圖形
+		CAnimation week_animation;
 	};
 }
