@@ -13,8 +13,7 @@ namespace game_framework
 		void OnMove();			// 移動
 		void OnShow();			// 將圖形貼到畫面
 	private:
-		int clk_x, clk_y,week_x,week_y;				// 圖形座標
+		int clk_x, clk_y;				// 圖形座標
 		CAnimation clock_animation;	// 利用動畫作圖形
-		CAnimation week_animation;
 	};
 }

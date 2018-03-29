@@ -84,9 +84,6 @@
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Program Files\Microsoft DirectX SDK %28February 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Program Files\Microsoft DirectX SDK %28February 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28February 2010%29\Include;$(IncludePath)</IncludePath>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -306,6 +303,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="Source\Timer.cpp" />
+    <ClCompile Include="Source\Week.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\audio.h" />
@@ -323,6 +321,7 @@
     <ClInclude Include="Source\gamelib.h" />
     <ClInclude Include="Source\mygame.h" />
     <ClInclude Include="Source\Timer.h" />
+    <ClInclude Include="Source\Week.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Source\game.rc">
@@ -330,136 +329,6 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="RES\clock.bmp" />
-    <Image Include="RES\ClockImage\Clock_0.bmp" />
-    <Image Include="RES\ClockImage\Clock_1.bmp" />
-    <Image Include="RES\ClockImage\Clock_10.bmp" />
-    <Image Include="RES\ClockImage\Clock_11.bmp" />
-    <Image Include="RES\ClockImage\Clock_12.bmp" />
-    <Image Include="RES\ClockImage\Clock_13.bmp" />
-    <Image Include="RES\ClockImage\Clock_14.bmp" />
-    <Image Include="RES\ClockImage\Clock_15.bmp" />
-    <Image Include="RES\ClockImage\Clock_16.bmp" />
-    <Image Include="RES\ClockImage\Clock_17.bmp" />
-    <Image Include="RES\ClockImage\Clock_18.bmp" />
-    <Image Include="RES\ClockImage\Clock_19.bmp" />
-    <Image Include="RES\ClockImage\Clock_2.bmp" />
-    <Image Include="RES\ClockImage\Clock_20.bmp" />
-    <Image Include="RES\ClockImage\Clock_21.bmp" />
-    <Image Include="RES\ClockImage\Clock_22.bmp" />
-    <Image Include="RES\ClockImage\Clock_23.bmp" />
-    <Image Include="RES\ClockImage\Clock_24.bmp" />
-    <Image Include="RES\ClockImage\Clock_25.bmp" />
-    <Image Include="RES\ClockImage\Clock_26.bmp" />
-    <Image Include="RES\ClockImage\Clock_27.bmp" />
-    <Image Include="RES\ClockImage\Clock_28.bmp" />
-    <Image Include="RES\ClockImage\Clock_29.bmp" />
-    <Image Include="RES\ClockImage\Clock_3.bmp" />
-    <Image Include="RES\ClockImage\Clock_30.bmp" />
-    <Image Include="RES\ClockImage\Clock_31.bmp" />
-    <Image Include="RES\ClockImage\Clock_32.bmp" />
-    <Image Include="RES\ClockImage\Clock_33.bmp" />
-    <Image Include="RES\ClockImage\Clock_34.bmp" />
-    <Image Include="RES\ClockImage\Clock_35.bmp" />
-    <Image Include="RES\ClockImage\Clock_36.bmp" />
-    <Image Include="RES\ClockImage\Clock_37.bmp" />
-    <Image Include="RES\ClockImage\Clock_38.bmp" />
-    <Image Include="RES\ClockImage\Clock_39.bmp" />
-    <Image Include="RES\ClockImage\Clock_4.bmp" />
-    <Image Include="RES\ClockImage\Clock_40.bmp" />
-    <Image Include="RES\ClockImage\Clock_41.bmp" />
-    <Image Include="RES\ClockImage\Clock_42.bmp" />
-    <Image Include="RES\ClockImage\Clock_43.bmp" />
-    <Image Include="RES\ClockImage\Clock_44.bmp" />
-    <Image Include="RES\ClockImage\Clock_45.bmp" />
-    <Image Include="RES\ClockImage\Clock_46.bmp" />
-    <Image Include="RES\ClockImage\Clock_47.bmp" />
-    <Image Include="RES\ClockImage\Clock_48.bmp" />
-    <Image Include="RES\ClockImage\Clock_49.bmp" />
-    <Image Include="RES\ClockImage\Clock_5.bmp" />
-    <Image Include="RES\ClockImage\Clock_50.bmp" />
-    <Image Include="RES\ClockImage\Clock_51.bmp" />
-    <Image Include="RES\ClockImage\Clock_52.bmp" />
-    <Image Include="RES\ClockImage\Clock_53.bmp" />
-    <Image Include="RES\ClockImage\Clock_54.bmp" />
-    <Image Include="RES\ClockImage\Clock_55.bmp" />
-    <Image Include="RES\ClockImage\Clock_56.bmp" />
-    <Image Include="RES\ClockImage\Clock_57.bmp" />
-    <Image Include="RES\ClockImage\Clock_58.bmp" />
-    <Image Include="RES\ClockImage\Clock_59.bmp" />
-    <Image Include="RES\ClockImage\Clock_6.bmp" />
-    <Image Include="RES\ClockImage\Clock_60.bmp" />
-    <Image Include="RES\ClockImage\Clock_61.bmp" />
-    <Image Include="RES\ClockImage\Clock_62.bmp" />
-    <Image Include="RES\ClockImage\Clock_63.bmp" />
-    <Image Include="RES\ClockImage\Clock_64.bmp" />
-    <Image Include="RES\ClockImage\Clock_65.bmp" />
-    <Image Include="RES\ClockImage\Clock_66.bmp" />
-    <Image Include="RES\ClockImage\Clock_67.bmp" />
-    <Image Include="RES\ClockImage\Clock_68.bmp" />
-    <Image Include="RES\ClockImage\Clock_69.bmp" />
-    <Image Include="RES\ClockImage\Clock_7.bmp" />
-    <Image Include="RES\ClockImage\Clock_70.bmp" />
-    <Image Include="RES\ClockImage\Clock_71.bmp" />
-    <Image Include="RES\ClockImage\Clock_72.bmp" />
-    <Image Include="RES\ClockImage\Clock_73.bmp" />
-    <Image Include="RES\ClockImage\Clock_74.bmp" />
-    <Image Include="RES\ClockImage\Clock_75.bmp" />
-    <Image Include="RES\ClockImage\Clock_76.bmp" />
-    <Image Include="RES\ClockImage\Clock_77.bmp" />
-    <Image Include="RES\ClockImage\Clock_78.bmp" />
-    <Image Include="RES\ClockImage\Clock_79.bmp" />
-    <Image Include="RES\ClockImage\Clock_8.bmp" />
-    <Image Include="RES\ClockImage\Clock_80.bmp" />
-    <Image Include="RES\ClockImage\Clock_81.bmp" />
-    <Image Include="RES\ClockImage\Clock_82.bmp" />
-    <Image Include="RES\ClockImage\Clock_83.bmp" />
-    <Image Include="RES\ClockImage\Clock_84.bmp" />
-    <Image Include="RES\ClockImage\Clock_85.bmp" />
-    <Image Include="RES\ClockImage\Clock_86.bmp" />
-    <Image Include="RES\ClockImage\Clock_87.bmp" />
-    <Image Include="RES\ClockImage\Clock_88.bmp" />
-    <Image Include="RES\ClockImage\Clock_89.bmp" />
-    <Image Include="RES\ClockImage\Clock_9.bmp" />
-    <Image Include="RES\ClockImage\Clock_90.bmp" />
-    <Image Include="RES\ClockImage\Clock_91.bmp" />
-    <Image Include="RES\ClockImage\Clock_92.bmp" />
-    <Image Include="RES\ClockImage\Clock_93.bmp" />
-    <Image Include="RES\ClockImage\Clock_94.bmp" />
-    <Image Include="RES\ClockImage\Clock_95.bmp" />
-    <Image Include="RES\ClockImage\Clock_96.bmp" />
-    <Image Include="RES\ClockImage\Clock_97.bmp" />
-    <Image Include="RES\ClockImage\Clock_98.bmp" />
-    <Image Include="RES\ClockImage\Clock_99.bmp" />
-    <Image Include="RES\Comp 4_00000.bmp" />
-    <Image Include="RES\Comp 4_00020.bmp" />
-    <Image Include="RES\Comp 4_00042.bmp" />
-    <Image Include="RES\Comp 4_00062.bmp" />
-    <Image Include="RES\Comp 4_00084.bmp" />
-    <Image Include="RES\Comp 4_00104.bmp" />
-    <Image Include="RES\Comp 4_00124.bmp" />
-    <Image Include="RES\Comp 4_00144.bmp" />
-    <Image Include="RES\Comp 4_00167.bmp" />
-    <Image Include="RES\Comp 4_00187.bmp" />
-    <Image Include="RES\Comp 4_00207.bmp" />
-    <Image Include="RES\Comp 4_00230.bmp" />
-    <Image Include="RES\p.bmp" />
-    <Image Include="RES\Station\Station_Circle.bmp" />
-    <Image Include="RES\Station\Station_Diamond.bmp" />
-    <Image Include="RES\Station\Station_Hexagon.bmp" />
-    <Image Include="RES\Station\Station_Pentagon.bmp" />
-    <Image Include="RES\Station\Station_Rectangle.bmp" />
-    <Image Include="RES\Station\Station_Square.bmp" />
-    <Image Include="RES\Station\Station_Triangle.bmp" />
-    <Image Include="RES\Week\1.bmp" />
-    <Image Include="RES\Week\2.bmp" />
-    <Image Include="RES\Week\3.bmp" />
-    <Image Include="RES\Week\4.bmp" />
-    <Image Include="RES\Week\5.bmp" />
-    <Image Include="RES\Week\6.bmp" />
-    <Image Include="RES\Week\7.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

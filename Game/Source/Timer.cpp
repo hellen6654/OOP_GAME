@@ -19,13 +19,11 @@ namespace game_framework
 		start_time = clock();
 	}
 
-	void Timer::EndCount()
+	void Timer::CountPassTime()
 	{
 		end_time = clock();
-		if ((end_time - start_time) / CLOCKS_PER_SEC > 1)
-		{
+		if (( (end_time - start_time) / CLOCKS_PER_SEC )/ 3600 > 1)
 			time++;
-		}
 	}
 
 	void Timer::ResetCount()

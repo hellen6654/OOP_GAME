@@ -5,7 +5,7 @@ namespace game_framework
 	public:
 		Timer();
 		void StartCount();
-		void EndCount();
+		void CountPassTime();
 		void ResetCount();
 		int GetTime();
 		~Timer();
