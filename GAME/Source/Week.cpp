@@ -15,7 +15,7 @@ namespace game_framework
 	Week::Week()
 	{
 		week_x = 700;
-		week_y = 10;
+		week_y = 20;
 	}
 
 	void Week::LoadBitmap()
@@ -25,8 +25,7 @@ namespace game_framework
 			,".\\RES\\WeekImage\\5.bmp",".\\RES\\WeekImage\\6.bmp",".\\RES\\WeekImage\\7.bmp"
 		};
 		for (int i = 0; i < 7; i++)
-			week_animation.AddBitmap(week_filename[i], RGB(0, 0, 0));
-		week_animation.SetDelayCount(600);
+			week_animation.AddBitmap(week_filename[i], RGB(255,255,255));
 	}
 
 	void Week::OnMove()

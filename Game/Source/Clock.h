@@ -12,6 +12,7 @@ namespace game_framework
 		void LoadBitmap();		// 載入圖形
 		void OnMove();			// 移動
 		void OnShow();			// 將圖形貼到畫面
+		bool IsFinalBitmap();	//是不是播到最後一張bitmap了
 	private:
 		int clk_x, clk_y;				// 圖形座標
 		CAnimation clock_animation;	// 利用動畫作圖形

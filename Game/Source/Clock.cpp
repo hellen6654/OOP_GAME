@@ -44,9 +44,7 @@ namespace game_framework
 		};
 		for (int i = 0; i < 100; i++)  	// 載入動畫(由100張圖形構成)
 			clock_animation.AddBitmap(clock_filename[i], RGB(0, 0, 0));
-
 		clock_animation.SetDelayCount(5); // 延遲播放速度
-
 	}
 
 	void Clock::OnMove()
@@ -56,8 +54,11 @@ namespace game_framework
 
 	void Clock::OnShow()
 	{
-		
 		clock_animation.SetTopLeft(clk_x, clk_y);
 		clock_animation.OnShow();
+	}
+	bool Clock::IsFinalBitmap()
+	{
+		return clock_animation.IsFinalBitmap();
 	}
 }

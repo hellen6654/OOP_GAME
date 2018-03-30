@@ -206,15 +206,17 @@ namespace game_framework
 
 	void CGameStateRun::OnBeginState()
 	{
-		t.StartCount();
-		counter = 30 * 60;
+		counter = 0;
 	}
 
 	void CGameStateRun::OnMove()							// 移動遊戲元素
 	{
-		clock.OnMove();
-		week.OnMove();
-		if(counter > 0)counter--;
+		counter++;
+		clock.OnMove();				//播放clock時鐘動畫
+		if(clock.IsFinalBitmap())	//播放week周次動畫
+			week.OnMove();
+		if (counter % (30 * 5) == 0 && current_station<MAXIUM_STATION) //每五秒出一個車站
+			current_station++;
 	}
 
 	void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -322,11 +324,9 @@ namespace game_framework
 		//t.CountPassTime();
 		map.SetTopLeft(0, 0);
 		map.ShowBitmap();
-		if ( counter % (30*5) == 0 && current_station<MAXIUM_STATION) //每五秒出一個車站
-			current_station++;
 		for (int i = 0; i < current_station; i++)
 			station_list[i].OnShow();
-		clock.OnShow();
 		week.OnShow();
+		clock.OnShow();
 	}
 }
