@@ -102,14 +102,21 @@ class CGameStateRun : public CGameState
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
 		CMovingBitmap  map;
+		CMovingBitmap  firstline;
 		const int MAXIUM_STATION = 10;					//會出現在地圖上的只有10個車站
 		const int MAXIUM_STATION_TYPE = 7;				//車站樣式總共有7個 00~06
+		const int MAX_GAME_MAP_SIDE_X = 770;			//實際上的遊戲邊界X軸只有到770
+		const int MIN_GAME_MAP_SIDE_X = 30;			    //實際上的遊戲邊界X軸從30開始
+		const int MAX_GAME_MAP_SIDE_Y = 570;			//實際上的遊戲邊界Y軸只有到570
+		const int MIN_GAME_MAP_SIDE_Y = 60;			    //實際上的遊戲邊界Y軸從60開始
 		int current_station;							//目前出現到哪個車站
 		int counter;
         Clock   clock;									// 會動的時鐘
 		Week    week;
 		Timer   t;										//計時器
 		vector<Station> station_list;					//一堆的車站
+		int line[800][600];								//軌道位置
+		int mouse_x = 0, mouse_y = 0;					//滑鼠位置
 };
 
 /////////////////////////////////////////////////////////////////////////////

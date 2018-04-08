@@ -11,11 +11,14 @@ namespace game_framework
 		int GetX();
 		int GetY();
 		void SetType(int);
+		bool IsClicked();
+		void setClicked(bool flag);
 		void OnShow();				//將圖形貼到畫面
 		~Station();
 	private:
 		int x, y;					//圖形座標
 		int station_type;			//車站類型
+		bool isClicked;
 		CMovingBitmap station_animation;	//利用動畫作圖形
 	};
 }
