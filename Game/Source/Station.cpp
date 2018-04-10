@@ -50,14 +50,6 @@ namespace game_framework
 	{
 		station_type = type;
 	}
-	bool Station::IsClicked()
-	{
-		return isClicked;
-	}
-	void Station::setClicked(bool flag)
-	{
-		isClicked = flag;
-	}
 	void Station::OnShow()
 	{
 		station_animation.SetTopLeft(x, y);

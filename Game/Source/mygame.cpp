@@ -211,12 +211,46 @@ namespace game_framework
 
 	void CGameStateRun::OnMove()							// 移動遊戲元素
 	{
+		
+		
 		counter++;
 		clock.OnMove();				//播放clock時鐘動畫
 		if(clock.IsFinalBitmap())	//播放week周次動畫
 			week.OnMove();
 		if (counter % (30 * 5) == 0 && current_station<MAXIUM_STATION) //每五秒出一個車站
 			current_station++;
+		/*for (int i = 0; i < current_station; i++)
+		{
+			if (station_list[i].IsClicked())
+			{
+				if (clicked_station_a == -1) clicked_station_a = i;
+				else clicked_station_b = i;
+				station_clicked++;
+			}
+		}
+		if (station_clicked==2)
+		{
+			for (int i = station_list[clicked_station_a].GetX(); i<=station_list[clicked_station_b].GetX() ; i++)
+			{
+				for (int j = station_list[clicked_station_b].GetY(); j <= station_list[clicked_station_a].GetY(); j++)
+				{
+					if (i== station_list[clicked_station_a].GetX() )
+					{
+						
+							line[i][j] = 1;
+						
+					}
+					if ( j == station_list[clicked_station_b].GetY())
+					{
+							line[i][j] = 1;
+					}
+					
+				}
+			}
+			station_list[clicked_station_a].setClicked(false);
+			station_list[clicked_station_b].setClicked(false);
+			station_clicked = 0;
+		}*/
 	}
 
 	void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -241,7 +275,7 @@ namespace game_framework
 			station_type = rand() % MAXIUM_STATION_TYPE; //隨機選擇第一個的車站形狀
 			station_x = MIN_GAME_MAP_SIDE_X + rand() % (MAX_GAME_MAP_SIDE_X-MIN_GAME_MAP_SIDE_X); // 隨機選第一個的車站位置
 			station_y =MIN_GAME_MAP_SIDE_Y+rand() % (MAX_GAME_MAP_SIDE_Y-MIN_GAME_MAP_SIDE_Y);	// 隨機選第一個的車站位置
-			while (i>j)   // 確保車站不會重疊 且在車站附近100內不會出車站
+			while (i>j)   // 確保車站不會重疊 且在距離車站附近100內不會出車站
 			{
 				if ((station_x > station_list[j].GetX()-100 && station_x < station_list[j].GetX() + 100) &&
 					(station_y > station_list[j].GetY()-100 && station_y < station_list[j].GetY() + 100))
@@ -258,6 +292,7 @@ namespace game_framework
 			station_list[i].LoadBitmap();
 		}
 		current_station=3;
+
 		ShowInitProgress(50);
 		//Sleep(300); // 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
 		//
@@ -287,44 +322,24 @@ namespace game_framework
 		const char KEY_DOWN  = 0x28; // keyboard下箭頭
 	}
 
-	void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
+	void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠左鍵的動作 按下
 	{
 		//eraser.SetMovingLeft(true);
-		/*for (int i = point.x; i < point.x; i++)
-		{
-			for (int j = point.y; j < point.y ; j++)
-			{
-				line[i][j] = 1;
-			}
-		}*/
-		for (int i = 0; i < MAXIUM_STATION ;i++)
-		{
-			if (point.x >= station_list[i].GetX() && point.x <= station_list[i].GetX()+25 &&
-				point.y >= station_list[i].GetY() && point.y <= station_list[i].GetY() + 25)
-			{
-				station_list[i].setClicked(true);
-			}
-		}
+
 
 	}
 
-	void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
+	void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作 放開
 	{
 		//eraser.SetMovingLeft(false);
-	}
+	} 
 
-	void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// 處理滑鼠的動作
+	void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作 移動
 	{
 		// 沒事。如果需要處理滑鼠移動的話，寫code在這裡
 		mouse_x = point.x;
 		mouse_y = point.y;
-		/*for (int i = point.x; i < point.x + 5; i++)
-		{
-			for (int j = point.y; j < point.y + 5; j++)
-			{
-				line[i][j] = 1;
-			}
-		}*/
+
 	}
 
 	void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
@@ -347,7 +362,7 @@ namespace game_framework
 		//
 		//  貼上背景圖、撞擊數、球、擦子、彈跳的球
 		//
-		//t.CountPassTime();
+		//timer.CountPassTime();
 		map.SetTopLeft(0, 0);
 		map.ShowBitmap();
 		for (int i = 0; i < current_station; i++)
@@ -359,19 +374,19 @@ namespace game_framework
 		CFont f, *fp;
 		f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
 		fp = pDC->SelectObject(&f);					// 選用 font f
-		pDC->SetBkColor(RGB(0, 0, 0));
-		pDC->SetTextColor(RGB(255, 255, 0));
+		//pDC->SetBkColor(RGB(0, 0, 0));
+		pDC->SetTextColor(RGB(0, 0, 0));
 		char str[80];								// Demo 數字對字串的轉換
-		sprintf(str, "%d,%d", mouse_x, mouse_y );
+		sprintf(str, "%d,%d", mouse_x, mouse_y);
 		pDC->TextOut(10, 10, str);
 		pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
 		CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
 
-		for (int i = MIN_GAME_MAP_SIDE_X; i <MAX_GAME_MAP_SIDE_X ; i+=4)
+		for (int i = MIN_GAME_MAP_SIDE_X; i <MAX_GAME_MAP_SIDE_X ; i++)
 		{
-			for (int j = MIN_GAME_MAP_SIDE_Y; j < MAX_GAME_MAP_SIDE_Y; j+=4)
+			for (int j = MIN_GAME_MAP_SIDE_Y; j < MAX_GAME_MAP_SIDE_Y; j++)
 			{
-				if (line[i][j] == 1)
+				if (railwayPosition[i][j] == 1)
 				{
 					firstline.SetTopLeft(i, j);
 					firstline.ShowBitmap();

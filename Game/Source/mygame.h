@@ -45,6 +45,7 @@
 #include "Clock.h"
 #include "Week.h"
 #include "Timer.h"
+#include "Line.h"
 
 namespace game_framework
 {
@@ -111,11 +112,14 @@ class CGameStateRun : public CGameState
 		const int MIN_GAME_MAP_SIDE_Y = 60;			    //實際上的遊戲邊界Y軸從60開始
 		int current_station;							//目前出現到哪個車站
 		int counter;
-        Clock   clock;									// 會動的時鐘
-		Week    week;
-		Timer   t;										//計時器
+		int clicked_station_a;
+		int clicked_station_b;
+		Line    line;									//負責處理火車線路的物件
+        Clock   clock;									//會動的時鐘
+		Week    week;									//會動的周次
+		Timer   timer;									//計時器
 		vector<Station> station_list;					//一堆的車站
-		int line[800][600];								//軌道位置
+		int railwayPosition[800][600];					//軌道位置
 		int mouse_x = 0, mouse_y = 0;					//滑鼠位置
 };
 
