@@ -212,45 +212,22 @@ namespace game_framework
 	void CGameStateRun::OnMove()							// 移動遊戲元素
 	{
 		
-		
 		counter++;
 		clock.OnMove();				//播放clock時鐘動畫
 		if(clock.IsFinalBitmap())	//播放week周次動畫
 			week.OnMove();
-		if (counter % (30 * 5) == 0 && current_station<MAXIUM_STATION) //每五秒出一個車站
-			current_station++;
-		/*for (int i = 0; i < current_station; i++)
+		if (counter % (30 * 5) == 0 && currentStationNum<MAXIUM_STATION) //每五秒出一個車站
+			currentStationNum++;
+		
+
+		if (line.IsClickedTwoStation())
 		{
-			if (station_list[i].IsClicked())
-			{
-				if (clicked_station_a == -1) clicked_station_a = i;
-				else clicked_station_b = i;
-				station_clicked++;
-			}
+			stationRelation[line.GetclickedTwoNumA()][line.GetclickedTwoNumB()] = stationRelation[line.GetclickedTwoNumB()][line.GetclickedTwoNumA()] = 1;
+			line.SetclickedTwoNumA(-1);
+			line.SetclickedTwoNumB(-1);
 		}
-		if (station_clicked==2)
-		{
-			for (int i = station_list[clicked_station_a].GetX(); i<=station_list[clicked_station_b].GetX() ; i++)
-			{
-				for (int j = station_list[clicked_station_b].GetY(); j <= station_list[clicked_station_a].GetY(); j++)
-				{
-					if (i== station_list[clicked_station_a].GetX() )
-					{
-						
-							line[i][j] = 1;
-						
-					}
-					if ( j == station_list[clicked_station_b].GetY())
-					{
-							line[i][j] = 1;
-					}
-					
-				}
-			}
-			station_list[clicked_station_a].setClicked(false);
-			station_list[clicked_station_b].setClicked(false);
-			station_clicked = 0;
-		}*/
+		
+		
 	}
 
 	void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -265,7 +242,6 @@ namespace game_framework
 		clock.LoadBitmap();
 		week.LoadBitmap();
 		map.LoadBitmap(".\\RES\\map.bmp");
-		firstline.LoadBitmap(".\\RES\\RedLine.bmp");
 		srand((unsigned)time(NULL));
 		int station_y = 0,station_x = 0,station_type = 0;
 		Station buffer;
@@ -277,8 +253,8 @@ namespace game_framework
 			station_y =MIN_GAME_MAP_SIDE_Y+rand() % (MAX_GAME_MAP_SIDE_Y-MIN_GAME_MAP_SIDE_Y);	// 隨機選第一個的車站位置
 			while (i>j)   // 確保車站不會重疊 且在距離車站附近100內不會出車站
 			{
-				if ((station_x > station_list[j].GetX()-100 && station_x < station_list[j].GetX() + 100) &&
-					(station_y > station_list[j].GetY()-100 && station_y < station_list[j].GetY() + 100))
+				if ((station_x > stationList[j].GetX()-100 && station_x < stationList[j].GetX() + 100) &&
+					(station_y > stationList[j].GetY()-100 && station_y < stationList[j].GetY() + 100))
 				{
 					station_x = MIN_GAME_MAP_SIDE_X + rand() % (MAX_GAME_MAP_SIDE_X - MIN_GAME_MAP_SIDE_X);
 					station_y = MIN_GAME_MAP_SIDE_Y + rand() % (MAX_GAME_MAP_SIDE_Y - MIN_GAME_MAP_SIDE_Y);
@@ -288,11 +264,14 @@ namespace game_framework
 			}
 			buffer.SetType(station_type);
 			buffer.SetXY(station_x, station_y);
-			station_list.push_back(buffer);
-			station_list[i].LoadBitmap();
+			stationList.push_back(buffer);
+			stationList[i].LoadBitmap();
 		}
-		current_station=3;
-
+		currentStationNum=3;
+		clickedX = clickedY = -1;
+		for (int i = 0; i < MAXIUM_STATION; i++)
+			for (int j = 0; j < MAXIUM_STATION; j++)
+				stationRelation[i][j] = 0;
 		ShowInitProgress(50);
 		//Sleep(300); // 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
 		//
@@ -325,13 +304,13 @@ namespace game_framework
 	void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠左鍵的動作 按下
 	{
 		//eraser.SetMovingLeft(true);
-
-
+		line.IsClickedStation(point.x,point.y, stationList, currentStationNum);
 	}
 
 	void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作 放開
 	{
 		//eraser.SetMovingLeft(false);
+		
 	} 
 
 	void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作 移動
@@ -339,7 +318,6 @@ namespace game_framework
 		// 沒事。如果需要處理滑鼠移動的話，寫code在這裡
 		mouse_x = point.x;
 		mouse_y = point.y;
-
 	}
 
 	void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
@@ -365,8 +343,22 @@ namespace game_framework
 		//timer.CountPassTime();
 		map.SetTopLeft(0, 0);
 		map.ShowBitmap();
-		for (int i = 0; i < current_station; i++)
-			station_list[i].OnShow();
+		
+		for (int i = 0; i < MAXIUM_STATION; i++)
+		{
+			for (int j = i+1; j < MAXIUM_STATION; j++)
+			{
+				if (stationRelation[i][j]==1)
+				{
+					line.DrawRailway(stationList[i].GetX(), stationList[i].GetY(),
+						stationList[j].GetX(), stationList[j].GetY());
+				}
+			}
+		}
+			
+			
+		for (int i = 0; i < currentStationNum; i++)
+			stationList[i].OnShow();
 		week.OnShow();
 		clock.OnShow();
 
@@ -377,22 +369,11 @@ namespace game_framework
 		//pDC->SetBkColor(RGB(0, 0, 0));
 		pDC->SetTextColor(RGB(0, 0, 0));
 		char str[80];								// Demo 數字對字串的轉換
-		sprintf(str, "%d,%d", mouse_x, mouse_y);
+		sprintf(str, "%d,%d,%d,%d,%d,%d", mouse_x, mouse_y,clickedX,clickedY,line.GetclickedTwoNumA(),line.GetclickedTwoNumB());
 		pDC->TextOut(10, 10, str);
 		pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
 		CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
 
-		for (int i = MIN_GAME_MAP_SIDE_X; i <MAX_GAME_MAP_SIDE_X ; i++)
-		{
-			for (int j = MIN_GAME_MAP_SIDE_Y; j < MAX_GAME_MAP_SIDE_Y; j++)
-			{
-				if (railwayPosition[i][j] == 1)
-				{
-					firstline.SetTopLeft(i, j);
-					firstline.ShowBitmap();
-				}
-			}
-		}
-
+		
 	}
 }
