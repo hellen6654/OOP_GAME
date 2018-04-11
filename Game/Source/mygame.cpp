@@ -350,8 +350,8 @@ namespace game_framework
 			{
 				if (stationRelation[i][j]==1)
 				{
-					line.DrawRailway(stationList[i].GetX(), stationList[i].GetY(),
-						stationList[j].GetX(), stationList[j].GetY());
+					line.DrawRailway(stationList[i].GetX()+5, stationList[i].GetY()+5,
+						stationList[j].GetX()+5, stationList[j].GetY()+5);
 				}
 			}
 		}
