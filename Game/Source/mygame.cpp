@@ -145,7 +145,7 @@ void CGameStateInit::OnShow()
         end.SetTopLeft((SIZE_X - end.Width()) / 2, SIZE_Y / 8 + 270);
         end.ShowBitmap(0.9);
     }
-    else if (mouse_x > end.Left() &&  mouse_x < 491 && mouse_y > end.Top() && mouse_y < 402)
+    else if (mouse_x > end.Left() && mouse_x < 491 && mouse_y > end.Top() && mouse_y < 402)
     {
         start.SetTopLeft((SIZE_X - start.Width()) / 2, SIZE_Y / 8 + 170);
         start.ShowBitmap(0.9);
@@ -268,11 +268,7 @@ void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
 
     if (line.IsClickedTwoStation())
     {
-        if (stationRelation[line.GetclickedTwoNumB()][line.GetclickedTwoNumA()] != 1)
-        {
-            stationRelation[line.GetclickedTwoNumA()][line.GetclickedTwoNumB()] = 1;
-        }
-
+        stationRelation[line.GetclickedTwoNumA()][line.GetclickedTwoNumB()] = 1;
         line.SetclickedTwoNumA(-1);
         line.SetclickedTwoNumB(-1);
     }
@@ -290,43 +286,39 @@ void CGameStateRun::OnInit()  								// ¹CÀ¸ªºªì­È¤Î¹Ï§Î³]©w
     clock.LoadBitmap();
     week.LoadBitmap();
     map.LoadBitmap(".\\RES\\map.bmp");
-    color[0].LoadBitmap(".\\RES\\color\\red.bmp", RGB(255, 255, 255));
-    color[1].LoadBitmap(".\\RES\\color\\orang.bmp", RGB(255, 255, 255));
-    color[2].LoadBitmap(".\\RES\\color\\yellow.bmp", RGB(255, 255, 255));
-    color[3].LoadBitmap(".\\RES\\color\\green.bmp", RGB(255, 255, 255));
-    color[4].LoadBitmap(".\\RES\\color\\blue.bmp", RGB(255, 255, 255));
-    color[5].LoadBitmap(".\\RES\\color\\bblue.bmp", RGB(255, 255, 255));
-    color[6].LoadBitmap(".\\RES\\color\\purple.bmp", RGB(255, 255, 255));
-    srand((unsigned)time(NULL));
-    int station_y = 0, station_x = 0, station_type = 0;
-    Station buffer;
+	line.LoadBitmap();
 
-    for (int i = 0; i < MAXIUM_STATION; i++)
-    {
-        int j = 0;
-        station_type = rand() % MAXIUM_STATION_TYPE; //ÀH¾÷¿ï¾Ü²Ä¤@­Óªº¨®¯¸§Îª¬
-        station_x = MIN_GAME_MAP_SIDE_X + rand() % (MAX_GAME_MAP_SIDE_X - MIN_GAME_MAP_SIDE_X); // ÀH¾÷¿ï²Ä¤@­Óªº¨®¯¸¦ì¸m
-        station_y = MIN_GAME_MAP_SIDE_Y + rand() % (MAX_GAME_MAP_SIDE_Y - MIN_GAME_MAP_SIDE_Y);	// ÀH¾÷¿ï²Ä¤@­Óªº¨®¯¸¦ì¸m
+	//red(255.0.0),orang(255.144.0),yellow(255.255.0),green(0.255.0),blue(0.138.255),bblue(0.6.255),puple(144.0.255)
+	redLine.SetLineColor(255, 0, 0);
+	orangeLine.SetLineColor(255, 144, 0);
+	yellowLine.SetLineColor(255, 255, 0);
+	greenLine.SetLineColor(0, 255, 0);
+	blueLine.SetLineColor(0, 138, 255);
+	bblueLine.SetLineColor(0, 6, 255);
+	purpleLine.SetLineColor(144, 0, 255);
 
-        while (i > j) // ½T«O¨®¯¸¤£·|­«Å| ¥B¦b¶ZÂ÷¨®¯¸ªþªñ100¤º¤£·|¥X¨®¯¸
-        {
-            if ((station_x > stationList[j].GetX() - 100 && station_x < stationList[j].GetX() + 100) &&
-                    (station_y > stationList[j].GetY() - 100 && station_y < stationList[j].GetY() + 100))
-            {
-                station_x = MIN_GAME_MAP_SIDE_X + rand() % (MAX_GAME_MAP_SIDE_X - MIN_GAME_MAP_SIDE_X);
-                station_y = MIN_GAME_MAP_SIDE_Y + rand() % (MAX_GAME_MAP_SIDE_Y - MIN_GAME_MAP_SIDE_Y);
-            }
-            else
-                j++;
-        }
+	redLine.LoadBitmap();
+	orangeLine.LoadBitmap();
+	yellowLine.LoadBitmap();								
+	greenLine.LoadBitmap();								
+	blueLine.LoadBitmap();								
+	bblueLine.LoadBitmap();								
+	purpleLine.LoadBitmap();
+	
+	
 
-        buffer.SetType(station_type);
-        buffer.SetXY(station_x, station_y);
-        stationList.push_back(buffer);
-        stationList[i].LoadBitmap();
-    }
 
-    currentStationNum = 3;
+	s.RandomBuildStation(stationList);					//«Ø¥ßÀH¾÷¨®¯¸¦Cªí
+	s.CheckedOverLappingStation(stationList);			//ÀË¬d¨®¯¸¦Cªí¥Ü¬O§_¦³­«Å|ªº¨®¯¸
+	
+	for (int i = 0; i < MAXIUM_STATION; i++)			//¸ü¤J¹Ï¤ù
+		stationList[i].LoadBitmap();
+	for (int i = 0; i < MAXIUM_STATION; i++)
+		for (int j = 0; j < MAXIUM_STATION; j++)
+			stationRelation[i][j] = 0;
+
+	currentStationNum = 3;								//²{¦³¨®¯¸¬°¤T­Ó ¹CÀ¸¶}©l ¦³¤T­Ó¨®¯¸
+
     clickedX = clickedY = -1;
 
     for (int i = 0; i < MAXIUM_STATION; i++)
@@ -365,7 +357,7 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // ³B²z·Æ¹«¥ªÁäªº°Ê§@ «ö¤U
 {
     //eraser.SetMovingLeft(true);
-    if (stationX[line.GetclickedTwoNumA()] == 1)
+    if (line.GetclickedTwoNumA() != -1)
     {
         if (!line.IsClickedStation(point.x, point.y, stationList, currentStationNum))
         {
@@ -373,7 +365,6 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // ³B²z·Æ¹«¥ªÁäªº°
             {
                 stationX[i] = 0;
             }
-
             line.SetclickedTwoNumA(-1);
         }
     }
@@ -384,7 +375,6 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // ³B²z·Æ¹«¥ªÁäªº°
             stationX[line.GetclickedTwoNumA()] = 1;
         }
     }
-
     clickedX = point.x;
     clickedY = point.y;
 }
@@ -422,59 +412,32 @@ void CGameStateRun::OnShow()
     //timer.CountPassTime();
     map.SetTopLeft(0, 0);
     map.ShowBitmap();
-    color[0].SetTopLeft(240, 565);
-    color[0].ShowBitmap();
-    color[1].SetTopLeft(285, 565);
-    color[1].ShowBitmap();
-    color[2].SetTopLeft(330, 565);
-    color[2].ShowBitmap();
-    color[3].SetTopLeft(375, 565);
-    color[3].ShowBitmap();
-    color[4].SetTopLeft(420, 565);
-    color[4].ShowBitmap();
-    color[5].SetTopLeft(465, 565);
-    color[5].ShowBitmap();
-    color[6].SetTopLeft(510, 565);
-    color[6].ShowBitmap();
+	line.ShowBitmap();
 
-    if (stationX[line.GetclickedTwoNumA()] == 1)
+	redLine.ShowBitmap();
+	orangeLine.ShowBitmap();
+	yellowLine.ShowBitmap();
+	greenLine.ShowBitmap();
+	blueLine.ShowBitmap();
+	bblueLine.ShowBitmap();
+	purpleLine.ShowBitmap();
+
+    if (line.GetclickedTwoNumA() != -1 ) // ²Ä¤@­Ó¨®¯¸³Q¿ï¨ú¤F ´N­nµe¥X¨Ó
     {
-        line.DrawRailway(stationList[line.GetclickedTwoNumA()].GetX() + 5, stationList[line.GetclickedTwoNumA()].GetY() + 5,
-                         mouse_x, mouse_y);
+        line.DrawRailway(stationList[line.GetclickedTwoNumA()].GetX() + 5, stationList[line.GetclickedTwoNumA()].GetY() + 5,mouse_x, mouse_y);
     }
 
-    for (int i = 0; i < MAXIUM_STATION; i++)
+    for (int i = 0; i < currentStationNum ; i++)
     {
-        for (int j = 0; j < MAXIUM_STATION; j++)
+        for (int j = 0; j < currentStationNum; j++)
         {
-            if (i != j)
+            if (stationRelation[i][j] == 1)
             {
-                if (stationRelation[i][j] == 1 )
-                {
-                    line.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5,
-                                     stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-                }
+                line.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5,stationList[j].GetX() + 5, stationList[j].GetY() + 5);
             }
         }
     }
 
-    /* for (int i = 0; i < currentStationNum; i++)
-     {
-         if (stationX[i] == 1)
-         {
-             line.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5,
-                              mouse_x, mouse_y);
-
-             for (int j = 0; j < currentStationNum; j++)
-             {
-                 if (stationRelation[i][j] == 1)
-                 {
-                     line.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5,
-                                      stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-                 }
-             }
-         }
-     }*/
 
     for (int i = 0; i < currentStationNum; i++)
         stationList[i].OnShow();
@@ -489,7 +452,7 @@ void CGameStateRun::OnShow()
     pDC->SetBkColor(RGB(241, 241, 241));
     pDC->SetTextColor(RGB(0, 0, 0));
     char str[80];								// Demo ¼Æ¦r¹ï¦r¦êªºÂà´«
-    sprintf(str, "(%d,%d),(%d,%d),(%d,%d)", mouse_x, mouse_y, clickedX, clickedY, line.GetclickedTwoNumA(), line.GetclickedTwoNumB());
+    sprintf(str, "(%d,%d),(%d,%d),(%d,%d)",  clickedX, clickedY,mouse_x, mouse_y , line.GetclickedTwoNumA(), line.GetclickedTwoNumB());
     pDC->TextOut(10, 10, str);
     pDC->SelectObject(fp);						// ©ñ±¼ font f (¤d¸U¤£­nº|¤F©ñ±¼)
     CDDraw::ReleaseBackCDC();					// ©ñ±¼ Back Plain ªº CDC
