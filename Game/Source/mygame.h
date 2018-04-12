@@ -73,10 +73,15 @@ class CGameStateInit : public CGameState
         void OnBeginState();							// 設定每次重玩所需的變數
         void OnKeyUp(UINT, UINT, UINT); 				// 處理鍵盤Up的動作
         void OnLButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
+        void OnLButtonUp(UINT nFlags, CPoint point);	// 處理滑鼠的動作
+        void OnMouseMove(UINT nFlags, CPoint point);	// 處理滑鼠的動作
     protected:
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
+        CMovingBitmap end;
+        CMovingBitmap start;
         CMovingBitmap logo;								// csie的logo
+        int mouse_x = 0, mouse_y = 0;					//滑鼠位置
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -102,24 +107,24 @@ class CGameStateRun : public CGameState
         void OnMove();									// 移動遊戲元素
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
-		CMovingBitmap  map;
-		const int MAXIUM_STATION = 10;					//會出現在地圖上的只有10個車站
-		const int MAXIUM_STATION_TYPE = 7;				//車站樣式總共有7個 00~06
-		const int MAX_GAME_MAP_SIDE_X = 770;			//實際上的遊戲邊界X軸只有到770
-		const int MIN_GAME_MAP_SIDE_X = 30;			    //實際上的遊戲邊界X軸從30開始
-		const int MAX_GAME_MAP_SIDE_Y = 570;			//實際上的遊戲邊界Y軸只有到570
-		const int MIN_GAME_MAP_SIDE_Y = 60;			    //實際上的遊戲邊界Y軸從60開始
-		int currentStationNum;							//目前出現到哪個車站
-		int counter;
-		int clickedX;
-		int clickedY;
-		Line    line;									//負責處理火車線路的物件
+        CMovingBitmap  map;
+        const int MAXIUM_STATION = 10;					//會出現在地圖上的只有10個車站
+        const int MAXIUM_STATION_TYPE = 7;				//車站樣式總共有7個 00~06
+        const int MAX_GAME_MAP_SIDE_X = 770;			//實際上的遊戲邊界X軸只有到770
+        const int MIN_GAME_MAP_SIDE_X = 30;			    //實際上的遊戲邊界X軸從30開始
+        const int MAX_GAME_MAP_SIDE_Y = 570;			//實際上的遊戲邊界Y軸只有到570
+        const int MIN_GAME_MAP_SIDE_Y = 60;			    //實際上的遊戲邊界Y軸從60開始
+        int currentStationNum;							//目前出現到哪個車站
+        int counter;
+        int clickedX;
+        int clickedY;
+        Line    line;									//負責處理火車線路的物件
         Clock   clock;									//會動的時鐘
-		Week    week;									//會動的周次
-		Timer   timer;									//計時器
-		vector<Station> stationList;					//一堆的車站
-		int stationRelation[10][10];					//軌道位置
-		int mouse_x = 0, mouse_y = 0;					//滑鼠位置
+        Week    week;									//會動的周次
+        Timer   timer;									//計時器
+        vector<Station> stationList;					//一堆的車站
+        int stationRelation[10][10];					//軌道位置
+        int mouse_x = 0, mouse_y = 0;					//滑鼠位置
 };
 
 /////////////////////////////////////////////////////////////////////////////
