@@ -163,7 +163,7 @@ void CGameStateInit::OnShow()
     //
     // Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好
     //
-    CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
+    /*CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
     CFont f, *fp;
     f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
     fp = pDC->SelectObject(&f);					// 選用 font f
@@ -180,7 +180,7 @@ void CGameStateInit::OnShow()
 
     pDC->TextOut(6, 569, "Press Alt-F4 or ESC to Quit.");
     pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
-    CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+    CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC*/
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -266,11 +266,11 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     if (counter % (30 * 5) == 0 && currentStationNum < MAXIUM_STATION) //每五秒出一個車站
         currentStationNum++;
 
-    if (line.IsClickedTwoStation())
+    if (line->IsClickedTwoStation())
     {
-        stationRelation[line.GetclickedTwoNumA()][line.GetclickedTwoNumB()] = 1;
-        line.SetclickedTwoNumA(-1);
-        line.SetclickedTwoNumB(-1);
+        stationRelation[line->GetclickedTwoNumA()][line->GetclickedTwoNumB()][line->GetLineColor()] = 1;
+        line->SetclickedTwoNumA(-1);
+        line->SetclickedTwoNumB(-1);
     }
 }
 
@@ -283,10 +283,11 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     ShowInitProgress(33);	// 接個前一個狀態的進度，此處進度視為33%
     //
     // 開始載入資料
+	line = &redLine;
     clock.LoadBitmap();
     week.LoadBitmap();
     map.LoadBitmap(".\\RES\\map.bmp");
-	line.LoadBitmap();
+	//line->LoadBitmap();
 
 	//red(255.0.0),orang(255.144.0),yellow(255.255.0),green(0.255.0),blue(0.138.255),bblue(0.6.255),puple(144.0.255)
 	redLine.SetLineColor(255, 0, 0);
@@ -315,15 +316,12 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 		stationList[i].LoadBitmap();
 	for (int i = 0; i < MAXIUM_STATION; i++)
 		for (int j = 0; j < MAXIUM_STATION; j++)
-			stationRelation[i][j] = 0;
+			for (int k = 0; k < LINE_COLOR_NUM; k++)
+				stationRelation[i][j][k] = 0;
 
 	currentStationNum = 3;								//現有車站為三個 遊戲開始 有三個車站
 
     clickedX = clickedY = -1;
-
-    for (int i = 0; i < MAXIUM_STATION; i++)
-        for (int j = 0; j < MAXIUM_STATION; j++)
-            stationRelation[i][j] = 0;
 
     ShowInitProgress(50);
     //Sleep(300); // 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
@@ -357,42 +355,58 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠左鍵的動作 按下
 {
     //eraser.SetMovingLeft(true);
-    if (line.GetclickedTwoNumA() != -1)
+    if (line->GetclickedTwoNumA() != -1)
     {
-        if (!line.IsClickedStation(point.x, point.y, stationList, currentStationNum))
+        if (!line->IsClickedStation(point.x, point.y, stationList, currentStationNum))
         {
             for (int i = 0; i < 10; i++)
             {
                 stationX[i] = 0;
             }
-            line.SetclickedTwoNumA(-1);
+            line->SetclickedTwoNumA(-1);
         }
     }
     else
     {
-        if (line.IsClickedStation(point.x, point.y, stationList, currentStationNum))
+        if (line->IsClickedStation(point.x, point.y, stationList, currentStationNum))
         {
-            stationX[line.GetclickedTwoNumA()] = 1;
+            stationX[line->GetclickedTwoNumA()] = 1;
         }
     }
+
     clickedX = point.x;
-    clickedY = point.y;
+	clickedY = point.y;
 }
 
 void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作 放開
 {
     //eraser.SetMovingLeft(false);
+	if (redLine.IsMouseClickedBMP(point.x, point.y))
+		line = &redLine;
+	else if (orangeLine.IsMouseClickedBMP(point.x, point.y))
+		line = &orangeLine;
+	else if (yellowLine.IsMouseClickedBMP(point.x, point.y))
+		line = &yellowLine;
+	else if (greenLine.IsMouseClickedBMP(point.x, point.y))
+		line = &greenLine;
+	else if (blueLine.IsMouseClickedBMP(point.x, point.y))
+		line = &blueLine;
+	else if (bblueLine.IsMouseClickedBMP(point.x, point.y))
+		line = &bblueLine;
+	else if (purpleLine.IsMouseClickedBMP(point.x, point.y))
+		line = &purpleLine;
 }
 
 void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作 移動
 {
     // 沒事。如果需要處理滑鼠移動的話，寫code在這裡
-    mouse_x = point.x;
-    mouse_y = point.y;
+	if (point.x > MIN_GAME_MAP_SIDE_X+5 && point.x < MAX_GAME_MAP_SIDE_X-10) mouse_x = point.x;
+	if (point.y > MIN_GAME_MAP_SIDE_Y+5 && point.y < MAX_GAME_MAP_SIDE_Y-10) mouse_y = point.y;
 }
 
 void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
 {
+
 }
 
 void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
@@ -412,39 +426,62 @@ void CGameStateRun::OnShow()
     //timer.CountPassTime();
     map.SetTopLeft(0, 0);
     map.ShowBitmap();
-	line.ShowBitmap();
+	//line.ShowBitmap();
 
-	redLine.ShowBitmap();
-	orangeLine.ShowBitmap();
-	yellowLine.ShowBitmap();
-	greenLine.ShowBitmap();
-	blueLine.ShowBitmap();
-	bblueLine.ShowBitmap();
 	purpleLine.ShowBitmap();
-
-    if (line.GetclickedTwoNumA() != -1 ) // 第一個車站被選取了 就要畫出來
+	bblueLine.ShowBitmap();
+	blueLine.ShowBitmap();
+	greenLine.ShowBitmap();
+	yellowLine.ShowBitmap();
+	orangeLine.ShowBitmap();
+	redLine.ShowBitmap();
+	
+    if (line->GetclickedTwoNumA() != -1 ) // 第一個車站被選取了 就要畫出來
     {
-        line.DrawRailway(stationList[line.GetclickedTwoNumA()].GetX() + 5, stationList[line.GetclickedTwoNumA()].GetY() + 5,mouse_x, mouse_y);
+        line->DrawRailway(stationList[line->GetclickedTwoNumA()].GetX() + 5, stationList[line->GetclickedTwoNumA()].GetY() + 5,mouse_x, mouse_y);
     }
+	else // 點空白處即可取消
+	{
+		line->SetclickedTwoNumA(-1);
+		line->SetclickedTwoNumB(-1);
+	}
 
     for (int i = 0; i < currentStationNum ; i++)
     {
-        for (int j = 0; j < currentStationNum; j++)
-        {
-            if (stationRelation[i][j] == 1)
-            {
-                line.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5,stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-            }
-        }
+		for (int j = 0; j < currentStationNum; j++)
+		{
+			for (int k = 0; k < LINE_COLOR_NUM; k++)
+			{
+				{
+					if (stationRelation[i][j][k] == 1 )
+					{
+						if (k==0)
+							redLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+						else if(k==1)
+							orangeLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+						else if (k == 2)
+							yellowLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+						else if (k == 3)
+							greenLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+						else if (k == 4)
+							blueLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+						else if (k == 5)
+							bblueLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+						else if (k == 6)
+							purpleLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+					}
+				}
+			}
+		}
     }
 
 
     for (int i = 0; i < currentStationNum; i++)
         stationList[i].OnShow();
 
-    week.OnShow();
+    //week.OnShow();
     clock.OnShow();
-    CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
+    /*CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
     CFont f, *fp;
     f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
     fp = pDC->SelectObject(&f);					// 選用 font f
@@ -452,9 +489,9 @@ void CGameStateRun::OnShow()
     pDC->SetBkColor(RGB(241, 241, 241));
     pDC->SetTextColor(RGB(0, 0, 0));
     char str[80];								// Demo 數字對字串的轉換
-    sprintf(str, "(%d,%d),(%d,%d),(%d,%d)",  clickedX, clickedY,mouse_x, mouse_y , line.GetclickedTwoNumA(), line.GetclickedTwoNumB());
+    sprintf(str, "(%d,%d),(%d,%d),(%d,%d)",  clickedX, clickedY,mouse_x, mouse_y , line->GetclickedTwoNumA(), line->GetclickedTwoNumB());
     pDC->TextOut(10, 10, str);
     pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
-    CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+    CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC*/
 }
 }

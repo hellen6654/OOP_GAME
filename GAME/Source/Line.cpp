@@ -30,17 +30,18 @@ namespace game_framework
 			if (x >= stationList[i].GetX() && x <= stationList[i].GetX() + 25 &&
 					y >= stationList[i].GetY() && y <= stationList[i].GetY() + 25)
 			{
-				if (clickedStationNumA == -1 && clickedStationNumB == -1) clickedStationNumA = i;
-				else if (clickedStationNumA != -1 && clickedStationNumB == -1) clickedStationNumB = i;
+				if (clickedStationNumA == -1 && clickedStationNumB == -1 ) clickedStationNumA = i;
+				else if ( clickedStationNumB == -1) clickedStationNumB = i;
 				return true;
 			}
 		}
 
 		return false;
 	}
+
 	bool Line::IsClickedTwoStation()
 	{
-		if (clickedStationNumA != -1 && clickedStationNumB != -1 && clickedStationNumA!= clickedStationNumB)
+		if (clickedStationNumA != -1 && clickedStationNumB != -1 && clickedStationNumA != clickedStationNumB)
 			return true;
 		return false;
 	}
@@ -55,6 +56,26 @@ namespace game_framework
 		return clickedStationNumB;
 	}
 
+	int Line::GetLineColor()
+	{
+		if (lineColor[0] == 255 && lineColor[1] == 0 && lineColor[2] == 0)
+			return 0;
+		else if (lineColor[0] == 255 && lineColor[1] == 144 && lineColor[2] == 0)
+			return 1;
+		else if (lineColor[0] == 255 && lineColor[1] == 255 && lineColor[2] == 0)
+			return 2;
+		else if (lineColor[0] == 0 && lineColor[1] == 255 && lineColor[2] == 0)
+			return 3;
+		else if (lineColor[0] == 0 && lineColor[1] == 138 && lineColor[2] == 255)
+			return 4;
+		else if (lineColor[0] == 0 && lineColor[1] == 6 && lineColor[2] == 255)
+			return 5;
+		else if (lineColor[0] == 144 && lineColor[1] == 0 && lineColor[2] == 255)
+			return 6;
+		else
+			return 0;
+	}
+
 	void Line::SetclickedTwoNumA(int num)
 	{
 		clickedStationNumA = num;
@@ -63,6 +84,14 @@ namespace game_framework
 	void Line::SetclickedTwoNumB(int num)
 	{
 		clickedStationNumB = num;
+	}
+
+	bool Line::IsMouseClickedBMP(int mouseX, int mouseY)
+	{
+		if (mouseX > lineColorBMP.Left() && mouseX < lineColorBMP.Left() + lineColorBMP.Width() &&
+			mouseY > lineColorBMP.Top() && mouseY < lineColorBMP.Top() + lineColorBMP.Height())
+			return true;
+		return false;
 	}
 
 	void Line::LoadBitmap()
@@ -82,26 +111,26 @@ namespace game_framework
 			lineColorBMP.LoadBitmap(".\\RES\\color\\bblue.bmp", RGB(255, 255, 255));
 		else if (lineColor[0] == 144 && lineColor[1] == 0 && lineColor[2] == 255)
 			lineColorBMP.LoadBitmap(".\\RES\\color\\purple.bmp", RGB(255, 255, 255));
-		else if (lineColor[0] == 0 && lineColor[1] == 0 && lineColor[2] == 0)
-			lineColorBMP.LoadBitmap(".\\RES\\color\\purple.bmp", RGB(255, 255, 255));
+		/*else if (lineColor[0] == 0 && lineColor[1] == 0 && lineColor[2] == 0)
+			lineColorBMP.LoadBitmap(".\\RES\\color\\purple.bmp", RGB(255, 255, 255));*/
 	}
 
 	void Line::ShowBitmap()
 	{
 		if (lineColor[0] == 255 && lineColor[1] == 0 && lineColor[2] == 0)
-			lineColorBMP.SetTopLeft(240, 565);
+			lineColorBMP.SetTopLeft(240, 570);
 		else if (lineColor[0] == 255 && lineColor[1] == 144 && lineColor[2] == 0)
-			lineColorBMP.SetTopLeft(285, 565);
+			lineColorBMP.SetTopLeft(285, 570);
 		else if (lineColor[0] == 255 && lineColor[1] == 255 && lineColor[2] == 0)
-			lineColorBMP.SetTopLeft(330, 565);
+			lineColorBMP.SetTopLeft(330, 570);
 		else if (lineColor[0] == 0 && lineColor[1] == 255 && lineColor[2] == 0)
-			lineColorBMP.SetTopLeft(375, 565);
+			lineColorBMP.SetTopLeft(375, 570);
 		else if (lineColor[0] == 0 && lineColor[1] == 138 && lineColor[2] == 255)
-			lineColorBMP.SetTopLeft(420, 565);
+			lineColorBMP.SetTopLeft(420, 570);
 		else if (lineColor[0] == 0 && lineColor[1] == 6 && lineColor[2] == 255)
-			lineColorBMP.SetTopLeft(465, 565);
+			lineColorBMP.SetTopLeft(465, 570);
 		else if (lineColor[0] == 144 && lineColor[1] == 0 && lineColor[2] == 255)
-			lineColorBMP.SetTopLeft(510, 565);
+			lineColorBMP.SetTopLeft(510, 570);
 
 		lineColorBMP.ShowBitmap();
 	}

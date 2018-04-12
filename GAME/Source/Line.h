@@ -13,8 +13,10 @@ namespace game_framework
 		bool IsClickedTwoStation();
 		int  GetclickedTwoNumA();
 		int  GetclickedTwoNumB();
+		int  GetLineColor();
 		void SetclickedTwoNumA(int);
 		void SetclickedTwoNumB(int);
+		bool IsMouseClickedBMP(int,int);
 		void LoadBitmap();
 		void ShowBitmap();
 	private:

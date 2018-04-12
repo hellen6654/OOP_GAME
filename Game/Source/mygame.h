@@ -111,15 +111,16 @@ class CGameStateRun : public CGameState
 		CMovingBitmap  color[7];
         const int MAXIUM_STATION = 10;					//會出現在地圖上的只有10個車站
         const int MAXIUM_STATION_TYPE = 7;				//車站樣式總共有7個 00~06
+		const int LINE_COLOR_NUM = 7;				//車站樣式總共有7個 00~06
         const int MAX_GAME_MAP_SIDE_X = 770;			//實際上的遊戲邊界X軸只有到770
         const int MIN_GAME_MAP_SIDE_X = 30;			    //實際上的遊戲邊界X軸從30開始
-        const int MAX_GAME_MAP_SIDE_Y = 570;			//實際上的遊戲邊界Y軸只有到570
+        const int MAX_GAME_MAP_SIDE_Y = 560;			//實際上的遊戲邊界Y軸只有到560
         const int MIN_GAME_MAP_SIDE_Y = 60;			    //實際上的遊戲邊界Y軸從60開始
         int currentStationNum;							//目前出現到哪個車站
         int counter;
         int clickedX;
         int clickedY;
-        Line    line;									//負責處理火車線路的物件
+        Line    *line;									//負責處理火車線路的物件
 
 		Line    redLine;								//紅色線路 
 		Line    orangeLine;								//橘色線路 
@@ -134,7 +135,7 @@ class CGameStateRun : public CGameState
         Timer   timer;									//計時器
 		Station s;
         vector<Station> stationList;					//一堆的車站
-        int stationRelation[10][10];					//軌道位置
+        int stationRelation[10][10][7];					//軌道位置
         int stationX[10];
         int mouse_x = 0, mouse_y = 0;					//滑鼠位置
 };
