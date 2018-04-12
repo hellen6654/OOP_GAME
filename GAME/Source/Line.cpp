@@ -23,7 +23,7 @@ bool Line::IsClickedStation(int x, int y, vector<Station> stationList, int curre
                 y >= stationList[i].GetY() && y <= stationList[i].GetY() + 25)
         {
             if (clickedStationNumA == -1 && clickedStationNumB == -1) clickedStationNumA = i;
-            else if (clickedStationNumB == -1) clickedStationNumB = i;
+            else if (clickedStationNumA != -1 && clickedStationNumB == -1) clickedStationNumB = i;
 
             return true;
         }

@@ -124,6 +124,7 @@ class CGameStateRun : public CGameState
         Timer   timer;									//計時器
         vector<Station> stationList;					//一堆的車站
         int stationRelation[10][10];					//軌道位置
+        int stationX[10];
         int mouse_x = 0, mouse_y = 0;					//滑鼠位置
 };
 

@@ -354,7 +354,26 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠左鍵的動作 按下
 {
     //eraser.SetMovingLeft(true);
-    line.IsClickedStation(point.x, point.y, stationList, currentStationNum);
+    if (stationX[line.GetclickedTwoNumA()] == 1)
+    {
+        if (!line.IsClickedStation(point.x, point.y, stationList, currentStationNum))
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                stationX[i] = 0;
+            }
+
+            line.SetclickedTwoNumA(-1);
+        }
+    }
+    else
+    {
+        if (line.IsClickedStation(point.x, point.y, stationList, currentStationNum))
+        {
+            stationX[line.GetclickedTwoNumA()] = 1;
+        }
+    }
+
     clickedX = point.x;
     clickedY = point.y;
 }
@@ -393,9 +412,15 @@ void CGameStateRun::OnShow()
     map.SetTopLeft(0, 0);
     map.ShowBitmap();
 
-    for (int i = 0; i < currentStationNum; i++)
+    if (stationX[line.GetclickedTwoNumA()] == 1)
     {
-        for (int j = i + 1; j < currentStationNum; j++)
+        line.DrawRailway(stationList[line.GetclickedTwoNumA()].GetX() + 5, stationList[line.GetclickedTwoNumA()].GetY() + 5,
+                         mouse_x, mouse_y);
+    }
+
+    for (int i = 0; i < MAXIUM_STATION; i++)
+    {
+        for (int j = i + 1; j < MAXIUM_STATION; j++)
         {
             if (stationRelation[i][j] == 1)
             {
@@ -404,6 +429,24 @@ void CGameStateRun::OnShow()
             }
         }
     }
+
+    /* for (int i = 0; i < currentStationNum; i++)
+     {
+         if (stationX[i] == 1)
+         {
+             line.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5,
+                              mouse_x, mouse_y);
+
+             for (int j = 0; j < currentStationNum; j++)
+             {
+                 if (stationRelation[i][j] == 1)
+                 {
+                     line.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5,
+                                      stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+                 }
+             }
+         }
+     }*/
 
     for (int i = 0; i < currentStationNum; i++)
         stationList[i].OnShow();
