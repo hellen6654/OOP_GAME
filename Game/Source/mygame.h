@@ -108,6 +108,7 @@ class CGameStateRun : public CGameState
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
         CMovingBitmap  map;
+        CMovingBitmap  color[7];
         const int MAXIUM_STATION = 10;					//會出現在地圖上的只有10個車站
         const int MAXIUM_STATION_TYPE = 7;				//車站樣式總共有7個 00~06
         const int MAX_GAME_MAP_SIDE_X = 770;			//實際上的遊戲邊界X軸只有到770

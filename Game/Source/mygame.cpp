@@ -145,7 +145,7 @@ void CGameStateInit::OnShow()
         end.SetTopLeft((SIZE_X - end.Width()) / 2, SIZE_Y / 8 + 270);
         end.ShowBitmap(0.9);
     }
-    else if (mouse_x > end.Left() && 491 && mouse_y > end.Top() && mouse_y < 402)
+    else if (mouse_x > end.Left() &&  mouse_x < 491 && mouse_y > end.Top() && mouse_y < 402)
     {
         start.SetTopLeft((SIZE_X - start.Width()) / 2, SIZE_Y / 8 + 170);
         start.ShowBitmap(0.9);
@@ -268,7 +268,11 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 
     if (line.IsClickedTwoStation())
     {
-        stationRelation[line.GetclickedTwoNumA()][line.GetclickedTwoNumB()] = stationRelation[line.GetclickedTwoNumB()][line.GetclickedTwoNumA()] = 1;
+        if (stationRelation[line.GetclickedTwoNumB()][line.GetclickedTwoNumA()] != 1)
+        {
+            stationRelation[line.GetclickedTwoNumA()][line.GetclickedTwoNumB()] = 1;
+        }
+
         line.SetclickedTwoNumA(-1);
         line.SetclickedTwoNumB(-1);
     }
@@ -286,6 +290,13 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     clock.LoadBitmap();
     week.LoadBitmap();
     map.LoadBitmap(".\\RES\\map.bmp");
+    color[0].LoadBitmap(".\\RES\\color\\red.bmp", RGB(255, 255, 255));
+    color[1].LoadBitmap(".\\RES\\color\\orang.bmp", RGB(255, 255, 255));
+    color[2].LoadBitmap(".\\RES\\color\\yellow.bmp", RGB(255, 255, 255));
+    color[3].LoadBitmap(".\\RES\\color\\green.bmp", RGB(255, 255, 255));
+    color[4].LoadBitmap(".\\RES\\color\\blue.bmp", RGB(255, 255, 255));
+    color[5].LoadBitmap(".\\RES\\color\\bblue.bmp", RGB(255, 255, 255));
+    color[6].LoadBitmap(".\\RES\\color\\purple.bmp", RGB(255, 255, 255));
     srand((unsigned)time(NULL));
     int station_y = 0, station_x = 0, station_type = 0;
     Station buffer;
@@ -411,6 +422,20 @@ void CGameStateRun::OnShow()
     //timer.CountPassTime();
     map.SetTopLeft(0, 0);
     map.ShowBitmap();
+    color[0].SetTopLeft(240, 565);
+    color[0].ShowBitmap();
+    color[1].SetTopLeft(285, 565);
+    color[1].ShowBitmap();
+    color[2].SetTopLeft(330, 565);
+    color[2].ShowBitmap();
+    color[3].SetTopLeft(375, 565);
+    color[3].ShowBitmap();
+    color[4].SetTopLeft(420, 565);
+    color[4].ShowBitmap();
+    color[5].SetTopLeft(465, 565);
+    color[5].ShowBitmap();
+    color[6].SetTopLeft(510, 565);
+    color[6].ShowBitmap();
 
     if (stationX[line.GetclickedTwoNumA()] == 1)
     {
@@ -420,12 +445,15 @@ void CGameStateRun::OnShow()
 
     for (int i = 0; i < MAXIUM_STATION; i++)
     {
-        for (int j = i + 1; j < MAXIUM_STATION; j++)
+        for (int j = 0; j < MAXIUM_STATION; j++)
         {
-            if (stationRelation[i][j] == 1)
+            if (i != j)
             {
-                line.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5,
-                                 stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+                if (stationRelation[i][j] == 1 )
+                {
+                    line.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5,
+                                     stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+                }
             }
         }
     }
