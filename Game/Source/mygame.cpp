@@ -266,6 +266,27 @@ void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
     if (counter % (30 * 5) == 0 && currentStationNum < MAXIUM_STATION) //¨C¤­¬í¥X¤@­Ó¨®¯¸
         currentStationNum++;
 
+    if (counter % (30 * 1) == 0 && currentPassengerNum < MAXIUM_PASSENGER)
+    {
+        //¨C¤@¬í¥X¤@­Ó­¼«È
+        currentPassengerNum++;
+        srand((unsigned)time(NULL));
+        type_p = rand() % 3; //ÀH¾÷¿ï¾Ü¨®¯¸ªº§Îª¬
+
+        if (type_p == 0)
+        {
+            type_s = rand() % currentStationNum;
+            stationList[type_s].Setpassenger();//¦¹¨®¯¸¤H¼Æ++
+            Passenger_Circle.RandomBuildPassenger(passengerList, stationList[1].GetX(), stationList[1].GetY(), stationList[1].Getpassenger(), 0);
+        }
+        else if (type_p == 1)
+        {
+            type_s = rand() % currentStationNum;
+            stationList[type_s].Setpassenger();
+            Passenger_Triangle.RandomBuildPassenger(passengerList, stationList[type_s].GetX(), stationList[type_s].GetY(), stationList[type_s].Getpassenger(), 1);
+        }
+    }
+
     if (line->IsClickedTwoStation())
     {
         stationRelation[line->GetclickedTwoNumA()][line->GetclickedTwoNumB()][line->GetLineColor()] = 1;
@@ -283,46 +304,46 @@ void CGameStateRun::OnInit()  								// ¹CÀ¸ªºªì­È¤Î¹Ï§Î³]©w
     ShowInitProgress(33);	// ±µ­Ó«e¤@­Óª¬ºAªº¶i«×¡A¦¹³B¶i«×µø¬°33%
     //
     // ¶}©l¸ü¤J¸ê®Æ
-	line = &redLine;
+    line = &redLine;
     clock.LoadBitmap();
     week.LoadBitmap();
     map.LoadBitmap(".\\RES\\map.bmp");
-	//line->LoadBitmap();
+    //line->LoadBitmap();
+    //red(255.0.0),orang(255.144.0),yellow(255.255.0),green(0.255.0),blue(0.138.255),bblue(0.6.255),puple(144.0.255)
+    redLine.SetLineColor(255, 0, 0);
+    orangeLine.SetLineColor(255, 144, 0);
+    yellowLine.SetLineColor(255, 255, 0);
+    greenLine.SetLineColor(0, 255, 0);
+    blueLine.SetLineColor(0, 138, 255);
+    bblueLine.SetLineColor(0, 6, 255);
+    purpleLine.SetLineColor(144, 0, 255);
+    redLine.LoadBitmap();
+    orangeLine.LoadBitmap();
+    yellowLine.LoadBitmap();
+    greenLine.LoadBitmap();
+    blueLine.LoadBitmap();
+    bblueLine.LoadBitmap();
+    purpleLine.LoadBitmap();
+    Passenger_Circle.SetType(0) ;
+    Passenger_Triangle.SetType(1);
+    Passenger_Square.SetType(2);
+    Passenger_Circle.LoadBitmap();
+    Passenger_Triangle.LoadBitmap();
+    Passenger_Square.LoadBitmap();
+    s.RandomBuildStation(stationList);					//«Ø¥ßÀH¾÷¨®¯¸¦Cªí
+    s.CheckedOverLappingStation(stationList);			//ÀË¬d¨®¯¸¦Cªí¥Ü¬O§_¦³­«Å|ªº¨®¯¸
 
-	//red(255.0.0),orang(255.144.0),yellow(255.255.0),green(0.255.0),blue(0.138.255),bblue(0.6.255),puple(144.0.255)
-	redLine.SetLineColor(255, 0, 0);
-	orangeLine.SetLineColor(255, 144, 0);
-	yellowLine.SetLineColor(255, 255, 0);
-	greenLine.SetLineColor(0, 255, 0);
-	blueLine.SetLineColor(0, 138, 255);
-	bblueLine.SetLineColor(0, 6, 255);
-	purpleLine.SetLineColor(144, 0, 255);
+    for (int i = 0; i < MAXIUM_STATION; i++)			//¸ü¤J¹Ï¤ù
+        stationList[i].LoadBitmap();
 
-	redLine.LoadBitmap();
-	orangeLine.LoadBitmap();
-	yellowLine.LoadBitmap();								
-	greenLine.LoadBitmap();								
-	blueLine.LoadBitmap();								
-	bblueLine.LoadBitmap();								
-	purpleLine.LoadBitmap();
-	
-	
+    for (int i = 0; i < MAXIUM_STATION; i++)
+        for (int j = 0; j < MAXIUM_STATION; j++)
+            for (int k = 0; k < LINE_COLOR_NUM; k++)
+                stationRelation[i][j][k] = 0;
 
-
-	s.RandomBuildStation(stationList);					//«Ø¥ßÀH¾÷¨®¯¸¦Cªí
-	s.CheckedOverLappingStation(stationList);			//ÀË¬d¨®¯¸¦Cªí¥Ü¬O§_¦³­«Å|ªº¨®¯¸
-	
-	for (int i = 0; i < MAXIUM_STATION; i++)			//¸ü¤J¹Ï¤ù
-		stationList[i].LoadBitmap();
-	for (int i = 0; i < MAXIUM_STATION; i++)
-		for (int j = 0; j < MAXIUM_STATION; j++)
-			for (int k = 0; k < LINE_COLOR_NUM; k++)
-				stationRelation[i][j][k] = 0;
-
-	currentStationNum = 3;								//²{¦³¨®¯¸¬°¤T­Ó ¹CÀ¸¶}©l ¦³¤T­Ó¨®¯¸
-
+    currentStationNum = 3;
+    //²{¦³¨®¯¸¬°¤T­Ó ¹CÀ¸¶}©l ¦³¤T­Ó¨®¯¸
     clickedX = clickedY = -1;
-
     ShowInitProgress(50);
     //Sleep(300); // ©ñºC¡A¥H«K¬Ý²M·¡¶i«×¡A¹ê»Ú¹CÀ¸½Ð§R°£¦¹Sleep
     //
@@ -363,6 +384,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // ³B²z·Æ¹«¥ªÁäªº°
             {
                 stationX[i] = 0;
             }
+
             line->SetclickedTwoNumA(-1);
         }
     }
@@ -375,38 +397,38 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // ³B²z·Æ¹«¥ªÁäªº°
     }
 
     clickedX = point.x;
-	clickedY = point.y;
+    clickedY = point.y;
 }
 
 void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// ³B²z·Æ¹«¥ªÁäªº°Ê§@ ©ñ¶}
 {
     //eraser.SetMovingLeft(false);
-	if (redLine.IsMouseClickedBMP(point.x, point.y))
-		line = &redLine;
-	else if (orangeLine.IsMouseClickedBMP(point.x, point.y))
-		line = &orangeLine;
-	else if (yellowLine.IsMouseClickedBMP(point.x, point.y))
-		line = &yellowLine;
-	else if (greenLine.IsMouseClickedBMP(point.x, point.y))
-		line = &greenLine;
-	else if (blueLine.IsMouseClickedBMP(point.x, point.y))
-		line = &blueLine;
-	else if (bblueLine.IsMouseClickedBMP(point.x, point.y))
-		line = &bblueLine;
-	else if (purpleLine.IsMouseClickedBMP(point.x, point.y))
-		line = &purpleLine;
+    if (redLine.IsMouseClickedBMP(point.x, point.y))
+        line = &redLine;
+    else if (orangeLine.IsMouseClickedBMP(point.x, point.y))
+        line = &orangeLine;
+    else if (yellowLine.IsMouseClickedBMP(point.x, point.y))
+        line = &yellowLine;
+    else if (greenLine.IsMouseClickedBMP(point.x, point.y))
+        line = &greenLine;
+    else if (blueLine.IsMouseClickedBMP(point.x, point.y))
+        line = &blueLine;
+    else if (bblueLine.IsMouseClickedBMP(point.x, point.y))
+        line = &bblueLine;
+    else if (purpleLine.IsMouseClickedBMP(point.x, point.y))
+        line = &purpleLine;
 }
 
 void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// ³B²z·Æ¹«¥ªÁäªº°Ê§@ ²¾°Ê
 {
     // ¨S¨Æ¡C¦pªG»Ý­n³B²z·Æ¹«²¾°Êªº¸Ü¡A¼gcode¦b³o¸Ì
-	if (point.x > MIN_GAME_MAP_SIDE_X+5 && point.x < MAX_GAME_MAP_SIDE_X-10) mouse_x = point.x;
-	if (point.y > MIN_GAME_MAP_SIDE_Y+5 && point.y < MAX_GAME_MAP_SIDE_Y-10) mouse_y = point.y;
+    if (point.x > MIN_GAME_MAP_SIDE_X + 5 && point.x < MAX_GAME_MAP_SIDE_X - 10) mouse_x = point.x;
+
+    if (point.y > MIN_GAME_MAP_SIDE_Y + 5 && point.y < MAX_GAME_MAP_SIDE_Y - 10) mouse_y = point.y;
 }
 
 void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // ³B²z·Æ¹«ªº°Ê§@
 {
-
 }
 
 void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// ³B²z·Æ¹«ªº°Ê§@
@@ -426,58 +448,59 @@ void CGameStateRun::OnShow()
     //timer.CountPassTime();
     map.SetTopLeft(0, 0);
     map.ShowBitmap();
-	//line.ShowBitmap();
+    //line.ShowBitmap();
+    purpleLine.ShowBitmap();
+    bblueLine.ShowBitmap();
+    blueLine.ShowBitmap();
+    greenLine.ShowBitmap();
+    yellowLine.ShowBitmap();
+    orangeLine.ShowBitmap();
+    redLine.ShowBitmap();
 
-	purpleLine.ShowBitmap();
-	bblueLine.ShowBitmap();
-	blueLine.ShowBitmap();
-	greenLine.ShowBitmap();
-	yellowLine.ShowBitmap();
-	orangeLine.ShowBitmap();
-	redLine.ShowBitmap();
-	
     if (line->GetclickedTwoNumA() != -1 ) // ²Ä¤@­Ó¨®¯¸³Q¿ï¨ú¤F ´N­nµe¥X¨Ó
     {
-        line->DrawRailway(stationList[line->GetclickedTwoNumA()].GetX() + 5, stationList[line->GetclickedTwoNumA()].GetY() + 5,mouse_x, mouse_y);
+        line->DrawRailway(stationList[line->GetclickedTwoNumA()].GetX() + 5, stationList[line->GetclickedTwoNumA()].GetY() + 5, mouse_x, mouse_y);
     }
-	else // ÂIªÅ¥Õ³B§Y¥i¨ú®ø
-	{
-		line->SetclickedTwoNumA(-1);
-		line->SetclickedTwoNumB(-1);
-	}
+    else // ÂIªÅ¥Õ³B§Y¥i¨ú®ø
+    {
+        line->SetclickedTwoNumA(-1);
+        line->SetclickedTwoNumB(-1);
+    }
 
     for (int i = 0; i < currentStationNum ; i++)
     {
-		for (int j = 0; j < currentStationNum; j++)
-		{
-			for (int k = 0; k < LINE_COLOR_NUM; k++)
-			{
-				{
-					if (stationRelation[i][j][k] == 1 )
-					{
-						if (k==0)
-							redLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-						else if(k==1)
-							orangeLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-						else if (k == 2)
-							yellowLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-						else if (k == 3)
-							greenLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-						else if (k == 4)
-							blueLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-						else if (k == 5)
-							bblueLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-						else if (k == 6)
-							purpleLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-					}
-				}
-			}
-		}
+        for (int j = 0; j < currentStationNum; j++)
+        {
+            for (int k = 0; k < LINE_COLOR_NUM; k++)
+            {
+                {
+                    if (stationRelation[i][j][k] == 1 )
+                    {
+                        if (k == 0)
+                            redLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+                        else if (k == 1)
+                            orangeLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+                        else if (k == 2)
+                            yellowLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+                        else if (k == 3)
+                            greenLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+                        else if (k == 4)
+                            blueLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+                        else if (k == 5)
+                            bblueLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+                        else if (k == 6)
+                            purpleLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
+                    }
+                }
+            }
+        }
     }
-
 
     for (int i = 0; i < currentStationNum; i++)
         stationList[i].OnShow();
+
+    for (int i = 0; i < currentPassengerNum; i++)
+        passengerList[i].OnShow();
 
     //week.OnShow();
     clock.OnShow();

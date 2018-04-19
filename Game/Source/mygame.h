@@ -41,6 +41,7 @@
 #include "CEraser.h"
 #include "CBall.h"
 #include "CBouncingBall.h"
+#include "Passenger.h"
 #include "Station.h"
 #include "Clock.h"
 #include "Week.h"
@@ -108,36 +109,48 @@ class CGameStateRun : public CGameState
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
         CMovingBitmap  map;
-		CMovingBitmap  color[7];
+        CMovingBitmap  color[7];
         const int MAXIUM_STATION = 10;					//會出現在地圖上的只有10個車站
         const int MAXIUM_STATION_TYPE = 7;				//車站樣式總共有7個 00~06
-		const int LINE_COLOR_NUM = 7;				//車站樣式總共有7個 00~06
+        const int MAXIUM_PASSENGER = 10;					//會出現在地圖上的只有10個車站
+        const int MAXIUM_PASSENGER_TYPE = 7;				//車站樣式總共有7個 00~06
+        const int LINE_COLOR_NUM = 7;				//車站樣式總共有7個 00~06
         const int MAX_GAME_MAP_SIDE_X = 770;			//實際上的遊戲邊界X軸只有到770
         const int MIN_GAME_MAP_SIDE_X = 30;			    //實際上的遊戲邊界X軸從30開始
         const int MAX_GAME_MAP_SIDE_Y = 560;			//實際上的遊戲邊界Y軸只有到560
         const int MIN_GAME_MAP_SIDE_Y = 60;			    //實際上的遊戲邊界Y軸從60開始
         int currentStationNum;							//目前出現到哪個車站
+        int currentPassengerNum;							//目前出現到哪個車站
         int counter;
         int clickedX;
         int clickedY;
-        Line    *line;									//負責處理火車線路的物件
+        int station;
+        Line*    line;									//負責處理火車線路的物件
 
-		Line    redLine;								//紅色線路 
-		Line    orangeLine;								//橘色線路 
-		Line    yellowLine;								//黃色線路
-		Line    greenLine;								//綠色線路
-		Line    blueLine;								//藍色線路
-		Line    bblueLine;								//靛色線路
-		Line    purpleLine;								//紫色線路
-		
+        Line    redLine;								//紅色線路
+        Line    orangeLine;								//橘色線路
+        Line    yellowLine;								//黃色線路
+        Line    greenLine;								//綠色線路
+        Line    blueLine;								//藍色線路
+        Line    bblueLine;								//靛色線路
+        Line    purpleLine;								//紫色線路
+
+        Passenger Passenger_Circle;
+        Passenger Passenger_Triangle;
+        Passenger Passenger_Square;
+
         Clock   clock;									//會動的時鐘
         Week    week;									//會動的周次
         Timer   timer;									//計時器
-		Station s;
+        Station s;
         vector<Station> stationList;					//一堆的車站
+        vector<Passenger> passengerList;					//一堆的乘客
         int stationRelation[10][10][7];					//軌道位置
         int stationX[10];
         int mouse_x = 0, mouse_y = 0;					//滑鼠位置
+
+        int type_p;
+        int type_s;
 };
 
 /////////////////////////////////////////////////////////////////////////////
