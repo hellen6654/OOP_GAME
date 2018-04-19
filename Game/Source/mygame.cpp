@@ -64,457 +64,442 @@
 
 namespace game_framework
 {
-/////////////////////////////////////////////////////////////////////////////
-// 這個class為遊戲的遊戲開頭畫面物件
-/////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
+	// 這個class為遊戲的遊戲開頭畫面物件
+	/////////////////////////////////////////////////////////////////////////////
 
-CGameStateInit::CGameStateInit(CGame* g)
-    : CGameState(g)
-{
-}
+	CGameStateInit::CGameStateInit(CGame* g)
+		: CGameState(g)
+	{
+	}
 
-void CGameStateInit::OnInit()
-{
-    //
-    // 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
-    //     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
-    //
-    ShowInitProgress(0);	// 一開始的loading進度為0%
-    //
-    // 開始載入資料
-    //
-    logo.LoadBitmap(".\\RES\\title.bmp");
-    start.LoadBitmap(".\\RES\\button\\start.bmp");
-    end.LoadBitmap(".\\RES\\button\\end.bmp");
-    Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
-    //
-    // 此OnInit動作會接到CGameStaterRun::OnInit()，所以進度還沒到100%
-    //
-}
+	void CGameStateInit::OnInit()
+	{
+		//
+		// 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
+		//     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
+		//
+		ShowInitProgress(0);	// 一開始的loading進度為0%
+		//
+		// 開始載入資料
+		//
+		logo.LoadBitmap(".\\RES\\title.bmp");
+		start.LoadBitmap(".\\RES\\button\\start.bmp");
+		end.LoadBitmap(".\\RES\\button\\end.bmp");
+		Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
+		//
+		// 此OnInit動作會接到CGameStaterRun::OnInit()，所以進度還沒到100%
+		//
+	}
 
-void CGameStateInit::OnBeginState()
-{
-}
+	void CGameStateInit::OnBeginState()
+	{
+	}
 
-void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-    const char KEY_ESC = 27;
-    const char KEY_SPACE = ' ';
+	void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+	{
+		const char KEY_ESC = 27;
+		const char KEY_SPACE = ' ';
 
-    if (nChar == KEY_SPACE)
-        GotoGameState(GAME_STATE_RUN);						// 切換至GAME_STATE_RUN
-    else if (nChar == KEY_ESC)								// Demo 關閉遊戲的方法
-        PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
-}
+		if (nChar == KEY_SPACE)
+			GotoGameState(GAME_STATE_RUN);						// 切換至GAME_STATE_RUN
+		else if (nChar == KEY_ESC)								// Demo 關閉遊戲的方法
+			PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
+	}
 
-void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
-{
-    // GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
-}
+	void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
+	{
+		// GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
+	}
 
-void CGameStateInit::OnLButtonUp(UINT nFlags, CPoint point)
-{
-    if (mouse_x >= start.Left() && mouse_x <= start.Left() + start.Width() && mouse_y >= start.Top() && mouse_y <= start.Top() + start.Height())
-    {
-        GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
-    }
-    else if (mouse_x >= end.Left() && mouse_x <= end.Left() + end.Width() && mouse_y >= end.Top() && mouse_y <= end.Top() + end.Height())
-    {
-        PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
-    }
-}
+	void CGameStateInit::OnLButtonUp(UINT nFlags, CPoint point)
+	{
+		if (mouse_x >= start.Left() && mouse_x <= start.Left() + start.Width() && mouse_y >= start.Top() && mouse_y <= start.Top() + start.Height())
+		{
+			GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
+		}
+		else if (mouse_x >= end.Left() && mouse_x <= end.Left() + end.Width() && mouse_y >= end.Top() && mouse_y <= end.Top() + end.Height())
+		{
+			PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
+		}
+	}
 
-void CGameStateInit::OnMouseMove(UINT nFlags, CPoint point)
-{
-    mouse_x = point.x;
-    mouse_y = point.y;
-}
+	void CGameStateInit::OnMouseMove(UINT nFlags, CPoint point)
+	{
+		mouse_x = point.x;
+		mouse_y = point.y;
+	}
 
-void CGameStateInit::OnShow()
-{
-    //
-    // 貼上logo
-    //
-    logo.SetTopLeft((SIZE_X - logo.Width()) / 2, SIZE_Y / 8);
-    logo.ShowBitmap();
+	void CGameStateInit::OnShow()
+	{
+		//
+		// 貼上logo
+		//
+		logo.SetTopLeft((SIZE_X - logo.Width()) / 2, SIZE_Y / 8);
+		logo.ShowBitmap();
+		//
+		// 滑鼠移到上面 讓圖標變大
+		//
+	
+		if (mouse_x > start.Left() && mouse_x < 491 && mouse_y > start.Top() && mouse_y < 302 )
+		{
+			start.SetTopLeft((SIZE_X - start.Width()) / 2 - 8, SIZE_Y / 8 + 166);
+			start.ShowBitmap(1.05);
+			end.SetTopLeft((SIZE_X - end.Width()) / 2, SIZE_Y / 8 + 270);
+			end.ShowBitmap(0.9);
+		}
+		else if (mouse_x > end.Left() && mouse_x < 491 && mouse_y > end.Top() && mouse_y < 402)
+		{
+			start.SetTopLeft((SIZE_X - start.Width()) / 2, SIZE_Y / 8 + 170);
+			start.ShowBitmap(0.9);
+			end.SetTopLeft((SIZE_X - end.Width()) / 2 - 8, SIZE_Y / 8 + 266);
+			end.ShowBitmap(1.05);
+		}
+		else
+		{
+			start.SetTopLeft((SIZE_X - start.Width()) / 2, SIZE_Y / 8 + 170);
+			start.ShowBitmap(0.9);
+			end.SetTopLeft((SIZE_X - end.Width()) / 2, SIZE_Y / 8 + 270);
+			end.ShowBitmap(0.9);
+		}
 
-    if (mouse_x > start.Left() && mouse_x < 491 && mouse_y > start.Top() && mouse_y < 302 )
-    {
-        start.SetTopLeft((SIZE_X - start.Width()) / 2 - 8, SIZE_Y / 8 + 166);
-        start.ShowBitmap(1.05);
-        end.SetTopLeft((SIZE_X - end.Width()) / 2, SIZE_Y / 8 + 270);
-        end.ShowBitmap(0.9);
-    }
-    else if (mouse_x > end.Left() && mouse_x < 491 && mouse_y > end.Top() && mouse_y < 402)
-    {
-        start.SetTopLeft((SIZE_X - start.Width()) / 2, SIZE_Y / 8 + 170);
-        start.ShowBitmap(0.9);
-        end.SetTopLeft((SIZE_X - end.Width()) / 2 - 8, SIZE_Y / 8 + 266);
-        end.ShowBitmap(1.05);
-    }
-    else
-    {
-        start.SetTopLeft((SIZE_X - start.Width()) / 2, SIZE_Y / 8 + 170);
-        start.ShowBitmap(0.9);
-        end.SetTopLeft((SIZE_X - end.Width()) / 2, SIZE_Y / 8 + 270);
-        end.ShowBitmap(0.9);
-    }
+		//
+		// Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好
+		//
+		/*
+		CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
+		CFont f, *fp;
+		f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
+		fp = pDC->SelectObject(&f);					// 選用 font f
+		pDC->SetBkColor(RGB(0, 0, 0));
+		pDC->SetTextColor(RGB(255, 255, 0));
+		//pDC->TextOut(150, 275, "Please click mouse or press SPACE to begin.");
+		pDC->TextOut(5, 493, "Press Ctrl-F to switch in between window mode and full screen mode.");
+		char t[30];
+		sprintf(t, "(%d,%d)", mouse_x, mouse_y);
+		pDC->TextOut(10, 10, t);
 
-    //
-    // Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好
-    //
-    /*CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
-    CFont f, *fp;
-    f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
-    fp = pDC->SelectObject(&f);					// 選用 font f
-    pDC->SetBkColor(RGB(0, 0, 0));
-    pDC->SetTextColor(RGB(255, 255, 0));
-    //pDC->TextOut(150, 275, "Please click mouse or press SPACE to begin.");
-    pDC->TextOut(5, 493, "Press Ctrl-F to switch in between window mode and full screen mode.");
-    char t[30];
-    sprintf(t, "(%d,%d)", mouse_x, mouse_y);
-    pDC->TextOut(10, 10, t);
+		if (ENABLE_GAME_PAUSE)
+			pDC->TextOut(6, 531, "Press Ctrl-Q to pause the Game.");
 
-    if (ENABLE_GAME_PAUSE)
-        pDC->TextOut(6, 531, "Press Ctrl-Q to pause the Game.");
+		pDC->TextOut(6, 569, "Press Alt-F4 or ESC to Quit.");
+		pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
+		CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+		*/
+	}
 
-    pDC->TextOut(6, 569, "Press Alt-F4 or ESC to Quit.");
-    pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
-    CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC*/
-}
+	/////////////////////////////////////////////////////////////////////////////
+	// 這個class為遊戲的結束狀態(Game Over)
+	/////////////////////////////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////////////////////////////////
-// 這個class為遊戲的結束狀態(Game Over)
-/////////////////////////////////////////////////////////////////////////////
+	CGameStateOver::CGameStateOver(CGame* g)
+		: CGameState(g)
+	{
+	}
 
-CGameStateOver::CGameStateOver(CGame* g)
-    : CGameState(g)
-{
-}
+	void CGameStateOver::OnMove()
+	{
+		counter--;
 
-void CGameStateOver::OnMove()
-{
-    counter--;
+		if (counter < 0)
+			GotoGameState(GAME_STATE_INIT);
+	}
 
-    if (counter < 0)
-        GotoGameState(GAME_STATE_INIT);
-}
+	void CGameStateOver::OnBeginState()
+	{
+		counter = 30 * 5; // 5 seconds
+	}
 
-void CGameStateOver::OnBeginState()
-{
-    counter = 30 * 5; // 5 seconds
-}
+	void CGameStateOver::OnInit()
+	{
+		//
+		// 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
+		//     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
+		//
+		ShowInitProgress(66);	// 接個前一個狀態的進度，此處進度視為66%
+		//
+		// 開始載入資料
+		//
+		Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
+		//
+		// 最終進度為100%
+		//
+		ShowInitProgress(100);
+	}
 
-void CGameStateOver::OnInit()
-{
-    //
-    // 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
-    //     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
-    //
-    ShowInitProgress(66);	// 接個前一個狀態的進度，此處進度視為66%
-    //
-    // 開始載入資料
-    //
-    Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
-    //
-    // 最終進度為100%
-    //
-    ShowInitProgress(100);
-}
+	void CGameStateOver::OnShow()
+	{
+		CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
+		CFont f, *fp;
+		f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
+		fp = pDC->SelectObject(&f);					// 選用 font f
+		pDC->SetBkColor(RGB(0, 0, 0));
+		pDC->SetTextColor(RGB(255, 255, 0));
+		char str[80];								// Demo 數字對字串的轉換
+		sprintf(str, "Game Over ! (%d)", counter / 30);
+		pDC->TextOut(240, 210, str);
+		pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
+		CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+	}
 
-void CGameStateOver::OnShow()
-{
-    CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
-    CFont f, *fp;
-    f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
-    fp = pDC->SelectObject(&f);					// 選用 font f
-    pDC->SetBkColor(RGB(0, 0, 0));
-    pDC->SetTextColor(RGB(255, 255, 0));
-    char str[80];								// Demo 數字對字串的轉換
-    sprintf(str, "Game Over ! (%d)", counter / 30);
-    pDC->TextOut(240, 210, str);
-    pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
-    CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
-}
+	/////////////////////////////////////////////////////////////////////////////
+	// 這個class為遊戲的遊戲執行物件，主要的遊戲程式都在這裡
+	/////////////////////////////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////////////////////////////////
-// 這個class為遊戲的遊戲執行物件，主要的遊戲程式都在這裡
-/////////////////////////////////////////////////////////////////////////////
+	CGameStateRun::CGameStateRun(CGame* g)
+		: CGameState(g)
+	{
+	}
 
-CGameStateRun::CGameStateRun(CGame* g)
-    : CGameState(g)
-{
-}
+	CGameStateRun::~CGameStateRun()
+	{
+	}
 
-CGameStateRun::~CGameStateRun()
-{
-}
+	void CGameStateRun::OnBeginState()
+	{
+		counter = 0;
+	}
 
-void CGameStateRun::OnBeginState()
-{
-    counter = 0;
-}
+	void CGameStateRun::OnMove()							// 移動遊戲元素
+	{
+		counter++;
+		clock.OnMove();				//播放clock時鐘動畫
+		p.RandomMadePassenger(currentStationNum);
+		for (int i = 0; i < MAXIUM_STATION; i++)
+		{
+			if (p.GetStartStation() == i)
+			{
+				p.SetX(stationList[i].GetX() + 30);
+				p.SetY(stationList[i].GetY());
+			}
+		}
+		//if (clock.isfinalbitmap())	//播放week周次動畫
+		//	week.onmove();
 
-void CGameStateRun::OnMove()							// 移動遊戲元素
-{
-    counter++;
-    clock.OnMove();				//播放clock時鐘動畫
+		if (counter % (30 * STATION_APPERAED_TIME) == 0 && currentStationNum < MAXIUM_STATION) //每 STATION_APPERAED_TIME 秒就出一個車站
+			currentStationNum++;
 
-    if (clock.IsFinalBitmap())	//播放week周次動畫
-        week.OnMove();
+		if (line->IsClickedTwoStation())
+		{
+			lstart = line->GetClickedStartStationNum();
+			lend = line->GetClickedEndStationNum();
+			stationRelation[line->GetClickedStartStationNum()][line->GetClickedEndStationNum()][line->GetLineColorNum()] = 1;
+			line->SetPassedStation(line->GetClickedStartStationNum(), line->GetClickedEndStationNum());
+			line->SetClickedStartStationNum(-1);
+			line->SetClickedEndStationNum(-1);
+		}
+	}
 
-    if (counter % (30 * 5) == 0 && currentStationNum < MAXIUM_STATION) //每五秒出一個車站
-        currentStationNum++;
+	void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
+	{
+		//
+		// 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
+		//     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
+		//
+		ShowInitProgress(33);	// 接個前一個狀態的進度，此處進度視為33%
+		//
+		// 開始載入資料
+		line = &redLine;
+		clock.LoadBitmap();
+		week.LoadBitmap();
+		map.LoadBitmap(".\\RES\\map.bmp");
+		//line->LoadBitmap();
 
-    if (counter % (30 * 1) == 0 && currentPassengerNum < MAXIUM_PASSENGER)
-    {
-        //每一秒出一個乘客
-        currentPassengerNum++;
-        srand((unsigned)time(NULL));
-        type_p = rand() % 3; //隨機選擇車站的形狀
+		p.LoadBitmap();
 
-        if (type_p == 0)
-        {
-            type_s = rand() % currentStationNum;
-            stationList[type_s].Setpassenger();//此車站人數++
-            Passenger_Circle.RandomBuildPassenger(passengerList, stationList[1].GetX(), stationList[1].GetY(), stationList[1].Getpassenger(), 0);
-        }
-        else if (type_p == 1)
-        {
-            type_s = rand() % currentStationNum;
-            stationList[type_s].Setpassenger();
-            Passenger_Triangle.RandomBuildPassenger(passengerList, stationList[type_s].GetX(), stationList[type_s].GetY(), stationList[type_s].Getpassenger(), 1);
-        }
-    }
 
-    if (line->IsClickedTwoStation())
-    {
-        stationRelation[line->GetclickedTwoNumA()][line->GetclickedTwoNumB()][line->GetLineColor()] = 1;
-        line->SetclickedTwoNumA(-1);
-        line->SetclickedTwoNumB(-1);
-    }
-}
+		//red(255.0.0),orang(255.144.0),yellow(255.255.0),green(0.255.0),blue(0.138.255),bblue(0.6.255),puple(144.0.255)
+		redLine.SetLineColor(255, 0, 0);
+		orangeLine.SetLineColor(255, 144, 0);
+		yellowLine.SetLineColor(255, 255, 0);
+		greenLine.SetLineColor(0, 255, 0);
+		blueLine.SetLineColor(0, 138, 255);
+		bblueLine.SetLineColor(0, 6, 255);
+		purpleLine.SetLineColor(144, 0, 255);
 
-void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
-{
-    //
-    // 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
-    //     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
-    //
-    ShowInitProgress(33);	// 接個前一個狀態的進度，此處進度視為33%
-    //
-    // 開始載入資料
-    line = &redLine;
-    clock.LoadBitmap();
-    week.LoadBitmap();
-    map.LoadBitmap(".\\RES\\map.bmp");
-    //line->LoadBitmap();
-    //red(255.0.0),orang(255.144.0),yellow(255.255.0),green(0.255.0),blue(0.138.255),bblue(0.6.255),puple(144.0.255)
-    redLine.SetLineColor(255, 0, 0);
-    orangeLine.SetLineColor(255, 144, 0);
-    yellowLine.SetLineColor(255, 255, 0);
-    greenLine.SetLineColor(0, 255, 0);
-    blueLine.SetLineColor(0, 138, 255);
-    bblueLine.SetLineColor(0, 6, 255);
-    purpleLine.SetLineColor(144, 0, 255);
-    redLine.LoadBitmap();
-    orangeLine.LoadBitmap();
-    yellowLine.LoadBitmap();
-    greenLine.LoadBitmap();
-    blueLine.LoadBitmap();
-    bblueLine.LoadBitmap();
-    purpleLine.LoadBitmap();
-    Passenger_Circle.SetType(0) ;
-    Passenger_Triangle.SetType(1);
-    Passenger_Square.SetType(2);
-    Passenger_Circle.LoadBitmap();
-    Passenger_Triangle.LoadBitmap();
-    Passenger_Square.LoadBitmap();
-    s.RandomBuildStation(stationList);					//建立隨機車站列表
-    s.CheckedOverLappingStation(stationList);			//檢查車站列表示是否有重疊的車站
+		ShowInitProgress(40);
 
-    for (int i = 0; i < MAXIUM_STATION; i++)			//載入圖片
-        stationList[i].LoadBitmap();
+		redLine.LoadBitmap();
+		orangeLine.LoadBitmap();
+		yellowLine.LoadBitmap();								
+		greenLine.LoadBitmap();								
+		blueLine.LoadBitmap();								
+		bblueLine.LoadBitmap();								
+		purpleLine.LoadBitmap();
+	
+		s.RandomBuildStation(stationList);					//建立隨機車站列表
+		s.CheckedOverLappingStation(stationList);			//檢查車站列表示是否有重疊的車站
+	
+		for (int i = 0; i < MAXIUM_STATION; i++)			//載入圖片
+			stationList[i].LoadBitmap();
+		for (int i = 0; i < MAXIUM_STATION; i++)
+			for (int j = 0; j < MAXIUM_STATION; j++)
+				for (int k = 0; k < LINE_COLOR_NUM; k++)
+					stationRelation[i][j][k] = 0;
 
-    for (int i = 0; i < MAXIUM_STATION; i++)
-        for (int j = 0; j < MAXIUM_STATION; j++)
-            for (int k = 0; k < LINE_COLOR_NUM; k++)
-                stationRelation[i][j][k] = 0;
+		currentStationNum = 3;								//現有車站為三個 遊戲開始 有三個車站
 
-    currentStationNum = 3;
-    //現有車站為三個 遊戲開始 有三個車站
-    clickedX = clickedY = -1;
-    ShowInitProgress(50);
-    //Sleep(300); // 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
-    //
-    // 繼續載入其他資料
-    //
-    //CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	// 載入編號0的聲音ding.wav
-    //CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	// 載入編號1的聲音lake.mp3
-    //CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");	// 載入編號2的聲音ntut.mid
-    //
-    // 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
-    //
-}
+		clickedX = clickedY = -1;
 
-void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-    const char KEY_LEFT  = 0x25; // keyboard左箭頭
-    const char KEY_UP    = 0x26; // keyboard上箭頭
-    const char KEY_RIGHT = 0x27; // keyboard右箭頭
-    const char KEY_DOWN  = 0x28; // keyboard下箭頭
-}
+		ShowInitProgress(50);
+		//Sleep(300); // 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
+		//
+		// 繼續載入其他資料
+		//
+		//CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	// 載入編號0的聲音ding.wav
+		//CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	// 載入編號1的聲音lake.mp3
+		//CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");	// 載入編號2的聲音ntut.mid
+		//
+		// 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
+		//
+	}
 
-void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-    const char KEY_LEFT  = 0x25; // keyboard左箭頭
-    const char KEY_UP    = 0x26; // keyboard上箭頭
-    const char KEY_RIGHT = 0x27; // keyboard右箭頭
-    const char KEY_DOWN  = 0x28; // keyboard下箭頭
-}
+	void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+	{
+		const char KEY_LEFT  = 0x25; // keyboard左箭頭
+		const char KEY_UP    = 0x26; // keyboard上箭頭
+		const char KEY_RIGHT = 0x27; // keyboard右箭頭
+		const char KEY_DOWN  = 0x28; // keyboard下箭頭
+	}
 
-void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠左鍵的動作 按下
-{
-    //eraser.SetMovingLeft(true);
-    if (line->GetclickedTwoNumA() != -1)
-    {
-        if (!line->IsClickedStation(point.x, point.y, stationList, currentStationNum))
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                stationX[i] = 0;
-            }
+	void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+	{
+		const char KEY_LEFT  = 0x25; // keyboard左箭頭
+		const char KEY_UP    = 0x26; // keyboard上箭頭
+		const char KEY_RIGHT = 0x27; // keyboard右箭頭
+		const char KEY_DOWN  = 0x28; // keyboard下箭頭
+	}
 
-            line->SetclickedTwoNumA(-1);
-        }
-    }
-    else
-    {
-        if (line->IsClickedStation(point.x, point.y, stationList, currentStationNum))
-        {
-            stationX[line->GetclickedTwoNumA()] = 1;
-        }
-    }
+	void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  
+	{
+		// 這邊負責處理按下滑鼠左鍵的動作 
 
-    clickedX = point.x;
-    clickedY = point.y;
-}
+		int start = line->GetClickedStartStationNum();	//紀錄起始車站
+		int end   = line->GetClickedEndStationNum();	//紀錄終點車站
 
-void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作 放開
-{
-    //eraser.SetMovingLeft(false);
-    if (redLine.IsMouseClickedBMP(point.x, point.y))
-        line = &redLine;
-    else if (orangeLine.IsMouseClickedBMP(point.x, point.y))
-        line = &orangeLine;
-    else if (yellowLine.IsMouseClickedBMP(point.x, point.y))
-        line = &yellowLine;
-    else if (greenLine.IsMouseClickedBMP(point.x, point.y))
-        line = &greenLine;
-    else if (blueLine.IsMouseClickedBMP(point.x, point.y))
-        line = &blueLine;
-    else if (bblueLine.IsMouseClickedBMP(point.x, point.y))
-        line = &bblueLine;
-    else if (purpleLine.IsMouseClickedBMP(point.x, point.y))
-        line = &purpleLine;
-}
+		if (start == -1) //沒有任何車站被選取
+		{
+			if (line->IsClickedStation(point.x, point.y, stationList, currentStationNum) ) //檢查是否有點到車站
+			{
+				start = line->GetMouseClickedStationNum(point.x, point.y, stationList, currentStationNum);
+				line->SetClickedStartStationNum(start);
+			}
+			else
+			{
+				line->SetClickedStartStationNum(-1);
+				line->SetClickedEndStationNum(-1);
+			}
+		}
+		else //如果起點車站已經被選取
+		{
+			if (line->IsClickedStation(point.x, point.y, stationList, currentStationNum)) //檢查是否有點到車站
+			{
+				end = line->GetMouseClickedStationNum(point.x, point.y, stationList, currentStationNum);
+				line->SetClickedEndStationNum(end);
+			}
+			else
+			{
+				line->SetClickedStartStationNum(-1);
+				line->SetClickedEndStationNum(-1);
+			}
+		}
+		clickedX = point.x;	//用來debug
+		clickedY = point.y; //用來debug
+	}
 
-void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作 移動
-{
-    // 沒事。如果需要處理滑鼠移動的話，寫code在這裡
-    if (point.x > MIN_GAME_MAP_SIDE_X + 5 && point.x < MAX_GAME_MAP_SIDE_X - 10) mouse_x = point.x;
+	void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作 放開
+	{
+		//換鐵軌的顏色
+		if (redLine.IsMouseClickedLineColorBMP(point.x, point.y))
+			line = &redLine;
+		else if (orangeLine.IsMouseClickedLineColorBMP(point.x, point.y))
+			line = &orangeLine;
+		else if (yellowLine.IsMouseClickedLineColorBMP(point.x, point.y))
+			line = &yellowLine;
+		else if (greenLine.IsMouseClickedLineColorBMP(point.x, point.y))
+			line = &greenLine;
+		else if (blueLine.IsMouseClickedLineColorBMP(point.x, point.y))
+			line = &blueLine;
+		else if (bblueLine.IsMouseClickedLineColorBMP(point.x, point.y))
+			line = &bblueLine;
+		else if (purpleLine.IsMouseClickedLineColorBMP(point.x, point.y))
+			line = &purpleLine;
+	}
 
-    if (point.y > MIN_GAME_MAP_SIDE_Y + 5 && point.y < MAX_GAME_MAP_SIDE_Y - 10) mouse_y = point.y;
-}
+	void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作 移動
+	{
+		// 沒事。如果需要處理滑鼠移動的話，寫code在這裡 
+		if (point.x > MIN_GAME_MAP_SIDE_X && point.x < MAX_GAME_MAP_SIDE_X) mouse_x = point.x;
+		if (point.y > MIN_GAME_MAP_SIDE_Y && point.y < MAX_GAME_MAP_SIDE_Y) mouse_y = point.y;
+	}
 
-void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
-{
-}
+	void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
+	{
 
-void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
-{
-}
+	}
 
-void CGameStateRun::OnShow()
-{
-    //
-    //  注意：Show裡面千萬不要移動任何物件的座標，移動座標的工作應由Move做才對，
-    //        否則當視窗重新繪圖時(OnDraw)，物件就會移動，看起來會很怪。換個術語
-    //        說，Move負責MVC中的Model，Show負責View，而View不應更動Model。
-    //
-    //
-    //  貼上背景圖、撞擊數、球、擦子、彈跳的球
-    //
-    //timer.CountPassTime();
-    map.SetTopLeft(0, 0);
-    map.ShowBitmap();
-    //line.ShowBitmap();
-    purpleLine.ShowBitmap();
-    bblueLine.ShowBitmap();
-    blueLine.ShowBitmap();
-    greenLine.ShowBitmap();
-    yellowLine.ShowBitmap();
-    orangeLine.ShowBitmap();
-    redLine.ShowBitmap();
+	void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
+	{
+	}
 
-    if (line->GetclickedTwoNumA() != -1 ) // 第一個車站被選取了 就要畫出來
-    {
-        line->DrawRailway(stationList[line->GetclickedTwoNumA()].GetX() + 5, stationList[line->GetclickedTwoNumA()].GetY() + 5, mouse_x, mouse_y);
-    }
-    else // 點空白處即可取消
-    {
-        line->SetclickedTwoNumA(-1);
-        line->SetclickedTwoNumB(-1);
-    }
+	void CGameStateRun::OnShow()
+	{
+		//
+		//  注意：Show裡面千萬不要移動任何物件的座標，移動座標的工作應由Move做才對，
+		//        否則當視窗重新繪圖時(OnDraw)，物件就會移動，看起來會很怪。換個術語
+		//        說，Move負責MVC中的Model，Show負責View，而View不應更動Model。
+		//
+    
+		map.SetTopLeft(0, 0);	//設置地圖位置
+		map.ShowBitmap();		//把地圖顯示出來
 
-    for (int i = 0; i < currentStationNum ; i++)
-    {
-        for (int j = 0; j < currentStationNum; j++)
-        {
-            for (int k = 0; k < LINE_COLOR_NUM; k++)
-            {
-                {
-                    if (stationRelation[i][j][k] == 1 )
-                    {
-                        if (k == 0)
-                            redLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-                        else if (k == 1)
-                            orangeLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-                        else if (k == 2)
-                            yellowLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-                        else if (k == 3)
-                            greenLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-                        else if (k == 4)
-                            blueLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-                        else if (k == 5)
-                            bblueLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-                        else if (k == 6)
-                            purpleLine.DrawRailway(stationList[i].GetX() + 5, stationList[i].GetY() + 5, stationList[j].GetX() + 5, stationList[j].GetY() + 5);
-                    }
-                }
-            }
-        }
-    }
+		clock.OnShow();			//顯示時鐘
+		
+		//===============顯示各顏色的路線===================
+		purpleLine.ShowLineIconBitmap();	//紫色
+		bblueLine.ShowLineIconBitmap();		//靛色
+		blueLine.ShowLineIconBitmap();		//藍色
+		greenLine.ShowLineIconBitmap();		//綠色
+		yellowLine.ShowLineIconBitmap();	//黃色
+		orangeLine.ShowLineIconBitmap();	//橘色
+		redLine.ShowLineIconBitmap();		//紅色
+		//===============================================
 
-    for (int i = 0; i < currentStationNum; i++)
-        stationList[i].OnShow();
+		// 如果有一個車站被選取 就要畫出來 //換句話說 就是線路要跟著滑鼠動啦
+		if (line->GetClickedStartStationNum() != -1)
+			line->DrawRailway(stationList[line->GetClickedStartStationNum()].GetX() + 5, stationList[line->GetClickedStartStationNum()].GetY() + 5, mouse_x, mouse_y);
 
-    for (int i = 0; i < currentPassengerNum; i++)
-        passengerList[i].OnShow();
+		//顯示各顏色線路 K為顏色 
+		purpleLine.ShowRailway(stationList, currentStationNum);
+		bblueLine.ShowRailway(stationList, currentStationNum);
+		blueLine.ShowRailway(stationList, currentStationNum);
+		greenLine.ShowRailway(stationList, currentStationNum);
+		yellowLine.ShowRailway(stationList, currentStationNum);
+		orangeLine.ShowRailway(stationList, currentStationNum);
+		redLine.ShowRailway(stationList, currentStationNum);
 
-    //week.OnShow();
-    clock.OnShow();
-    /*CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
-    CFont f, *fp;
-    f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
-    fp = pDC->SelectObject(&f);					// 選用 font f
-    //pDC->SetBkColor(RGB(0, 0, 0));
-    pDC->SetBkColor(RGB(241, 241, 241));
-    pDC->SetTextColor(RGB(0, 0, 0));
-    char str[80];								// Demo 數字對字串的轉換
-    sprintf(str, "(%d,%d),(%d,%d),(%d,%d)",  clickedX, clickedY,mouse_x, mouse_y , line->GetclickedTwoNumA(), line->GetclickedTwoNumB());
-    pDC->TextOut(10, 10, str);
-    pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
-    CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC*/
-}
+		// 顯示車站
+		for (int i = 0; i < currentStationNum; i++)
+			stationList[i].OnShow();
+
+		p.OnShow();
+
+		//week.OnShow();
+
+		// 以下Debug 用
+
+		
+		CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
+		CFont f, *fp;
+		f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
+		fp = pDC->SelectObject(&f);					// 選用 font f
+		//pDC->SetBkColor(RGB(0, 0, 0));
+		pDC->SetBkColor(RGB(241, 241, 241));
+		pDC->SetTextColor(RGB(0, 0, 0));
+		char str[80];								// Demo 數字對字串的轉換
+		sprintf(str, "(%d,%d),(%d,%d),(%d,%d)",  clickedX, clickedY,mouse_x, mouse_y ,line->GetClickedStartStationNum(),line->GetClickedEndStationNum());
+		pDC->TextOut(10, 10, str);
+		pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
+		CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+	}
 }

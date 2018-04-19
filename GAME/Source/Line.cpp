@@ -10,11 +10,55 @@
 namespace game_framework
 {
 	Line::Line()
-		: clickedStationNumA(-1), clickedStationNumB(-1),lineColor{0,0,0}
+		: clickedStartStationNum(-1), clickedEndStationNum(-1),lineColor{0,0,0}
 	{}
 	
 	Line::~Line()
 	{}
+
+	void Line::DrawRailway(int startX, int startY, int endX, int endY)
+	{
+		const int BORDERSIZE = 14;
+		//const int rectHeight = 20;
+		CDC* pDC = CDDraw::GetBackCDC();
+		CPen* pp, p(PS_NULL, 0, RGB(0, 0, 0));
+		pp = pDC->SelectObject(&p);
+
+		//比對start 跟 end 去判斷怎麼畫出線來
+
+		CBrush b1(RGB(lineColor[0], lineColor[1], lineColor[2]));
+		pDC->SelectObject(&b1);
+		CBrush b2(RGB(lineColor[0], lineColor[1], lineColor[2]));
+		pDC->SelectObject(&b2);
+
+		if (endX >= startX && endY >= startY)  //結束點在右下
+		{
+
+			pDC->Rectangle(startX, startY, endX + BORDERSIZE, startY + BORDERSIZE);
+			pDC->Rectangle(endX, startY, endX + BORDERSIZE, endY + BORDERSIZE);
+		}
+		else if (endX < startX && endY > startY) //結束點在左下
+		{
+
+			pDC->Rectangle(startX, startY, startX + BORDERSIZE, endY + BORDERSIZE);
+			pDC->Rectangle(startX + BORDERSIZE, endY, endX, endY + BORDERSIZE);
+		}
+		else if (endX <= startX && endY <= startY) //結束點在左上
+		{
+			pDC->Rectangle(startX, startY, endX, startY + BORDERSIZE);
+			pDC->Rectangle(endX, endY, endX + BORDERSIZE, startY + BORDERSIZE);
+		}
+		else if (endX > startX && endY < startY) //結束點在右上
+		{
+
+			pDC->Rectangle(startX, endY, startX + BORDERSIZE, startY);
+			pDC->Rectangle(startX, endY, endX, endY + BORDERSIZE);
+		}
+		//釋放 pen brush、Back、Plain的CDC
+		pDC->SelectObject(pp);
+		//pDC->SelectObject(pb);
+		CDDraw::ReleaseBackCDC();
+	}
 
 	void Line::SetLineColor(int r, int g, int b)
 	{
@@ -23,40 +67,56 @@ namespace game_framework
 		lineColor[2] = b;
 	}
 	
-	bool Line::IsClickedStation(int x, int y, vector<Station> stationList, int currentStation)
+	void Line::SetClickedStartStationNum(int num)
+	{
+		clickedStartStationNum = num;
+	}
+
+	void Line::SetClickedEndStationNum(int num)
+	{
+		clickedEndStationNum = num;
+	}
+
+	void Line::SetPassedStation(int start,int end)
+	{
+		if (passedStation.empty()) //從來沒有拉過線路
+		{
+			passedStation.push_back(start);
+			passedStation.push_back(end);
+		}
+		else 
+		{
+			if (passedStation.front()==start)//從頭拉線路出去
+			{
+				passedStation.insert(passedStation.begin(), end);
+			}
+			else if (passedStation.back()==start)//從尾巴拉線路出去
+			{
+				passedStation.push_back(end);
+			} 
+		}
+		
+	}
+	
+	int Line::GetClickedStartStationNum()
+	{
+		return clickedStartStationNum;
+	}
+
+	int Line::GetClickedEndStationNum()
+	{
+		return clickedEndStationNum;
+	}
+
+	int Line::GetMouseClickedStationNum(int x, int y, vector<Station> stationList, int currentStation)
 	{
 		for (int i = 0; i < currentStation; i++)
-		{
-			if (x >= stationList[i].GetX() && x <= stationList[i].GetX() + 25 &&
-					y >= stationList[i].GetY() && y <= stationList[i].GetY() + 25)
-			{
-				if (clickedStationNumA == -1 && clickedStationNumB == -1 ) clickedStationNumA = i;
-				else if ( clickedStationNumB == -1) clickedStationNumB = i;
-				return true;
-			}
-		}
-
-		return false;
+			if (x >= stationList[i].GetX() && x <= stationList[i].GetX() + 25 && y >= stationList[i].GetY() && y <= stationList[i].GetY() + 25)
+				return i;
+		return -1;
 	}
 
-	bool Line::IsClickedTwoStation()
-	{
-		if (clickedStationNumA != -1 && clickedStationNumB != -1 && clickedStationNumA != clickedStationNumB)
-			return true;
-		return false;
-	}
-
-	int Line::GetclickedTwoNumA()
-	{
-		return clickedStationNumA;
-	}
-
-	int Line::GetclickedTwoNumB()
-	{
-		return clickedStationNumB;
-	}
-
-	int Line::GetLineColor()
+	int Line::GetLineColorNum()
 	{
 		if (lineColor[0] == 255 && lineColor[1] == 0 && lineColor[2] == 0)
 			return 0;
@@ -76,17 +136,22 @@ namespace game_framework
 			return 0;
 	}
 
-	void Line::SetclickedTwoNumA(int num)
+	bool Line::IsClickedStation(int x, int y, vector<Station> stationList, int currentStation)
 	{
-		clickedStationNumA = num;
+		for (int i = 0; i < currentStation; i++)
+			if (x >= stationList[i].GetX() && x <= stationList[i].GetX() + 25 && y >= stationList[i].GetY() && y <= stationList[i].GetY() + 25)
+				return true;
+		return false;
 	}
 
-	void Line::SetclickedTwoNumB(int num)
+	bool Line::IsClickedTwoStation()
 	{
-		clickedStationNumB = num;
+		if (clickedStartStationNum != -1 && clickedEndStationNum != -1 && clickedStartStationNum != clickedEndStationNum)
+			return true;
+		return false;
 	}
 
-	bool Line::IsMouseClickedBMP(int mouseX, int mouseY)
+	bool Line::IsMouseClickedLineColorBMP(int mouseX, int mouseY)
 	{
 		if (mouseX > lineColorBMP.Left() && mouseX < lineColorBMP.Left() + lineColorBMP.Width() &&
 			mouseY > lineColorBMP.Top() && mouseY < lineColorBMP.Top() + lineColorBMP.Height())
@@ -115,7 +180,7 @@ namespace game_framework
 			lineColorBMP.LoadBitmap(".\\RES\\color\\purple.bmp", RGB(255, 255, 255));*/
 	}
 
-	void Line::ShowBitmap()
+	void Line::ShowLineIconBitmap()
 	{
 		if (lineColor[0] == 255 && lineColor[1] == 0 && lineColor[2] == 0)
 			lineColorBMP.SetTopLeft(240, 570);
@@ -135,47 +200,16 @@ namespace game_framework
 		lineColorBMP.ShowBitmap();
 	}
 
-	void Line::DrawRailway(int startX, int startY, int endX, int endY)
+	void Line::ShowRailway(vector<Station> stationList,int currentStation)
 	{
-		const int BORDERSIZE = 15;
-		//const int rectHeight = 20;
-		CDC* pDC = CDDraw::GetBackCDC();
-		CPen* pp, p(PS_NULL, 0, RGB(0, 0, 0));
-		pp = pDC->SelectObject(&p);
-		
-		//比對start 跟 end 去判斷怎麼畫出線來
-
-		CBrush b1(RGB(lineColor[0], lineColor[1], lineColor[2]));
-		pDC->SelectObject(&b1);
-		CBrush b2(RGB(lineColor[0], lineColor[1], lineColor[2]));
-		pDC->SelectObject(&b2);
-
-		if (endX >= startX && endY >= startY)  //結束點在右下
+		int vecSize = passedStation.size();
+		for (int i = 0; i < vecSize-1; i++)
 		{
-			
-			pDC->Rectangle(startX, startY, endX + BORDERSIZE, startY + BORDERSIZE);
-			pDC->Rectangle(endX, startY, endX + BORDERSIZE, endY+BORDERSIZE);
+			int stationA = passedStation[i];
+			int stationB = passedStation[i + 1];
+			DrawRailway(stationList[stationA].GetX() + 5, stationList[stationA].GetY() + 5, stationList[stationB].GetX() + 5, stationList[stationB].GetY() + 5);
 		}
-		else if (endX < startX && endY > startY) //結束點在左下
-		{
-			
-			pDC->Rectangle(startX, startY, startX + BORDERSIZE, endY + BORDERSIZE);
-			pDC->Rectangle(startX + BORDERSIZE, endY , endX , endY + BORDERSIZE);
-		}
-		else if (endX <= startX && endY <= startY) //結束點在左上
-		{
-			pDC->Rectangle(startX, startY, endX , startY + BORDERSIZE);
-			pDC->Rectangle(endX ,endY ,endX+BORDERSIZE, startY + BORDERSIZE);
-		}
-		else if(endX > startX && endY < startY) //結束點在右上
-		{
-			
-			pDC->Rectangle(startX, endY, startX + BORDERSIZE, startY);
-			pDC->Rectangle(startX, endY, endX, endY + BORDERSIZE);
-		}
-		//釋放 pen brush、Back、Plain的CDC
-		pDC->SelectObject(pp);
-		//pDC->SelectObject(pb);
-		CDDraw::ReleaseBackCDC();
 	}
+
+	
 }
