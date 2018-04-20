@@ -33,7 +33,6 @@ namespace game_framework
 
 		if (endX >= startX && endY >= startY)  //結束點在右下
 		{
-
 			pDC->Rectangle(startX, startY, endX + BORDERSIZE, startY + BORDERSIZE);
 			pDC->Rectangle(endX, startY, endX + BORDERSIZE, endY + BORDERSIZE);
 		}
@@ -50,7 +49,6 @@ namespace game_framework
 		}
 		else if (endX > startX && endY < startY) //結束點在右上
 		{
-
 			pDC->Rectangle(startX, endY, startX + BORDERSIZE, startY);
 			pDC->Rectangle(startX, endY, endX, endY + BORDERSIZE);
 		}
