@@ -282,6 +282,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="Source\Passenger.cpp" />
     <ClCompile Include="Source\Station.cpp" />
     <ClCompile Include="Source\StdAfx.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -317,6 +318,7 @@
     <ClInclude Include="Source\gameView.h" />
     <ClInclude Include="Source\Line.h" />
     <ClInclude Include="Source\MainFrm.h" />
+    <ClInclude Include="Source\Passenger.h" />
     <ClInclude Include="Source\Resource.h" />
     <ClInclude Include="Source\Station.h" />
     <ClInclude Include="Source\StdAfx.h" />

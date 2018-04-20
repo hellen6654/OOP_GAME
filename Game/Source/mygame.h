@@ -46,6 +46,7 @@
 #include "Week.h"
 #include "Timer.h"
 #include "Line.h"
+#include "Passenger.h"
 
 namespace game_framework
 {
@@ -109,18 +110,24 @@ class CGameStateRun : public CGameState
     private:
         CMovingBitmap  map;
 		CMovingBitmap  color[7];
-        const int MAXIUM_STATION = 10;					//會出現在地圖上的只有10個車站
+		const int STATION_APPERAED_TIME = 5;			//車站出現的秒數
+        const int MAXIUM_STATION = 10;					//會出現在地圖上車站總數
         const int MAXIUM_STATION_TYPE = 7;				//車站樣式總共有7個 00~06
-		const int LINE_COLOR_NUM = 7;				//車站樣式總共有7個 00~06
-        const int MAX_GAME_MAP_SIDE_X = 770;			//實際上的遊戲邊界X軸只有到770
+		const int LINE_COLOR_NUM = 7;					//車站樣式總共有7個 00~06
+		const int MAXIUM_PASSANGER = 20;
+		//station.h裡面也有相同的屬性要改
+        const int MAX_GAME_MAP_SIDE_X = 770;			//實際上的遊戲邊界X軸只有到770 
         const int MIN_GAME_MAP_SIDE_X = 30;			    //實際上的遊戲邊界X軸從30開始
         const int MAX_GAME_MAP_SIDE_Y = 560;			//實際上的遊戲邊界Y軸只有到560
         const int MIN_GAME_MAP_SIDE_Y = 60;			    //實際上的遊戲邊界Y軸從60開始
+
         int currentStationNum;							//目前出現到哪個車站
         int counter;
         int clickedX;
         int clickedY;
-        Line    *line;									//負責處理火車線路的物件
+		int lstart;
+		int lend;
+        Line    *line;									//負責處理火車線路的指標
 
 		Line    redLine;								//紅色線路 
 		Line    orangeLine;								//橘色線路 
@@ -133,10 +140,10 @@ class CGameStateRun : public CGameState
         Clock   clock;									//會動的時鐘
         Week    week;									//會動的周次
         Timer   timer;									//計時器
-		Station s;
+		Station s;										//挖馬母災J系勒銃三小勒
+		Passenger p;
         vector<Station> stationList;					//一堆的車站
         int stationRelation[10][10][7];					//軌道位置
-        int stationX[10];
         int mouse_x = 0, mouse_y = 0;					//滑鼠位置
 };
 
