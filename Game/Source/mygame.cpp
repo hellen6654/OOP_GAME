@@ -269,8 +269,7 @@ namespace game_framework
 		{
 			if (p.GetStartStation() == i)
 			{
-				p.SetX(stationList[i].GetX() + 25);
-				p.SetY(stationList[i].GetY());
+				p.SetXY(stationList[i].GetX() + 25,stationList[i].GetY());
 			}
 		}
 		//if (clock.isfinalbitmap())	//播放week周次動畫
@@ -299,6 +298,9 @@ namespace game_framework
 		ShowInitProgress(33);	// 接個前一個狀態的進度，此處進度視為33%
 		//
 		// 開始載入資料
+		//
+		Station* s = new Station;										//用來建立隨機車站列表 及 檢查車站 列表 是否重疊
+
 		line = &redLine;
 		clock.LoadBitmap();
 		week.LoadBitmap();
@@ -327,21 +329,20 @@ namespace game_framework
 		bblueLine.LoadBitmap();								
 		purpleLine.LoadBitmap();
 	
-		s.RandomBuildStation(stationList);					//建立隨機車站列表
-		s.CheckedOverLappingStation(stationList);			//檢查車站列表示是否有重疊的車站
+		s->RandomBuildStation(stationList);					//建立隨機車站列表
+		s->CheckedOverLappingStation(stationList);			//檢查車站列表是否有重疊的車站
 	
-		for (int i = 0; i < MAXIUM_STATION; i++)			//載入圖片
+		for (int i = 0; i < MAXIUM_STATION; i++)			//載入各車站圖片
 			stationList[i].LoadBitmap();
-		for (int i = 0; i < MAXIUM_STATION; i++)
-			for (int j = 0; j < MAXIUM_STATION; j++)
-				for (int k = 0; k < LINE_COLOR_NUM; k++)
-					stationRelation[i][j][k] = 0;
 
 		currentStationNum = 3;								//現有車站為三個 遊戲開始 有三個車站
 
 		clickedX = clickedY = -1;
 
 		ShowInitProgress(50);
+
+		delete s;
+
 		//Sleep(300); // 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
 		//
 		// 繼續載入其他資料

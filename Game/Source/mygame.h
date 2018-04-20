@@ -140,7 +140,6 @@ class CGameStateRun : public CGameState
         Clock   clock;									//會動的時鐘
         Week    week;									//會動的周次
         Timer   timer;									//計時器
-		Station s;										//挖馬母災J系勒銃三小勒
 		Passenger p;
         vector<Station> stationList;					//一堆的車站
         int stationRelation[10][10][7];					//軌道位置
