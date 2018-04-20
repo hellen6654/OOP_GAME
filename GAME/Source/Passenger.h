@@ -6,8 +6,8 @@ namespace game_framework
 		Passenger();
 		void LoadBitmap();			//¸ü¤J¹Ï§Î
 		void SetType(int);
-		void SetX(int);
-		void SetY(int);
+		void SetXY(int,int);
+
 		int GetStartStation();
 		void RandomMadePassenger(vector<Passenger>&,int,int);
 		void RandomMadePassenger(int);

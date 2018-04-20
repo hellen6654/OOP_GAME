@@ -41,15 +41,12 @@ namespace game_framework
 		passengerType = type;
 	}
 
-	void Passenger::SetX(int xP)
+	void Passenger::SetXY(int xP,int yP)
 	{
 		x = xP;
-	}
-
-	void Passenger::SetY(int yP)
-	{
 		y = yP;
 	}
+
 
 	int Passenger::GetStartStation()
 	{
