@@ -269,7 +269,7 @@ namespace game_framework
 		{
 			if (p.GetStartStation() == i)
 			{
-				p.SetX(stationList[i].GetX() + 30);
+				p.SetX(stationList[i].GetX() + 25);
 				p.SetY(stationList[i].GetY());
 			}
 		}
@@ -380,9 +380,14 @@ namespace game_framework
 		if (start == -1) //沒有任何車站被選取
 		{
 			if (line->IsClickedStation(point.x, point.y, stationList, currentStationNum) ) //檢查是否有點到車站
-			{
+			{	
 				start = line->GetMouseClickedStationNum(point.x, point.y, stationList, currentStationNum);
 				line->SetClickedStartStationNum(start);
+				if (!(line->IsPassedStationEmpty() || line->GetClickedFirstStation() == line->GetClickedStartStationNum() || line->GetClickedLastStation() == line->GetClickedStartStationNum()))
+				{
+					line->SetClickedStartStationNum(-1);
+					line->SetClickedEndStationNum(-1);
+				}
 			}
 			else
 			{
@@ -390,7 +395,7 @@ namespace game_framework
 				line->SetClickedEndStationNum(-1);
 			}
 		}
-		else //如果起點車站已經被選取
+		else //如果起點車站已經被選取 
 		{
 			if (line->IsClickedStation(point.x, point.y, stationList, currentStationNum)) //檢查是否有點到車站
 			{
@@ -465,8 +470,8 @@ namespace game_framework
 		redLine.ShowLineIconBitmap();		//紅色
 		//===============================================
 
-		// 如果有一個車站被選取 就要畫出來 //換句話說 就是線路要跟著滑鼠動啦
-		if (line->GetClickedStartStationNum() != -1)
+		// 如果有一個車站被選取 就要畫出來 //換句話說 就是線路要跟著滑鼠動啦 
+		if (line->GetClickedStartStationNum() != -1 && (line->IsPassedStationEmpty() || line->GetClickedFirstStation()==line->GetClickedStartStationNum() || line->GetClickedLastStation() == line->GetClickedStartStationNum()))
 			line->DrawRailway(stationList[line->GetClickedStartStationNum()].GetX() + 5, stationList[line->GetClickedStartStationNum()].GetY() + 5, mouse_x, mouse_y);
 
 		//顯示各顏色線路 K為顏色 

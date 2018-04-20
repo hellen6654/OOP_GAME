@@ -136,6 +136,16 @@ namespace game_framework
 			return 0;
 	}
 
+	int Line::GetClickedFirstStation()
+	{
+		return passedStation.empty() ? -1 : passedStation.front();
+	}
+
+	int Line::GetClickedLastStation()
+	{
+		return passedStation.empty() ? -1 : passedStation.back();
+	}
+
 	bool Line::IsClickedStation(int x, int y, vector<Station> stationList, int currentStation)
 	{
 		for (int i = 0; i < currentStation; i++)
@@ -157,6 +167,11 @@ namespace game_framework
 			mouseY > lineColorBMP.Top() && mouseY < lineColorBMP.Top() + lineColorBMP.Height())
 			return true;
 		return false;
+	}
+
+	bool Line::IsPassedStationEmpty()
+	{
+		return passedStation.empty();
 	}
 
 	void Line::LoadBitmap()

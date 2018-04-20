@@ -18,15 +18,18 @@ namespace game_framework
 		int  GetClickedEndStationNum();									//取得ClickedEndStationNum
 		int  GetMouseClickedStationNum(int,int,vector<Station>,int);	//取得滑鼠點到的那個車站的編號
 		int  GetLineColorNum();											//取得線路顏色編號 red=0 orange=1 ....
+		int  GetClickedFirstStation();									//取得線路車站起點
+		int  GetClickedLastStation();									//取得線路車站終點
 
 		bool IsClickedStation(int, int, vector<Station>, int);			//檢查是否點到車站 有就回傳ture 如果沒有則回傳false
 		bool IsClickedTwoStation();										//檢查是否已經點了兩個車站了
+		bool IsMouseClickedLineColorBMP(int,int);						//檢查是否滑鼠有點到下方線路顏色的圖片 //換線路顏色要用的啦
+		bool IsPassedStationEmpty();
 		
-		bool IsMouseClickedLineColorBMP(int,int);						//檢查是否滑鼠有點到下方線路顏色的圖片 //換線路顏色要用的啦幹
-		
+
 		void LoadBitmap();
 		void ShowLineIconBitmap();
-		void ShowRailway(vector<Station>,int);
+		void ShowRailway(vector<Station>,int);							//劃出路線
 	private:
 		CMovingBitmap lineColorBMP;
 		int clickedStartStationNum;
