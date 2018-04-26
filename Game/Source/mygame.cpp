@@ -264,14 +264,14 @@ namespace game_framework
 	{
 		counter++;
 		clock.OnMove();				//播放clock時鐘動畫
-		p.RandomMadePassenger(currentStationNum);
-		for (int i = 0; i < MAXIUM_STATION; i++)
+		
+		/*for (int i = 0; i < MAXIUM_STATION; i++)
 		{
 			if (p.GetStartStation() == i)
 			{
 				p.SetXY(stationList[i].GetX() + 25,stationList[i].GetY());
 			}
-		}
+		}*/
 		//if (clock.isfinalbitmap())	//播放week周次動畫
 		//	week.onmove();
 
@@ -282,7 +282,6 @@ namespace game_framework
 		{
 			lstart = line->GetClickedStartStationNum();
 			lend = line->GetClickedEndStationNum();
-			stationRelation[line->GetClickedStartStationNum()][line->GetClickedEndStationNum()][line->GetLineColorNum()] = 1;
 			line->SetPassedStation(line->GetClickedStartStationNum(), line->GetClickedEndStationNum());
 			line->SetClickedStartStationNum(-1);
 			line->SetClickedEndStationNum(-1);
@@ -300,17 +299,15 @@ namespace game_framework
 		// 開始載入資料
 		//
 		Station* s = new Station;										//用來建立隨機車站列表 及 檢查車站 列表 是否重疊
-
+		Passenger* p = new Passenger;									//用來建立隨機乘客個數 及 隨機列表
 		line = &redLine;
 		clock.LoadBitmap();
 		week.LoadBitmap();
 		map.LoadBitmap(".\\RES\\map.bmp");
-		//line->LoadBitmap();
-
-		p.LoadBitmap();
+		
 
 
-		//red(255.0.0),orang(255.144.0),yellow(255.255.0),green(0.255.0),blue(0.138.255),bblue(0.6.255),puple(144.0.255)
+		/*red(255.0.0),orang(255.144.0),yellow(255.255.0),green(0.255.0),blue(0.138.255),bblue(0.6.255),puple(144.0.255)*/
 		redLine.SetLineColor(255, 0, 0);
 		orangeLine.SetLineColor(255, 144, 0);
 		yellowLine.SetLineColor(255, 255, 0);
@@ -331,10 +328,16 @@ namespace game_framework
 	
 		s->RandomBuildStation(stationList);					//建立隨機車站列表
 		s->CheckedOverLappingStation(stationList);			//檢查車站列表是否有重疊的車站
-	
+
+		p->RandomMadePassenger(passengerList,stationList, MAXIUM_STATION, MAXIUM_STATION_TYPE,MAXIUM_PASSANGER);
+		//建立乘客列表 
+
+
 		for (int i = 0; i < MAXIUM_STATION; i++)			//載入各車站圖片
 			stationList[i].LoadBitmap();
-
+		for (int i = 0; i < MAXIUM_PASSANGER; i++)			//載入乘客圖片
+			passengerList[i].LoadBitmap();
+		
 		currentStationNum = 3;								//現有車站為三個 遊戲開始 有三個車站
 
 		clickedX = clickedY = -1;
@@ -342,7 +345,7 @@ namespace game_framework
 		ShowInitProgress(50);
 
 		delete s;
-
+		delete p;
 		//Sleep(300); // 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
 		//
 		// 繼續載入其他資料
@@ -475,7 +478,7 @@ namespace game_framework
 		if (line->GetClickedStartStationNum() != -1 && (line->IsPassedStationEmpty() || line->GetClickedFirstStation()==line->GetClickedStartStationNum() || line->GetClickedLastStation() == line->GetClickedStartStationNum()))
 			line->DrawRailway(stationList[line->GetClickedStartStationNum()].GetX() + 5, stationList[line->GetClickedStartStationNum()].GetY() + 5, mouse_x, mouse_y);
 
-		//顯示各顏色線路 K為顏色 
+		//顯示各顏色線路
 		purpleLine.ShowRailway(stationList, currentStationNum);
 		bblueLine.ShowRailway(stationList, currentStationNum);
 		blueLine.ShowRailway(stationList, currentStationNum);
@@ -484,17 +487,22 @@ namespace game_framework
 		orangeLine.ShowRailway(stationList, currentStationNum);
 		redLine.ShowRailway(stationList, currentStationNum);
 
-		// 顯示車站
+		// 顯示車站和乘客
 		for (int i = 0; i < currentStationNum; i++)
+		{
+			int n = stationList[i].GetPassenagerNum();
 			stationList[i].OnShow();
+			for (int j = 0; j < MAXIUM_PASSANGER; j++)
+				if (passengerList[j].GetStartStation() <= i)
+					passengerList[j].OnShow();
 
-		p.OnShow();
+			
+		}
+		
 
 		//week.OnShow();
 
 		// 以下Debug 用
-
-		
 		CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
 		CFont f, *fp;
 		f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
@@ -507,5 +515,6 @@ namespace game_framework
 		pDC->TextOut(10, 10, str);
 		pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
 		CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+		
 	}
 }

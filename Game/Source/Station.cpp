@@ -7,6 +7,7 @@
 #include <ctime>
 #include "audio.h"
 #include "gamelib.h"
+#include "Passenger.h"
 #include "Station.h"
 
 namespace game_framework
@@ -16,7 +17,7 @@ namespace game_framework
 	{ }
 
 	Station::Station(int type, int set_x, int set_y)
-		: stationType(type), x(set_x), y(set_y), centerPositionX(set_x + 13), centerPositionY(set_y + 13)
+		: stationType(type), x(set_x), y(set_y), centerPositionX(set_x + 13), centerPositionY(set_y + 13),passenagerNum(0)
 	{ }
 
 	void Station::LoadBitmap()
@@ -43,6 +44,16 @@ namespace game_framework
 		y = set_y;
 	}
 
+	void Station::SetPassenagerNum(int num)
+	{
+		passenagerNum = num;
+	}
+
+	void Station::SetAddPassenagerNum(int num)
+	{
+		passenagerNum += num;
+	}
+
 	int Station::GetX()
 	{
 		return x;
@@ -61,6 +72,11 @@ namespace game_framework
 	int Station::GetCenterPositionY()
 	{
 		return centerPositionY;
+	}
+
+	int Station::GetPassenagerNum()
+	{
+		return passenagerNum;
 	}
 
 	void Station::SetType(int type)

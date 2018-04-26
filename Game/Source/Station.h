@@ -8,10 +8,13 @@ namespace game_framework
 		Station(int, int, int);
 		void LoadBitmap();			//載入圖形
 		void SetXY(int, int);		//設定座標
+		void SetPassenagerNum(int); //設定目前乘客數量
+		void SetAddPassenagerNum(int); //設定增加目前乘客數量
 		int GetX();
 		int GetY();
 		int GetCenterPositionX();
 		int GetCenterPositionY();
+		int GetPassenagerNum();
 		void SetType(int);
 		void RandomBuildStation(vector<Station>&);
 		void CheckedOverLappingStation(vector<Station>&);
@@ -30,8 +33,9 @@ namespace game_framework
 		const int centerPositionY;						//中心Y座標
 		int x, y;										//圖形座標
 		int stationType;								//車站類型
-		
+		int passenagerNum;								//目前有幾個乘客在車站
 		CMovingBitmap stationAnimation;					//利用動畫作圖形
+				
 	};
 }
 
