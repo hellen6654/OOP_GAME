@@ -277,6 +277,9 @@ namespace game_framework
 
 		if (counter % (30 * STATION_APPERAED_TIME) == 0 && currentStationNum < MAXIUM_STATION) //每 STATION_APPERAED_TIME 秒就出一個車站
 			currentStationNum++;
+		if (counter % (30 * PASSENAGER_APPERAED_TIME) == 0 && currentPassenagerNum < MAXIUM_PASSANGER) //每 STATION_APPERAED_TIME 秒就出一個車站
+			currentPassenagerNum++;
+
 
 		if (line->IsClickedTwoStation())
 		{
@@ -286,6 +289,19 @@ namespace game_framework
 			line->SetClickedStartStationNum(-1);
 			line->SetClickedEndStationNum(-1);
 		}
+		for (int i = 0; i < MAXIUM_STATION; i++) //更新乘客的位置 //像是有人上車了 乘客要往前一格
+		{
+			int passenagerCounter = 0;
+			for (int j = 0; j < MAXIUM_PASSANGER; j++)
+			{
+				if (i == passengerList[j].GetStartStation())
+				{
+					passengerList[j].SetXY(stationList[i].GetX()+ passenagerCounter  * 13, stationList[i].GetY());
+					passenagerCounter++;
+				}	
+			}
+		}
+		cabin.OnMove();
 	}
 
 	void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -339,7 +355,7 @@ namespace game_framework
 			passengerList[i].LoadBitmap();
 		
 		currentStationNum = 3;								//現有車站為三個 遊戲開始 有三個車站
-
+		currentPassenagerNum = 0 ;							//一開始出現的乘客數為0
 		clickedX = clickedY = -1;
 
 		ShowInitProgress(50);
@@ -492,11 +508,9 @@ namespace game_framework
 		{
 			int n = stationList[i].GetPassenagerNum();
 			stationList[i].OnShow();
-			for (int j = 0; j < MAXIUM_PASSANGER; j++)
+			for (int j = 0; j < currentPassenagerNum; j++)
 				if (passengerList[j].GetStartStation() <= i)
 					passengerList[j].OnShow();
-
-			
 		}
 		
 
@@ -514,7 +528,8 @@ namespace game_framework
 		sprintf(str, "(%d,%d),(%d,%d),(%d,%d)",  clickedX, clickedY,mouse_x, mouse_y ,line->GetClickedStartStationNum(),line->GetClickedEndStationNum());
 		pDC->TextOut(10, 10, str);
 		pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
-		CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
-		
+		CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC	
+
+		cabin.OnShow();
 	}
 }

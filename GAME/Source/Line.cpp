@@ -28,8 +28,7 @@ namespace game_framework
 
 		CBrush b1(RGB(lineColor[0], lineColor[1], lineColor[2]));
 		pDC->SelectObject(&b1);
-		CBrush b2(RGB(lineColor[0], lineColor[1], lineColor[2]));
-		pDC->SelectObject(&b2);
+		
 
 		if (endX >= startX && endY >= startY)  //結束點在右下
 		{
@@ -93,6 +92,43 @@ namespace game_framework
 				passedStation.push_back(end);
 			} 
 		}
+		
+	}
+
+	void Line::SetTurnedPointXY(vector<Station> stationList)
+	{
+		int vecSize = passedStation.size();
+		for (int i = 0; i < vecSize - 1; i++)
+		{
+			int stationStartNum = passedStation[i];
+			int stationEndNum = passedStation[i+1];
+			int startX = stationList[stationStartNum].GetX()+5;
+			int startY = stationList[stationStartNum].GetY()+5;
+			int endX = stationList[stationEndNum].GetX()+5;
+			int endY = stationList[stationEndNum].GetY()+5;
+			if (endX >= startX && endY >= startY)  //結束點在右下
+			{
+				turnedPointX.push_back(endX+14);
+				turnedPointY.push_back(startY);
+			}
+			else if (endX < startX && endY > startY) //結束點在左下
+			{
+				turnedPointX.push_back(startX + 14);
+				turnedPointY.push_back(endY + 14);
+			}
+			else if (endX <= startX && endY <= startY) //結束點在左上
+			{
+				turnedPointX.push_back(endX);
+				turnedPointY.push_back(startY + 14);
+			}
+			else if (endX > startX && endY < startY) //結束點在右上
+			{
+				turnedPointX.push_back(startX);
+				turnedPointY.push_back(endY);
+			}
+		}
+		
+		
 		
 	}
 	

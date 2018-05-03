@@ -47,7 +47,7 @@ namespace game_framework
 
 	void Passenger::SetXY(int xP,int yP)
 	{
-		x = xP;
+		x = xP+27;
 		y = yP;
 	}
 

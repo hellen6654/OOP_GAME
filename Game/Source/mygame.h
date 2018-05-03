@@ -47,7 +47,7 @@
 #include "Timer.h"
 #include "Line.h"
 #include "Passenger.h"
-
+#include "Cabin.h"
 namespace game_framework
 {
 /////////////////////////////////////////////////////////////////////////////
@@ -111,6 +111,7 @@ class CGameStateRun : public CGameState
         CMovingBitmap  map;
 		CMovingBitmap  color[7];
 		const int STATION_APPERAED_TIME = 5;			//車站出現的秒數
+		const int PASSENAGER_APPERAED_TIME = 3;			//乘客出現的秒數
         const int MAXIUM_STATION = 10;					//會出現在地圖上車站總數
         const int MAXIUM_STATION_TYPE = 7;				//車站樣式總共有7個 00~06
 		const int LINE_COLOR_NUM = 7;					//車站樣式總共有7個 00~06
@@ -125,6 +126,7 @@ class CGameStateRun : public CGameState
 		
 		
         int currentStationNum;							//目前出現到哪個車站
+		int currentPassenagerNum;						//目前有幾個乘客出現
         int counter;
         int clickedX;
         int clickedY;
@@ -145,7 +147,7 @@ class CGameStateRun : public CGameState
 
         vector<Station> stationList;					//一堆的車站
 		vector<Passenger> passengerList;				//每個車站的乘客
-
+		Cabin cabin;
         int stationRelation[10][10][7];					//軌道位置
         int mouse_x = 0, mouse_y = 0;					//滑鼠位置
 };

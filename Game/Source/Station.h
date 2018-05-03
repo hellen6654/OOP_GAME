@@ -33,7 +33,8 @@ namespace game_framework
 		const int centerPositionY;						//中心Y座標
 		int x, y;										//圖形座標
 		int stationType;								//車站類型
-		int passenagerNum;								//目前有幾個乘客在車站
+		int passenagerNum;								//總共有幾個乘客在車站
+
 		CMovingBitmap stationAnimation;					//利用動畫作圖形
 				
 	};
