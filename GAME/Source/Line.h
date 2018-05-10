@@ -13,7 +13,7 @@ namespace game_framework
 		void SetClickedStartStationNum(int);							//設定ClickedStartStationNum
 		void SetClickedEndStationNum(int);								//設定ClickedEndStationNum
 		void SetPassedStation(int,int);									//設定有經過的車站
-		void SetTurnedPointXY(vector<Station>);							//設定轉折點的XY座標
+		void SetLinePointXY(vector<Station>);							//設定轉折點的XY座標
 
 		int  GetClickedStartStationNum();								//取得ClickedStartStationNum
 		int  GetClickedEndStationNum();									//取得ClickedEndStationNum
@@ -21,7 +21,7 @@ namespace game_framework
 		int  GetLineColorNum();											//取得線路顏色編號 red=0 orange=1 ....
 		int  GetClickedFirstStation();									//取得線路車站起點
 		int  GetClickedLastStation();									//取得線路車站終點
-
+		void GetLinePointXY(vector<int>&,vector<int>&);
 
 		bool IsClickedStation(int, int, vector<Station>, int);			//檢查是否點到車站 有就回傳ture 如果沒有則回傳false
 		bool IsClickedTwoStation();										//檢查是否已經點了兩個車站了
@@ -38,8 +38,8 @@ namespace game_framework
 		int clickedEndStationNum;
 		int lineColor[3];
 		vector<int> passedStation;										//經過的車站
-		vector<int> turnedPointX;										//劃出線路的時候中間的轉折點的X座標 與turnYPoint連動
-		vector<int> turnedPointY;										//劃出線路的時候中間的轉折點的Y座標 與turnXPoint連動
+		vector<int> linePointX;										//劃出線路點的X座標 與lineYPoint連動
+		vector<int> linePointY;										//劃出線路點的Y座標 與lineXPoint連動
 		//red(255.0.0),orang(255.144.0),yellow(255.255.0),green(0.255.0),blue(0.138.255),bblue(0.6.255),puple(144.0.255)
 	};
 

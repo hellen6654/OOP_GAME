@@ -148,6 +148,7 @@ class CGameStateRun : public CGameState
         vector<Station> stationList;					//一堆的車站
 		vector<Passenger> passengerList;				//每個車站的乘客
 		Cabin cabin;
+		
         int stationRelation[10][10][7];					//軌道位置
         int mouse_x = 0, mouse_y = 0;					//滑鼠位置
 };

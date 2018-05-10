@@ -4,73 +4,252 @@
 #include <ddraw.h>
 #include <cstdlib>
 #include <ctime>
+#include <vector>
 #include "audio.h"
 #include "gamelib.h"
 #include "Cabin.h"
-#include "Passenger.h"
 namespace game_framework 
 {
 	Cabin::Cabin()
+	{ }
+	Cabin::Cabin(int setX, int setY,int R,int G,int B)
 	{
-		const int BASIC_VELOCITY = 5;
-		direction = 'U';
+		const int BASIC_VELOCITY = 3;
+		nextPoint = 0;
+		prePoint = 1;
+		leftTopX = setX;
+		leftTopY = setY;
+		rightDownX = setX + 42;
+		rightDownY = setY + 28;
+		//movingDirection = "up";
+		goingDirection = "head";
 		velocity = BASIC_VELOCITY;
-		x = 300;
-		y = 0;
-		head = x + 42;
-		isTurn = false;
-		color[0] = 255;
-		color[1] = 0;
-		color[2] = 0;
+		color[0] = R;
+		color[1] = G;
+		color[2] = B;
 	}
 	Cabin::~Cabin()
-	{}
+	{ }
 	void Cabin::SetXY(int setX, int setY)
 	{
-		x = setX;
-		y = setY;
+		leftTopX = setX;
+		leftTopY = setY;
+		rightDownX = setX + 42;
+		rightDownY = setY + 28;
 	}
 	void Cabin::SetVelocity(int v)
 	{
 		velocity = v;
 	}
-	void Cabin::SetDirection(char d)
+	
+	void Cabin::SetMovingCabin(string movingDirection,int num)
 	{
-		direction = d;
+		if (movingDirection=="up")
+		{
+			leftTopY -= num;
+			rightDownY -= num;
+		}
+		else if (movingDirection == "down")
+		{
+			leftTopY += num;
+			rightDownY += num;
+		}
+		else if (movingDirection == "right")
+		{
+			leftTopX += num;
+			rightDownX += num;
+		}
+		else if (movingDirection == "left")
+		{
+			leftTopX -= num;
+			rightDownX -= num;
+		}
+	}
+	void Cabin::SetIsShow(bool b)
+	{
+		isShow = b;
+	}
+	void Cabin::SetRGB(int R, int G, int B)
+	{
+		color[0] = R;
+		color[1] = G;
+		color[2] = B;
+	}
+	void Cabin::SetGoingDirection(string s)
+	{
+		goingDirection = s;
+	}
+	void Cabin::SetMovingDirection(string s)
+	{
+		movingDirection = s;
+	}
+	void Cabin::SetLinePoint(vector<int> x, vector<int> y)
+	{
+		linePointX.assign(x.begin(), x.end());
+		linePointY.assign(y.begin(), y.end());
 	}
 	int Cabin::GetX()
 	{
-		return x;
+		return leftTopX;
 	}
 	int Cabin::GetY()
 	{
-		return y;
+		return leftTopY;
 	}
 	int Cabin::GetVelocity()
 	{
 		return velocity;
 	}
+	bool Cabin::IsShow()
+	{
+		return isShow;
+	}
 	void Cabin::OnMove()
 	{
-		if (!isTurn) //如果不是轉彎
+		int sizeVecX = linePointX.size();
+		int sizeVecY = linePointY.size();
+		int startX = linePointX[prePoint];
+		int startY = linePointY[prePoint];
+		int endX = linePointX[nextPoint];
+		int endY = linePointY[nextPoint];
+		int nowPointX = leftTopX;
+		int nowPointY = leftTopY;
+		// X座標相同 代表向上或向下移動
+		// Y座標相同 代表向左或向右移動
+		if (startX == endX) 
 		{
-			if (direction == 'U'&& y<=500) //UP
+			if (startY > endY) //向上移動
 			{
-				SetXY(x, y + velocity);
+				movingDirection = "up";
+			}	
+			else if (startY < endY) //向下移動
+			{
+				movingDirection = "down";
 			}
-			else if (direction == 'D')//Down
+				
+		}
+		else if (startY == endY)
+		{
+			if (startX > endX)// 向左移動
 			{
-				SetXY(x, y - velocity);
+				movingDirection = "left";
 			}
-			else if (direction == 'R')//Right
+			else if (startX < endX) //向右移動
 			{
-				SetXY(x + velocity, y);
-			}
-			else if (direction == 'L')//Left
-			{
-				SetXY(x - velocity, y);
+				movingDirection = "right";
 			}
 		}
+
+		if (movingDirection == "up")
+		{
+			if (nowPointY > endY)
+				SetMovingCabin(movingDirection, velocity);
+			else if (nowPointY == endY)
+			{
+				if (nextPoint == sizeVecX - 1) 
+				{
+					goingDirection = "back";
+				}
+				else if (nextPoint==0)
+				{
+					goingDirection = "head";
+				}
+
+				if (goingDirection=="head")
+				{
+					prePoint=nextPoint;
+					nextPoint++;
+				}
+				else if (goingDirection=="back")
+				{
+					prePoint = nextPoint;
+					nextPoint--;
+				}	
+			}
+		}
+		else if (movingDirection == "down")
+		{
+			if (nowPointY < endY)
+				SetMovingCabin(movingDirection, velocity);
+			else if (nowPointY == endY)
+			{
+				if (nextPoint == sizeVecX - 1)
+				{
+					goingDirection = "back";
+				}
+				else if (nextPoint == 0)
+				{
+					goingDirection = "head";
+				}
+
+				if (goingDirection == "head")
+				{
+					prePoint = nextPoint;
+					nextPoint++;
+				}
+				else if (goingDirection == "back")
+				{
+					prePoint = nextPoint;
+					nextPoint--;
+				}
+			}
+		}
+		else if (movingDirection == "left")
+		{
+			if (nowPointX > endX)
+				SetMovingCabin(movingDirection, velocity);
+			else if (nowPointX == endX)
+			{
+				if (nextPoint == sizeVecX - 1)
+				{
+					goingDirection = "back";
+				}
+				else if (nextPoint == 0)
+				{
+					goingDirection = "head";
+				}
+
+				if (goingDirection == "head")
+				{
+					prePoint = nextPoint;
+					nextPoint++;
+				}
+				else if (goingDirection == "back")
+				{
+					prePoint = nextPoint;
+					nextPoint--;
+				}
+			}
+		}
+		else if (movingDirection == "right")
+		{
+			if (nowPointX < endX)
+				SetMovingCabin(movingDirection, velocity);
+			else if (nowPointX == endX)
+			{
+				if (nextPoint == sizeVecX - 1)
+				{
+					goingDirection = "back";
+				}
+				else if (nextPoint == 0)
+				{
+					goingDirection = "head";
+				}
+
+				if (goingDirection == "head")
+				{
+					prePoint = nextPoint;
+					nextPoint++;
+				}
+				else if (goingDirection == "back")
+				{
+					prePoint = nextPoint;
+					nextPoint--;
+				}
+			}
+		}
+		
+		
 	}
 	void Cabin::OnShow()
 	{
@@ -79,31 +258,7 @@ namespace game_framework
 		pp = pDC->SelectObject(&p);
 		CBrush b(RGB(color[0], color[1], color[2]));
 		pDC->SelectObject(&b);
-		if (isTurn) //轉彎的狀態
-		{
-			if (direction == 'U') //UP
-			{
-				
-			}
-			else if (direction == 'D')//Down
-			{
-				
-			}
-			else if (direction == 'R')//Right
-			{
-				
-			}
-			else if (direction == 'L')//Left
-			{
-				
-			}
-			isTurn = !isTurn;
-		}
-		else //不用轉彎
-		{
-			pDC->Rectangle(x, y, x+28,y+42);
-		}
-		//pDC->Rectangle(startX, startY, endX + BORDERSIZE, startY + BORDERSIZE);
+		pDC->Rectangle(leftTopX, leftTopY, rightDownX,rightDownY);
 		pDC->SelectObject(pp);
 		//pDC->SelectObject(pb);
 		CDDraw::ReleaseBackCDC();
