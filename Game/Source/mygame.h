@@ -47,7 +47,7 @@
 #include "Timer.h"
 #include "Line.h"
 #include "Passenger.h"
-
+#include "Cabin.h"
 namespace game_framework
 {
 /////////////////////////////////////////////////////////////////////////////
@@ -111,17 +111,22 @@ class CGameStateRun : public CGameState
         CMovingBitmap  map;
 		CMovingBitmap  color[7];
 		const int STATION_APPERAED_TIME = 5;			//車站出現的秒數
+		const int PASSENAGER_APPERAED_TIME = 3;			//乘客出現的秒數
         const int MAXIUM_STATION = 10;					//會出現在地圖上車站總數
         const int MAXIUM_STATION_TYPE = 7;				//車站樣式總共有7個 00~06
 		const int LINE_COLOR_NUM = 7;					//車站樣式總共有7個 00~06
-		const int MAXIUM_PASSANGER = 20;
+
+		const int MAXIUM_PASSANGER = MAXIUM_STATION * 5; //乘客總個數
+
 		//station.h裡面也有相同的屬性要改
         const int MAX_GAME_MAP_SIDE_X = 770;			//實際上的遊戲邊界X軸只有到770 
         const int MIN_GAME_MAP_SIDE_X = 30;			    //實際上的遊戲邊界X軸從30開始
         const int MAX_GAME_MAP_SIDE_Y = 560;			//實際上的遊戲邊界Y軸只有到560
         const int MIN_GAME_MAP_SIDE_Y = 60;			    //實際上的遊戲邊界Y軸從60開始
-
+		
+		
         int currentStationNum;							//目前出現到哪個車站
+		int currentPassenagerNum;						//目前有幾個乘客出現
         int counter;
         int clickedX;
         int clickedY;
@@ -139,9 +144,11 @@ class CGameStateRun : public CGameState
 		
         Clock   clock;									//會動的時鐘
         Week    week;									//會動的周次
-        Timer   timer;									//計時器
-		Passenger p;
+
         vector<Station> stationList;					//一堆的車站
+		vector<Passenger> passengerList;				//每個車站的乘客
+		Cabin cabin;
+		
         int stationRelation[10][10][7];					//軌道位置
         int mouse_x = 0, mouse_y = 0;					//滑鼠位置
 };

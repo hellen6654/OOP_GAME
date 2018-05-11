@@ -28,8 +28,7 @@ namespace game_framework
 
 		CBrush b1(RGB(lineColor[0], lineColor[1], lineColor[2]));
 		pDC->SelectObject(&b1);
-		CBrush b2(RGB(lineColor[0], lineColor[1], lineColor[2]));
-		pDC->SelectObject(&b2);
+		
 
 		if (endX >= startX && endY >= startY)  //結束點在右下
 		{
@@ -95,6 +94,47 @@ namespace game_framework
 		}
 		
 	}
+
+	void Line::SetLinePointXY(vector<Station> stationList)
+	{
+		int vecSize = passedStation.size();
+		for (int i = 0; i < vecSize - 1; i++)
+		{
+			int stationStartNum = passedStation[i];
+			int stationEndNum = passedStation[i+1];
+			int startX = stationList[stationStartNum].GetX();
+			int startY = stationList[stationStartNum].GetY();
+			int endX = stationList[stationEndNum].GetX();
+			int endY = stationList[stationEndNum].GetY();
+			if(linePointX.empty()) linePointX.push_back(startX);
+			if(linePointY.empty()) linePointY.push_back(startY);
+			if (endX >= startX && endY >= startY)  //結束點在右下
+			{
+				linePointX.push_back(endX);
+				linePointY.push_back(startY);
+			}
+			else if (endX < startX && endY > startY) //結束點在左下
+			{
+				linePointX.push_back(startX );
+				linePointY.push_back(endY);
+			}
+			else if (endX <= startX && endY <= startY) //結束點在左上
+			{
+				linePointX.push_back(endX);
+				linePointY.push_back(startY);
+			}
+			else if (endX > startX && endY < startY) //結束點在右上
+			{
+				linePointX.push_back(startX);
+				linePointY.push_back(endY);
+			}
+			linePointX.push_back(endX);
+			linePointY.push_back(endY);
+		}
+		
+		
+		
+	}
 	
 	int Line::GetClickedStartStationNum()
 	{
@@ -142,6 +182,12 @@ namespace game_framework
 	int Line::GetClickedLastStation()
 	{
 		return passedStation.empty() ? -1 : passedStation.back();
+	}
+
+	void Line::GetLinePointXY(vector<int> &pointX, vector<int> &pointY)
+	{
+		pointX.assign(linePointX.begin(), linePointX.end());
+		pointY.assign(linePointY.begin(), linePointY.end());
 	}
 
 	bool Line::IsClickedStation(int x, int y, vector<Station> stationList, int currentStation)
