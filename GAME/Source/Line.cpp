@@ -7,6 +7,7 @@
 #include "gamelib.h"
 #include "Station.h"
 #include "Line.h"
+#include "Cabin.h"
 namespace game_framework
 {
 	Line::Line()
@@ -154,24 +155,11 @@ namespace game_framework
 		return -1;
 	}
 
-	int Line::GetLineColorNum()
+	void Line::GetLineColorRGB(int& R,int& G,int& B)
 	{
-		if (lineColor[0] == 255 && lineColor[1] == 0 && lineColor[2] == 0)
-			return 0;
-		else if (lineColor[0] == 255 && lineColor[1] == 144 && lineColor[2] == 0)
-			return 1;
-		else if (lineColor[0] == 255 && lineColor[1] == 255 && lineColor[2] == 0)
-			return 2;
-		else if (lineColor[0] == 0 && lineColor[1] == 255 && lineColor[2] == 0)
-			return 3;
-		else if (lineColor[0] == 0 && lineColor[1] == 138 && lineColor[2] == 255)
-			return 4;
-		else if (lineColor[0] == 0 && lineColor[1] == 6 && lineColor[2] == 255)
-			return 5;
-		else if (lineColor[0] == 144 && lineColor[1] == 0 && lineColor[2] == 255)
-			return 6;
-		else
-			return 0;
+		R = lineColor[0];
+		G = lineColor[1];
+		B = lineColor[2];
 	}
 
 	int Line::GetClickedFirstStation()

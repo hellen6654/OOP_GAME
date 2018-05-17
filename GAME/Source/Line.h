@@ -18,7 +18,7 @@ namespace game_framework
 		int  GetClickedStartStationNum();								//取得ClickedStartStationNum
 		int  GetClickedEndStationNum();									//取得ClickedEndStationNum
 		int  GetMouseClickedStationNum(int,int,vector<Station>,int);	//取得滑鼠點到的那個車站的編號
-		int  GetLineColorNum();											//取得線路顏色編號 red=0 orange=1 ....
+		void  GetLineColorRGB(int& R, int& G, int& B);					//取得線路顏色編號 red=0 orange=1 ....
 		int  GetClickedFirstStation();									//取得線路車站起點
 		int  GetClickedLastStation();									//取得線路車站終點
 		void GetLinePointXY(vector<int>&,vector<int>&);

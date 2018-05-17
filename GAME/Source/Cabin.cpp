@@ -8,20 +8,20 @@
 #include "audio.h"
 #include "gamelib.h"
 #include "Cabin.h"
+#include "Passenger.h"
 namespace game_framework 
 {
 	Cabin::Cabin()
 	{ }
 	Cabin::Cabin(int setX, int setY,int R,int G,int B)
 	{
-		const int BASIC_VELOCITY = 3;
 		nextPoint = 0;
 		prePoint = 1;
 		leftTopX = setX;
 		leftTopY = setY;
 		rightDownX = setX + 42;
 		rightDownY = setY + 28;
-		//movingDirection = "up";
+		movingDirection = "up";
 		goingDirection = "head";
 		velocity = BASIC_VELOCITY;
 		color[0] = R;
@@ -44,31 +44,32 @@ namespace game_framework
 	
 	void Cabin::SetMovingCabin(string movingDirection,int num)
 	{
-		if (movingDirection=="up")
+		if (movingDirection == "up")
 		{
 			leftTopY -= num;
-			rightDownY -= num;
+			rightDownX = leftTopX + 28;
+			rightDownY = leftTopY + 42;
 		}
 		else if (movingDirection == "down")
 		{
 			leftTopY += num;
-			rightDownY += num;
+			rightDownX = leftTopX + 28;
+			rightDownY = leftTopY + 42;
 		}
 		else if (movingDirection == "right")
 		{
 			leftTopX += num;
-			rightDownX += num;
+			rightDownX = leftTopX + 42;
+			rightDownY = leftTopY + 28;
 		}
 		else if (movingDirection == "left")
 		{
 			leftTopX -= num;
-			rightDownX -= num;
+			rightDownX = leftTopX + 42;
+			rightDownY = leftTopY + 28;
 		}
 	}
-	void Cabin::SetIsShow(bool b)
-	{
-		isShow = b;
-	}
+
 	void Cabin::SetRGB(int R, int G, int B)
 	{
 		color[0] = R;
@@ -100,10 +101,6 @@ namespace game_framework
 	{
 		return velocity;
 	}
-	bool Cabin::IsShow()
-	{
-		return isShow;
-	}
 	void Cabin::OnMove()
 	{
 		int sizeVecX = linePointX.size();
@@ -121,10 +118,12 @@ namespace game_framework
 			if (startY > endY) //向上移動
 			{
 				movingDirection = "up";
+				
 			}	
 			else if (startY < endY) //向下移動
 			{
 				movingDirection = "down";
+				
 			}
 				
 		}
@@ -144,7 +143,7 @@ namespace game_framework
 		{
 			if (nowPointY > endY)
 				SetMovingCabin(movingDirection, velocity);
-			else if (nowPointY == endY)
+			else if (nowPointY <= endY)
 			{
 				if (nextPoint == sizeVecX - 1) 
 				{
@@ -171,7 +170,7 @@ namespace game_framework
 		{
 			if (nowPointY < endY)
 				SetMovingCabin(movingDirection, velocity);
-			else if (nowPointY == endY)
+			else if (nowPointY >= endY)
 			{
 				if (nextPoint == sizeVecX - 1)
 				{
@@ -198,7 +197,7 @@ namespace game_framework
 		{
 			if (nowPointX > endX)
 				SetMovingCabin(movingDirection, velocity);
-			else if (nowPointX == endX)
+			else if (nowPointX <= endX)
 			{
 				if (nextPoint == sizeVecX - 1)
 				{
@@ -225,7 +224,7 @@ namespace game_framework
 		{
 			if (nowPointX < endX)
 				SetMovingCabin(movingDirection, velocity);
-			else if (nowPointX == endX)
+			else if (nowPointX >= endX)
 			{
 				if (nextPoint == sizeVecX - 1)
 				{
@@ -263,4 +262,68 @@ namespace game_framework
 		//pDC->SelectObject(pb);
 		CDDraw::ReleaseBackCDC();
 	}
+
+	void Cabin::SetPassengerPosition()
+	{
+		int vecSize = passengerOnCabinList.size();
+		if (movingDirection=="right" || movingDirection=="left")
+		{
+			for (int i = 0; i < vecSize; i++)
+			{
+				passengerOnCabinList[i].SetXY(leftTopX + PASSENGERPOSITIONX_RIGHTLEFT[i], leftTopY + PASSENGERPOSITIONY_RIGHTLEFT[i]);
+			}
+		}
+		else if (movingDirection == "up" || movingDirection == "down")
+		{
+			for (int i = 0; i < vecSize; i++)
+			{
+				passengerOnCabinList[i].SetXY(leftTopX + PASSENGERPOSITIONX_UPDOWN[i], leftTopY + PASSENGERPOSITIONY_UPDOWN[i]);
+			}
+		}
+	}
+	bool Cabin::IsCabinFull()
+	{
+		return (passengerOnCabinList.size() >= 6); //看乘客有沒有超過6個
+	}
+	void Cabin::PassengerGetOn(vector<Passenger> passengerList, int nowStation)
+	{
+		int vecSize = passengerList.size();
+		for (int i = 0; i < vecSize; i++)
+		{
+			if (passengerList[i].GetStartStation()==nowStation && vecSize < MAXPASSENGERNUM)
+			{
+				passengerOnCabinList.push_back(passengerList[i]);
+				passengerList.erase(passengerList.begin() + i);
+			}
+		}
+	}
+	
+	bool Cabin::IsPassengerGetOut(int nowStation)
+	{	
+		int vecSize = passengerOnCabinList.size();
+		if (vecSize>=MAXPASSENGERNUM) return false;
+		for (int i = 0; i < vecSize; i++)
+			if (passengerOnCabinList[i].GetFinalStation() == nowStation) return true;
+		return false;
+	}
+	int Cabin::PassengerGetOut(int nowStation)
+	{
+		int vecSize = passengerOnCabinList.size();
+		for (int i = 0; i < vecSize; i++)
+			if (passengerOnCabinList[i].GetFinalStation() == nowStation)
+				passengerOnCabinList.erase(passengerOnCabinList.begin() + i);
+			
+		return 1;
+	}
+
+	bool Cabin::GetIsStop()
+	{
+		return isStop;
+	}
+
+	void Cabin::SetIsStop(bool b)
+	{
+		isStop = b;
+	}
+	
 }

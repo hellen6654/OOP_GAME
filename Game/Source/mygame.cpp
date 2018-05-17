@@ -68,10 +68,17 @@
 			統一拉出相同的樣式
 			兩條重疊 顯示各半
 		車廂
-
+			轉彎變形
+			乘客
+			把線路拉到新的車站時 要先比對pointX & pointY 決定車廂要回到哪邊
+		車站
+			圖片白邊
+		乘客
+			其他類型乘客
 	待加：
 		音樂
 		界面
+		遊戲暫停
 */
 namespace game_framework
 {
@@ -278,6 +285,7 @@ namespace game_framework
 		vector<int> pointX;
 		vector<int> pointY;
 		
+
 		/*for (int i = 0; i < MAXIUM_STATION; i++)
 		{
 			if (p.GetStartStation() == i)
@@ -296,19 +304,18 @@ namespace game_framework
 
 		if (line->IsClickedTwoStation())
 		{
-			lstart = line->GetClickedStartStationNum();
+			int R, G, B;
+			//lstart = line->GetClickedStartStationNum();
 			lend = line->GetClickedEndStationNum();
 			line->SetPassedStation(line->GetClickedStartStationNum(), line->GetClickedEndStationNum());
 			line->SetClickedStartStationNum(-1);
 			line->SetClickedEndStationNum(-1);
 			line->SetLinePointXY(stationList);
 			line->GetLinePointXY(pointX, pointY);
-			cabin.SetVelocity(1);
-			cabin.SetXY(pointX[0], pointY[0]);
-			cabin.SetLinePoint(pointX, pointY);
-			cabin.SetGoingDirection("head");
-			cabin.SetMovingDirection("up");
-			cabin.SetIsShow(true);
+			line->GetLineColorRGB(R, G, B);
+			Cabin c(pointX[0],pointY[0],R,G,B);
+			cabinList.push_back(c);
+			cabinList[0].SetLinePoint(pointX, pointY);
 		}
 		for (int i = 0; i < MAXIUM_STATION; i++) //更新乘客的位置 //像是有人上車了 乘客要往前一格
 		{
@@ -322,8 +329,11 @@ namespace game_framework
 				}	
 			}
 		}
+		if (!cabinList.empty()) 
+		{
+			cabinList[0].OnMove();
+		}
 		
-		if (cabin.IsShow()) cabin.OnMove();
 	}
 
 	void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -342,7 +352,7 @@ namespace game_framework
 		clock.LoadBitmap();
 		week.LoadBitmap();
 		map.LoadBitmap(".\\RES\\map.bmp");
-		cabin.SetIsShow(false);
+		
 		cabin.SetRGB(255, 0, 0);
 
 		/*red(255.0.0),orang(255.144.0),yellow(255.255.0),green(0.255.0),blue(0.138.255),bblue(0.6.255),puple(144.0.255)*/
@@ -551,7 +561,6 @@ namespace game_framework
 		pDC->TextOut(10, 10, str);
 		pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
 		CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC	
-
-		if(cabin.IsShow()) cabin.OnShow();
+		if(!cabinList.empty()) cabinList[0].OnShow();
 	}
 }

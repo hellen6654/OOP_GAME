@@ -146,7 +146,8 @@ class CGameStateRun : public CGameState
         Week    week;									//會動的周次
 
         vector<Station> stationList;					//一堆的車站
-		vector<Passenger> passengerList;				//每個車站的乘客
+		vector<Passenger> passengerList;				//一堆的乘客
+		vector<Cabin> cabinList;
 		Cabin cabin;
 		
         int stationRelation[10][10][7];					//軌道位置

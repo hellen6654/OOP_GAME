@@ -1,7 +1,7 @@
 
 namespace game_framework
 {
-	
+	class Passenger;
 	class Cabin
 	{
 	public:
@@ -11,7 +11,6 @@ namespace game_framework
 		void SetXY(int, int);
 		void SetVelocity(int);
 		void SetMovingCabin(string,int);
-		void SetIsShow(bool);
 		void SetRGB(int, int, int);
 		void SetGoingDirection(string);
 		void SetMovingDirection(string);
@@ -19,11 +18,20 @@ namespace game_framework
 		int  GetX();
 		int  GetY();
 		int  GetVelocity();
-		bool IsShow();
 		void OnMove();
 		void OnShow();
+
+		void SetPassengerPosition();
+		bool IsCabinFull();
+		void PassengerGetOn(vector<Passenger>,int);
+		bool IsPassengerGetOut(int);
+		int  PassengerGetOut(int);
+		bool GetIsStop();
+		void SetIsStop(bool);
+		
 	private:
 		//車廂大小 42*28 每個乘客的邊緣各2px
+		const int BASIC_VELOCITY = 2;
 		int nextPoint=1;
 		int prePoint=0;
 		string movingDirection = "";
@@ -32,12 +40,16 @@ namespace game_framework
 		int rightDownX, rightDownY;		//車廂的右下角位置
 		int velocity;					//速度
 		int color[3];					//車廂顏色
-		bool isShow;
 		vector<int> linePointX;
 		vector<int> linePointY;
-		//int passenagerNum; //最多六個
-		//vector<Passenger*> passengerList;
-		
+
+		const int PASSENGERPOSITIONX_UPDOWN[6] = {2,16, 2,16, 2,16};
+		const int PASSENGERPOSITIONY_UPDOWN[6] = {2, 2,16,16,30,30};
+		const int PASSENGERPOSITIONX_RIGHTLEFT[6] = { 2, 2,16,16,30,30 };
+		const int PASSENGERPOSITIONY_RIGHTLEFT[6] = { 2,16, 2,16, 2,16 };
+		const int MAXPASSENGERNUM = 6; //最多六個乘客
+		bool isStop;
+		vector<Passenger> passengerOnCabinList;
 	};
 }
 

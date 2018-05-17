@@ -10,6 +10,7 @@ namespace game_framework
 		void SetType(int);
 		void SetXY(int,int);
 		int GetStartStation();
+		int GetFinalStation();
 		void RandomMadePassenger(vector<Passenger>& passengerList,vector<Station> stationList, int stationMaxium, int stationTypeNum,int passenagerNum);
 		void OnShow();										//將圖形貼到畫面
 		~Passenger();

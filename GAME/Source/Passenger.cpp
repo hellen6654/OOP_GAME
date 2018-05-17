@@ -56,6 +56,11 @@ namespace game_framework
 		return startStation;
 	}
 
+	int Passenger::GetFinalStation()
+	{
+		return finalStation;
+	}
+
 	void Passenger::RandomMadePassenger(vector<Passenger>& passengerList,vector<Station> stationList,int stationMaxium,int stationTypeNum,int totalPassenagerNum)
 	{ 
 		int start = -1;
