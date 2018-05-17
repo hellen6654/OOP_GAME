@@ -48,6 +48,7 @@
 #include "Line.h"
 #include "Passenger.h"
 #include "Cabin.h"
+
 namespace game_framework
 {
 /////////////////////////////////////////////////////////////////////////////
@@ -56,9 +57,14 @@ namespace game_framework
 
 enum AUDIO_ID  				// 定義各種音效的編號
 {
-    AUDIO_DING,				// 0
-    AUDIO_LAKE,				// 1
-    AUDIO_NTUT				// 2
+    AUDIO_SLIP,				// 0
+    AUDIO_CLICK,				// 1
+    AUDIO_MUSIC,			// 2
+    AUDIO_SELECT1,
+    AUDIO_SELECT2,
+    AUDIO_APPEAR,
+    AUDIO_STOP1,
+    AUDIO_STOP2
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -83,6 +89,8 @@ class CGameStateInit : public CGameState
         CMovingBitmap start;
         CMovingBitmap logo;								// csie的logo
         int mouse_x = 0, mouse_y = 0;					//滑鼠位置
+
+        int mouse_state = 1;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -109,49 +117,51 @@ class CGameStateRun : public CGameState
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
         CMovingBitmap  map;
-		CMovingBitmap  color[7];
-		const int STATION_APPERAED_TIME = 5;			//車站出現的秒數
-		const int PASSENAGER_APPERAED_TIME = 3;			//乘客出現的秒數
+        CMovingBitmap  color[7];
+        const int STATION_APPERAED_TIME = 5;			//車站出現的秒數
+        const int PASSENAGER_APPERAED_TIME = 3;			//乘客出現的秒數
         const int MAXIUM_STATION = 10;					//會出現在地圖上車站總數
         const int MAXIUM_STATION_TYPE = 7;				//車站樣式總共有7個 00~06
-		const int LINE_COLOR_NUM = 7;					//車站樣式總共有7個 00~06
+        const int LINE_COLOR_NUM = 7;					//車站樣式總共有7個 00~06
 
-		const int MAXIUM_PASSANGER = MAXIUM_STATION * 5; //乘客總個數
+        const int MAXIUM_PASSANGER = MAXIUM_STATION * 5; //乘客總個數
 
-		//station.h裡面也有相同的屬性要改
-        const int MAX_GAME_MAP_SIDE_X = 770;			//實際上的遊戲邊界X軸只有到770 
+        //station.h裡面也有相同的屬性要改
+        const int MAX_GAME_MAP_SIDE_X = 770;			//實際上的遊戲邊界X軸只有到770
         const int MIN_GAME_MAP_SIDE_X = 30;			    //實際上的遊戲邊界X軸從30開始
         const int MAX_GAME_MAP_SIDE_Y = 560;			//實際上的遊戲邊界Y軸只有到560
         const int MIN_GAME_MAP_SIDE_Y = 60;			    //實際上的遊戲邊界Y軸從60開始
-		
-		
+
+
         int currentStationNum;							//目前出現到哪個車站
-		int currentPassenagerNum;						//目前有幾個乘客出現
+        int currentPassenagerNum;						//目前有幾個乘客出現
         int counter;
         int clickedX;
         int clickedY;
-		int lstart;
-		int lend;
-        Line    *line;									//負責處理火車線路的指標
+        int lstart;
+        int lend;
+        int mouse_state = 1;
+        Line*    line;									//負責處理火車線路的指標
 
-		Line    redLine;								//紅色線路 
-		Line    orangeLine;								//橘色線路 
-		Line    yellowLine;								//黃色線路
-		Line    greenLine;								//綠色線路
-		Line    blueLine;								//藍色線路
-		Line    bblueLine;								//靛色線路
-		Line    purpleLine;								//紫色線路
-		
+        Line    redLine;								//紅色線路
+        Line    orangeLine;								//橘色線路
+        Line    yellowLine;								//黃色線路
+        Line    greenLine;								//綠色線路
+        Line    blueLine;								//藍色線路
+        Line    bblueLine;								//靛色線路
+        Line    purpleLine;								//紫色線路
+
         Clock   clock;									//會動的時鐘
         Week    week;									//會動的周次
 
         vector<Station> stationList;					//一堆的車站
-		vector<Passenger> passengerList;				//一堆的乘客
-		vector<Cabin> cabinList;
-		Cabin cabin;
-		
+        vector<Passenger> passengerList;				//一堆的乘客
+        vector<Cabin> cabinList;
+        Cabin cabin;
+
         int stationRelation[10][10][7];					//軌道位置
         int mouse_x = 0, mouse_y = 0;					//滑鼠位置
+        int mouse_X = 0, mouse_Y = 0;
 };
 
 /////////////////////////////////////////////////////////////////////////////
