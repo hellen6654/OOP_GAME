@@ -21,23 +21,21 @@ namespace game_framework
 	{ }
 	void Passenger::LoadBitmap()
 	{
-		passengerAnimation.LoadBitmap(".\\RES\\passenger\\Passenger_Circle.bmp", RGB(255, 255, 255));
-
-		/*if (passengerType == 0)
+		//passengerAnimation.LoadBitmap(".\\RES\\passenger\\Passenger_Circle.bmp", RGB(255, 255, 255));
+		if (passengerType == 0)
 			passengerAnimation.LoadBitmap(".\\RES\\passenger\\Passenger_Circle.bmp", RGB(255, 255, 255));
 		else if (passengerType == 1)
 			passengerAnimation.LoadBitmap(".\\RES\\passenger\\Passenger_Triangle.bmp", RGB(255, 255, 255));
 		else if (passengerType == 2)
 			passengerAnimation.LoadBitmap(".\\RES\\passenger\\Passenger_Square.bmp", RGB(255, 255, 255));
-
-		/*else if (passengerType == 3)
-		passengerAnimation.LoadBitmap(".\\RES\\passenger\\Passenger_Diamond.bmp", RGB(255, 255, 255));
+		else if (passengerType == 3)
+			passengerAnimation.LoadBitmap(".\\RES\\passenger\\Passenger_Diamond.bmp", RGB(255, 255, 255));
 		else if (passengerType == 4)
-		passengerAnimation.LoadBitmap(".\\RES\\passenger\\Passenger_Rectangle.bmp", RGB(255, 255, 255));
+			passengerAnimation.LoadBitmap(".\\RES\\passenger\\Passenger_Pentagon.bmp", RGB(255, 255, 255));
 		else if (passengerType == 5)
-		passengerAnimation.LoadBitmap(".\\RES\\passenger\\Passenger_Pentagon.bmp", RGB(255, 255, 255));
+			passengerAnimation.LoadBitmap(".\\RES\\passenger\\Passenger_Hexagon.bmp", RGB(255, 255, 255));
 		else if (passengerType == 6)
-		passengerAnimation.LoadBitmap(".\\RES\\passenger\\Passenger_Hexagon.bmp", RGB(255, 255, 255));*/
+			passengerAnimation.LoadBitmap(".\\RES\\passenger\\Passenger_Hexagon.bmp", RGB(255, 255, 255));
 	}
 
 	void Passenger::SetType(int type)
@@ -73,8 +71,12 @@ namespace game_framework
 		{
 			start = rand() % stationMaxium;
 			end = rand() % stationMaxium;
-			//type = rand() % stationTypeNum;
-			type = 0;
+			//start = 0;
+			//end = 3;
+			//type = 0;
+
+			type = rand() % stationTypeNum;
+			
 			stationList[start].SetAddPassenagerNum(1);
 			x = stationList[start].GetX();
 			y = stationList[start].GetY();

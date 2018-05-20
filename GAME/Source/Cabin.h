@@ -2,6 +2,7 @@
 namespace game_framework
 {
 	class Passenger;
+	class Station;
 	class Cabin
 	{
 	public:
@@ -15,33 +16,40 @@ namespace game_framework
 		void SetGoingDirection(string);
 		void SetMovingDirection(string);
 		void SetLinePoint(vector<int>, vector<int>);
+		void SetPassedStation(vector<int>);
 		int  GetX();
 		int  GetY();
 		int  GetVelocity();
-		void OnMove();
+		int GetNextPoint();
+		void OnMove(vector<Station>);
 		void OnShow();
 
 		void SetPassengerPosition();
 		bool IsCabinFull();
-		void PassengerGetOn(vector<Passenger>,int);
+		void PassengerGetOn(vector<Passenger>&,int);
 		bool IsPassengerGetOut(int);
 		int  PassengerGetOut(int);
-		bool GetIsStop();
+		bool IsStop();
 		void SetIsStop(bool);
 		
 	private:
 		//車廂大小 42*28 每個乘客的邊緣各2px
+		
 		const int BASIC_VELOCITY = 2;
 		int nextPoint=1;
 		int prePoint=0;
-		string movingDirection = "";
-		string goingDirection="";
 		int leftTopX, leftTopY;			//車廂的左上角位置
 		int rightDownX, rightDownY;		//車廂的右下角位置
 		int velocity;					//速度
 		int color[3];					//車廂顏色
+		string movingDirection = "";
+		string goingDirection="";
 		vector<int> linePointX;
 		vector<int> linePointY;
+		vector<int> updateLinePointX;
+		vector<int> updateLinePointY;
+
+		vector<int> passedStation;
 
 		const int PASSENGERPOSITIONX_UPDOWN[6] = {2,16, 2,16, 2,16};
 		const int PASSENGERPOSITIONY_UPDOWN[6] = {2, 2,16,16,30,30};

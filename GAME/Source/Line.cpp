@@ -162,6 +162,26 @@ namespace game_framework
 		B = lineColor[2];
 	}
 
+	int Line::GetLineColor()
+	{
+		if (lineColor[0]==255&& lineColor[1] == 0&&lineColor[2] == 0)
+			return 0;
+		else if (lineColor[0] == 255 && lineColor[1] == 144 && lineColor[2] == 0)
+			return 1;
+		else if (lineColor[0] == 255 && lineColor[1] == 255 && lineColor[2] == 0)
+			return 2;
+		else if (lineColor[0] == 0 && lineColor[1] == 255 && lineColor[2] == 0)
+			return 3;
+		else if (lineColor[0] == 0 && lineColor[1] == 138 && lineColor[2] == 255)
+			return 4;
+		else if (lineColor[0] == 0 && lineColor[1] == 6 && lineColor[2] == 255)
+			return 5;
+		else //if (lineColor[0] == 144 && lineColor[1] == 0 && lineColor[2] == 255)
+			return 6;
+
+		//red(255.0.0),orang(255.144.0),yellow(255.255.0),green(0.255.0),blue(0.138.255),bblue(0.6.255),puple(144.0.255)
+	}
+
 	int Line::GetClickedFirstStation()
 	{
 		return passedStation.empty() ? -1 : passedStation.front();
@@ -176,6 +196,11 @@ namespace game_framework
 	{
 		pointX.assign(linePointX.begin(), linePointX.end());
 		pointY.assign(linePointY.begin(), linePointY.end());
+	}
+
+	void Line::GetPassedStationNum(vector<int>& station)
+	{
+		station.assign(passedStation.begin(), passedStation.end());
 	}
 
 	bool Line::IsClickedStation(int x, int y, vector<Station> stationList, int currentStation)

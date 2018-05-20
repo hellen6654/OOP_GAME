@@ -9,6 +9,7 @@
 #include "gamelib.h"
 #include "Cabin.h"
 #include "Passenger.h"
+#include "Station.h"
 namespace game_framework 
 {
 	Cabin::Cabin()
@@ -86,8 +87,17 @@ namespace game_framework
 	}
 	void Cabin::SetLinePoint(vector<int> x, vector<int> y)
 	{
-		linePointX.assign(x.begin(), x.end());
-		linePointY.assign(y.begin(), y.end());
+		updateLinePointX.assign(x.begin(), x.end());
+		updateLinePointY.assign(y.begin(), y.end());
+		if (linePointX.empty() && linePointY.empty())
+		{
+			linePointX.assign(x.begin(), x.end());
+			linePointY.assign(y.begin(), y.end());
+		}
+	}
+	void Cabin::SetPassedStation(vector<int> station)
+	{
+		passedStation.assign(station.begin(), station.end());
 	}
 	int Cabin::GetX()
 	{
@@ -101,7 +111,11 @@ namespace game_framework
 	{
 		return velocity;
 	}
-	void Cabin::OnMove()
+	int Cabin::GetNextPoint()
+	{
+		return nextPoint;
+	}
+	void Cabin::OnMove(vector<Station> totalStationList)
 	{
 		int sizeVecX = linePointX.size();
 		int sizeVecY = linePointY.size();
@@ -113,17 +127,16 @@ namespace game_framework
 		int nowPointY = leftTopY;
 		// X座標相同 代表向上或向下移動
 		// Y座標相同 代表向左或向右移動
+		
 		if (startX == endX) 
 		{
 			if (startY > endY) //向上移動
 			{
 				movingDirection = "up";
-				
 			}	
 			else if (startY < endY) //向下移動
 			{
 				movingDirection = "down";
-				
 			}
 				
 		}
@@ -138,14 +151,14 @@ namespace game_framework
 				movingDirection = "right";
 			}
 		}
-
+		
 		if (movingDirection == "up")
 		{
 			if (nowPointY > endY)
 				SetMovingCabin(movingDirection, velocity);
 			else if (nowPointY <= endY)
 			{
-				if (nextPoint == sizeVecX - 1) 
+				if (nextPoint >= sizeVecX - 1) 
 				{
 					goingDirection = "back";
 				}
@@ -153,17 +166,20 @@ namespace game_framework
 				{
 					goingDirection = "head";
 				}
-
-				if (goingDirection=="head")
+				if (isStop)
 				{
-					prePoint=nextPoint;
-					nextPoint++;
+					if (goingDirection == "head")
+					{
+						prePoint = nextPoint;
+						nextPoint++;
+					}
+					else if (goingDirection == "back")
+					{
+						prePoint = nextPoint;
+						nextPoint--;
+					}
 				}
-				else if (goingDirection=="back")
-				{
-					prePoint = nextPoint;
-					nextPoint--;
-				}	
+				
 			}
 		}
 		else if (movingDirection == "down")
@@ -172,7 +188,7 @@ namespace game_framework
 				SetMovingCabin(movingDirection, velocity);
 			else if (nowPointY >= endY)
 			{
-				if (nextPoint == sizeVecX - 1)
+				if (nextPoint >= sizeVecX - 1)
 				{
 					goingDirection = "back";
 				}
@@ -180,17 +196,20 @@ namespace game_framework
 				{
 					goingDirection = "head";
 				}
-
-				if (goingDirection == "head")
+				if (isStop)
 				{
-					prePoint = nextPoint;
-					nextPoint++;
+					if (goingDirection == "head")
+					{
+						prePoint = nextPoint;
+						nextPoint++;
+					}
+					else if (goingDirection == "back")
+					{
+						prePoint = nextPoint;
+						nextPoint--;
+					}
 				}
-				else if (goingDirection == "back")
-				{
-					prePoint = nextPoint;
-					nextPoint--;
-				}
+				
 			}
 		}
 		else if (movingDirection == "left")
@@ -199,7 +218,7 @@ namespace game_framework
 				SetMovingCabin(movingDirection, velocity);
 			else if (nowPointX <= endX)
 			{
-				if (nextPoint == sizeVecX - 1)
+				if (nextPoint >= sizeVecX - 1)
 				{
 					goingDirection = "back";
 				}
@@ -207,17 +226,20 @@ namespace game_framework
 				{
 					goingDirection = "head";
 				}
-
-				if (goingDirection == "head")
+				if (isStop)
 				{
-					prePoint = nextPoint;
-					nextPoint++;
+					if (goingDirection == "head")
+					{
+						prePoint = nextPoint;
+						nextPoint++;
+					}
+					else if (goingDirection == "back")
+					{
+						prePoint = nextPoint;
+						nextPoint--;
+					}
 				}
-				else if (goingDirection == "back")
-				{
-					prePoint = nextPoint;
-					nextPoint--;
-				}
+				
 			}
 		}
 		else if (movingDirection == "right")
@@ -226,7 +248,7 @@ namespace game_framework
 				SetMovingCabin(movingDirection, velocity);
 			else if (nowPointX >= endX)
 			{
-				if (nextPoint == sizeVecX - 1)
+				if (nextPoint >= sizeVecX - 1)
 				{
 					goingDirection = "back";
 				}
@@ -234,17 +256,20 @@ namespace game_framework
 				{
 					goingDirection = "head";
 				}
-
-				if (goingDirection == "head")
+				if (isStop)
 				{
-					prePoint = nextPoint;
-					nextPoint++;
+					if (goingDirection == "head")
+					{
+						prePoint = nextPoint;
+						nextPoint++;
+					}
+					else if (goingDirection == "back")
+					{
+						prePoint = nextPoint;
+						nextPoint--;
+					}
 				}
-				else if (goingDirection == "back")
-				{
-					prePoint = nextPoint;
-					nextPoint--;
-				}
+				
 			}
 		}
 		
@@ -285,15 +310,17 @@ namespace game_framework
 	{
 		return (passengerOnCabinList.size() >= 6); //看乘客有沒有超過6個
 	}
-	void Cabin::PassengerGetOn(vector<Passenger> passengerList, int nowStation)
+
+	void Cabin::PassengerGetOn(vector<Passenger>& passengerList, int nowStation)
 	{
 		int vecSize = passengerList.size();
 		for (int i = 0; i < vecSize; i++)
 		{
-			if (passengerList[i].GetStartStation()==nowStation && vecSize < MAXPASSENGERNUM)
+			if (passengerList[i].GetStartStation()==nowStation )
 			{
 				passengerOnCabinList.push_back(passengerList[i]);
 				passengerList.erase(passengerList.begin() + i);
+				vecSize = passengerList.size();
 			}
 		}
 	}
@@ -316,7 +343,7 @@ namespace game_framework
 		return 1;
 	}
 
-	bool Cabin::GetIsStop()
+	bool Cabin::IsStop()
 	{
 		return isStop;
 	}
