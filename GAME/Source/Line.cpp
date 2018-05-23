@@ -33,8 +33,8 @@ namespace game_framework
 
 		if (endX >= startX && endY >= startY)  //結束點在右下
 		{
-			pDC->Rectangle(startX, startY, endX + BORDERSIZE, startY + BORDERSIZE);
-			pDC->Rectangle(endX, startY, endX + BORDERSIZE, endY + BORDERSIZE);
+			pDC->Rectangle(startX, startY, startX + BORDERSIZE, endY + BORDERSIZE);
+			pDC->Rectangle(startX, endY, endX + BORDERSIZE, endY + BORDERSIZE);
 		}
 		else if (endX < startX && endY > startY) //結束點在左下
 		{
@@ -49,8 +49,8 @@ namespace game_framework
 		}
 		else if (endX > startX && endY < startY) //結束點在右上
 		{
-			pDC->Rectangle(startX, endY, startX + BORDERSIZE, startY);
-			pDC->Rectangle(startX, endY, endX, endY + BORDERSIZE);
+			pDC->Rectangle(startX, startY, endX + BORDERSIZE, startY+BORDERSIZE);
+			pDC->Rectangle(endX, endY , endX + BORDERSIZE, startY + BORDERSIZE);
 		}
 		//釋放 pen brush、Back、Plain的CDC
 		pDC->SelectObject(pp);
@@ -111,8 +111,8 @@ namespace game_framework
 			if(linePointY.empty()) linePointY.push_back(startY);
 			if (endX >= startX && endY >= startY)  //結束點在右下
 			{
-				linePointX.push_back(endX);
-				linePointY.push_back(startY);
+				linePointX.push_back(startX);
+				linePointY.push_back(endY);
 			}
 			else if (endX < startX && endY > startY) //結束點在左下
 			{
@@ -126,8 +126,8 @@ namespace game_framework
 			}
 			else if (endX > startX && endY < startY) //結束點在右上
 			{
-				linePointX.push_back(startX);
-				linePointY.push_back(endY);
+				linePointX.push_back(endX);
+				linePointY.push_back(startY);
 			}
 			linePointX.push_back(endX);
 			linePointY.push_back(endY);
@@ -135,6 +135,11 @@ namespace game_framework
 		
 		
 		
+		//else if (endX > startX && endY < startY) //結束點在右上
+		//{
+		//	pDC->Rectangle(startX, startY, endX + BORDERSIZE, startY + BORDERSIZE);
+		//	pDC->Rectangle(endX, endY, endX + BORDERSIZE, startY + BORDERSIZE);
+		//}
 	}
 	
 	int Line::GetClickedStartStationNum()

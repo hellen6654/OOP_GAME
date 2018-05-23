@@ -115,11 +115,18 @@ namespace game_framework
 	{
 		return nextPoint;
 	}
+	void Cabin::GetRGB(int & R, int & G, int & B)
+	{
+		R = color[0];
+		G = color[1];
+		B = color[2];
+	}
 	void Cabin::OnMove(vector<Station> totalStationList)
 	{
 		int sizeVecX = linePointX.size();
 		int sizeVecY = linePointY.size();
 		int startX = linePointX[prePoint];
+		//int startX = totalStationList[passedStation[prePoint]].GetX();
 		int startY = linePointY[prePoint];
 		int endX = linePointX[nextPoint];
 		int endY = linePointY[nextPoint];
@@ -166,18 +173,16 @@ namespace game_framework
 				{
 					goingDirection = "head";
 				}
-				if (isStop)
+				
+				if (goingDirection == "head")
 				{
-					if (goingDirection == "head")
-					{
-						prePoint = nextPoint;
-						nextPoint++;
-					}
-					else if (goingDirection == "back")
-					{
-						prePoint = nextPoint;
-						nextPoint--;
-					}
+					prePoint = nextPoint;
+					nextPoint++;
+				}
+				else if (goingDirection == "back")
+				{
+					prePoint = nextPoint;
+					nextPoint--;
 				}
 				
 			}
@@ -196,18 +201,16 @@ namespace game_framework
 				{
 					goingDirection = "head";
 				}
-				if (isStop)
+				
+				if (goingDirection == "head")
 				{
-					if (goingDirection == "head")
-					{
-						prePoint = nextPoint;
-						nextPoint++;
-					}
-					else if (goingDirection == "back")
-					{
-						prePoint = nextPoint;
-						nextPoint--;
-					}
+					prePoint = nextPoint;
+					nextPoint++;
+				}
+				else if (goingDirection == "back")
+				{
+					prePoint = nextPoint;
+					nextPoint--;
 				}
 				
 			}
@@ -226,18 +229,16 @@ namespace game_framework
 				{
 					goingDirection = "head";
 				}
-				if (isStop)
+				
+				if (goingDirection == "head")
 				{
-					if (goingDirection == "head")
-					{
-						prePoint = nextPoint;
-						nextPoint++;
-					}
-					else if (goingDirection == "back")
-					{
-						prePoint = nextPoint;
-						nextPoint--;
-					}
+					prePoint = nextPoint;
+					nextPoint++;
+				}
+				else if (goingDirection == "back")
+				{
+					prePoint = nextPoint;
+					nextPoint--;
 				}
 				
 			}
@@ -256,24 +257,19 @@ namespace game_framework
 				{
 					goingDirection = "head";
 				}
-				if (isStop)
-				{
-					if (goingDirection == "head")
-					{
-						prePoint = nextPoint;
-						nextPoint++;
-					}
-					else if (goingDirection == "back")
-					{
-						prePoint = nextPoint;
-						nextPoint--;
-					}
-				}
 				
+				if (goingDirection == "head")
+				{
+					prePoint = nextPoint;
+					nextPoint++;
+				}
+				else if (goingDirection == "back")
+				{
+					prePoint = nextPoint;
+					nextPoint--;
+				}
 			}
 		}
-		
-		
 	}
 	void Cabin::OnShow()
 	{
@@ -287,6 +283,8 @@ namespace game_framework
 		//pDC->SelectObject(pb);
 		CDDraw::ReleaseBackCDC();
 	}
+
+
 
 	void Cabin::SetPassengerPosition()
 	{

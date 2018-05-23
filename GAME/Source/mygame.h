@@ -84,11 +84,15 @@ class CGameStateInit : public CGameState
     protected:
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
-        CMovingBitmap end;
-        CMovingBitmap start;
-        CMovingBitmap logo;								// csie的logo
+		CMovingBitmap start;							//遊戲開始的按鈕圖
+		CMovingBitmap startInvert;						//遊戲開始的顏色反相按鈕圖
+        CMovingBitmap end;								//遊戲結束的按鈕圖
+		CMovingBitmap endInvert;						//遊戲結束的顏色反相按鈕圖
+        CMovingBitmap logo;								//遊戲的logo
+		bool isMouseInStartBtn;							//滑鼠在開始按鈕
+		bool isMouseInEndBtn;							//滑鼠在結束按鈕			
         int mouse_x = 0, mouse_y = 0;					//滑鼠位置
-		int mouse_state = 1;
+		
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -154,7 +158,6 @@ class CGameStateRun : public CGameState
         vector<Station> stationList;					//一堆的車站
 		vector<Passenger> passengerList;				//一堆的乘客
 		vector<Cabin> cabinList;
-		Cabin cabin;
 		
         int mouse_x = 0, mouse_y = 0;					//滑鼠位置
 };

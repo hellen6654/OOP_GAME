@@ -64,22 +64,18 @@
 
 /*
 	待修 ： 
-		路線 
-			統一拉出相同的樣式
-			兩條重疊 顯示各半
 		車廂
-			轉彎變形
 			乘客
 			把線路拉到新的車站時 要先比對pointX & pointY 決定車廂要回到哪邊
 			拉出新的線路 車廂會亂跑 pointX & pointY 沒寫好
 		車站
 			圖片白邊
 		乘客
-			其他類型乘客
+			ALL
 	待加：
-		音樂
+		
 		界面
-		遊戲暫停
+		
 */
 namespace game_framework
 {
@@ -90,6 +86,7 @@ namespace game_framework
 	CGameStateInit::CGameStateInit(CGame* g)
 		: CGameState(g)
 	{
+		
 	}
 
 	void CGameStateInit::OnInit()
@@ -102,12 +99,19 @@ namespace game_framework
 		//
 		// 開始載入資料
 		//
+		// 載入音效
 		CAudio::Instance()->Load(AUDIO_SLIP, "sounds\\slip.mp3");
 		CAudio::Instance()->Load(AUDIO_CLICK, "sounds\\click.mp3");
 		CAudio::Instance()->Load(AUDIO_MUSIC, "sounds\\music.mp3");
+		// 載入圖片
 		logo.LoadBitmap(".\\RES\\title.bmp");
 		start.LoadBitmap(".\\RES\\button\\start.bmp");
+		startInvert.LoadBitmap(".\\RES\\button\\startInvert.bmp");
 		end.LoadBitmap(".\\RES\\button\\end.bmp");
+		endInvert.LoadBitmap(".\\RES\\button\\endInvert.bmp");
+		//設定參數
+		isMouseInStartBtn = false;
+		isMouseInEndBtn = false;
 		Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
 		//
 		// 此OnInit動作會接到CGameStaterRun::OnInit()，所以進度還沒到100%
@@ -130,84 +134,100 @@ namespace game_framework
 
 	void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
 	{
-		if (mouse_x >= start.Left() && mouse_x <= start.Left() + start.Width() && mouse_y >= start.Top() && mouse_y <= start.Top() + start.Height())
+		if (start.IsBitmapLoaded() && end.IsBitmapLoaded())
 		{
+			if (mouse_x >= start.Left() && mouse_x <= start.Left() + start.Width() && mouse_y >= start.Top() && mouse_y <= start.Top() + start.Height())
+			{
 			CAudio::Instance()->Play(AUDIO_CLICK);
-		}
-		else if (mouse_x >= end.Left() && mouse_x <= end.Left() + end.Width() && mouse_y >= end.Top() && mouse_y <= end.Top() + end.Height())
-		{
+			}
+			else if (mouse_x >= end.Left() && mouse_x <= end.Left() + end.Width() && mouse_y >= end.Top() && mouse_y <= end.Top() + end.Height())
+			{
 			CAudio::Instance()->Play(AUDIO_CLICK);
+			}
 		}
+		
 	}
 
 	void CGameStateInit::OnLButtonUp(UINT nFlags, CPoint point)
 	{
-		if (mouse_x >= start.Left() && mouse_x <= start.Left() + start.Width() && mouse_y >= start.Top() && mouse_y <= start.Top() + start.Height())
+		if (start.IsBitmapLoaded() && end.IsBitmapLoaded())
 		{
-			GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
+			if (isMouseInStartBtn)
+			{
+				GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
+			}
+			else if (isMouseInEndBtn)
+			{
+				PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
+			}
 		}
-		else if (mouse_x >= end.Left() && mouse_x <= end.Left() + end.Width() && mouse_y >= end.Top() && mouse_y <= end.Top() + end.Height())
-		{
-			PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
-		}
+		
 	}
 
 	void CGameStateInit::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		mouse_x = point.x;
 		mouse_y = point.y;
-
-		if (mouse_x > start.Left() && mouse_x < 491 && mouse_y > start.Top() && mouse_y < 302 || mouse_x > end.Left() && mouse_x < 491 && mouse_y > end.Top() && mouse_y < 402)
+		
+		if ( start.IsBitmapLoaded() && end.IsBitmapLoaded())
 		{
-			if (mouse_state == 1)
+			if (mouse_x > start.Left() && mouse_x < start.Left() + start.Width() &&
+				mouse_y > start.Top() && mouse_y < start.Top() + start.Height())
 			{
+				CAudio::Instance()->Stop(AUDIO_SLIP);
+				isMouseInStartBtn = true;
 				CAudio::Instance()->Play(AUDIO_SLIP);
-				mouse_state = 0;
+
 			}
-		}
-		else
-		{
-			mouse_state = 1;
+			else if (mouse_x > end.Left() && mouse_x < end.Left() + end.Width() &&
+				mouse_y > end.Top() && mouse_y < end.Top() + end.Height())
+			{
+				CAudio::Instance()->Stop(AUDIO_SLIP);
+				isMouseInEndBtn = true;
+				CAudio::Instance()->Play(AUDIO_SLIP);
+			}
+			else
+			{
+				isMouseInStartBtn = false;
+				isMouseInEndBtn = false;
+				
+			}
 		}
 	}
 
 	void CGameStateInit::OnShow()
 	{
-		//
-		// 貼上logo
-		//
-		logo.SetTopLeft((SIZE_X - logo.Width()) / 2, SIZE_Y / 8);
-
+		//設定Logo 位置 和顯示
+		logo.SetTopLeft((SIZE_X / 2) - (logo.Width() / 2), SIZE_Y / 8 * 1);
 		logo.ShowBitmap();
 
+		//開始按鈕 結束按鈕的位置
+		start.SetTopLeft((SIZE_X / 2) - (start.Width() / 2),SIZE_Y / 8 * 4);
+		end.SetTopLeft((SIZE_X / 2) - (end.Width() / 2) , SIZE_Y / 8 * 6);
+		//反相 開始按鈕 結束按鈕的位置
+		startInvert.SetTopLeft((SIZE_X / 2) - (start.Width() / 2), SIZE_Y / 8 * 4);
+		endInvert.SetTopLeft((SIZE_X / 2) - (end.Width() / 2), SIZE_Y / 8 * 6);
+		//顯示 開始按鈕 結束按鈕
+		start.ShowBitmap();
+		end.ShowBitmap();
+
 		CAudio::Instance()->Play(AUDIO_MUSIC, true);
+
 		//
-		// 滑鼠移到上面 讓圖標變大
+		// 滑鼠移到上面 讓按鈕變色
 		//
 	
-		if (mouse_x > start.Left() && mouse_x < 491 && mouse_y > start.Top() && mouse_y < 302 )
+		if (isMouseInStartBtn)
 		{
-
-			start.SetTopLeft((SIZE_X - start.Width()) / 2 - 8, SIZE_Y / 8 + 166);
-			start.ShowBitmap(1.05);
-			end.SetTopLeft((SIZE_X - end.Width()) / 2, SIZE_Y / 8 + 270);
-			end.ShowBitmap(0.9);
-
+			startInvert.ShowBitmap();
+			
 		}
-		else if (mouse_x > end.Left() && mouse_x < 491 && mouse_y > end.Top() && mouse_y < 402)
+		else if (isMouseInEndBtn)
 		{
-			start.SetTopLeft((SIZE_X - start.Width()) / 2, SIZE_Y / 8 + 170);
-			start.ShowBitmap(0.9);
-			end.SetTopLeft((SIZE_X - end.Width()) / 2 - 8, SIZE_Y / 8 + 266);
-			end.ShowBitmap(1.05);
+			endInvert.ShowBitmap();
+			
 		}
-		else
-		{
-			start.SetTopLeft((SIZE_X - start.Width()) / 2, SIZE_Y / 8 + 170);
-			start.ShowBitmap(0.9);
-			end.SetTopLeft((SIZE_X - end.Width()) / 2, SIZE_Y / 8 + 270);
-			end.ShowBitmap(0.9);
-		}
+		
 
 		//
 		// Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好
@@ -317,30 +337,30 @@ namespace game_framework
 			vector<int> pointY;
 			vector<int> passedStation;
 
-
-			if (counter % (30 * STATION_APPERAED_TIME) == 0 && currentStationNum < MAXIUM_STATION) //每 STATION_APPERAED_TIME 秒就出一個車站
-				currentStationNum++;
-			if (counter % (30 * PASSENAGER_APPERAED_TIME) == 0 && currentPassenagerNum < MAXIUM_PASSANGER) //每 PASSENAGER_APPERAED_TIME 秒就出一個乘客
-				currentPassenagerNum++;
-
+			//每 STATION_APPERAED_TIME 秒就出一個車站
+			if (counter % (30 * STATION_APPERAED_TIME) == 0 && currentStationNum < MAXIUM_STATION) currentStationNum++;
+			//每 PASSENAGER_APPERAED_TIME 秒就出一個乘客
+			if (counter % (30 * PASSENAGER_APPERAED_TIME) == 0 && currentPassenagerNum < MAXIUM_PASSANGER) currentPassenagerNum++;
 
 			if (line->IsClickedTwoStation())
 			{
 				int R, G, B;
-				int linecolornum;
+				
 				line->SetPassedStation(line->GetClickedStartStationNum(), line->GetClickedEndStationNum());
 				line->SetClickedStartStationNum(-1);
 				line->SetClickedEndStationNum(-1);
 				line->SetLinePointXY(stationList);
+
 				line->GetLinePointXY(pointX, pointY);
 				line->GetPassedStationNum(passedStation);
 				line->GetLineColorRGB(R, G, B);
-				linecolornum=line->GetLineColor();
 
 				Cabin c(pointX[0], pointY[0], R, G, B);
+				c.SetLinePoint(pointX, pointY);
+				c.SetPassedStation(passedStation);
 				cabinList.push_back(c);
-
-				cabinList[linecolornum].SetLinePoint(pointX, pointY);
+				
+				
 			}
 
 			if (!cabinList.empty())

@@ -20,9 +20,11 @@ namespace game_framework
 		int  GetX();
 		int  GetY();
 		int  GetVelocity();
-		int GetNextPoint();
+		int  GetNextPoint();
+		void GetRGB(int& R, int& G, int& B);
 		void OnMove(vector<Station>);
 		void OnShow();
+
 
 		void SetPassengerPosition();
 		bool IsCabinFull();
