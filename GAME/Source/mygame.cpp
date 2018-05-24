@@ -704,17 +704,6 @@ void CGameStateRun::OnShow()
     orangeLine.ShowRailway(stationList, currentStationNum);
     redLine.ShowRailway(stationList, currentStationNum);
 
-    // 顯示車站和乘客
-    for (int i = 0; i < currentStationNum; i++)
-    {
-        int n = stationList[i].GetPassenagerNum();
-        stationList[i].OnShow();
-
-        for (int j = 0; j < currentPassenagerNum; j++)
-            if (passengerList[j].GetStartStation() <= i)
-                passengerList[j].OnShow();
-    }
-
     //if (!cabinList.empty()) cabinList[0].OnShow();
 
     if (!redCabinList.empty())
@@ -785,6 +774,17 @@ void CGameStateRun::OnShow()
         {
             pupleCabinList[i].OnShow();
         }
+    }
+
+    // 顯示車站和乘客
+    for (int i = 0; i < currentStationNum; i++)
+    {
+        int n = stationList[i].GetPassenagerNum();
+        stationList[i].OnShow();
+
+        for (int j = 0; j < currentPassenagerNum; j++)
+            if (passengerList[j].GetStartStation() <= i)
+                passengerList[j].OnShow();
     }
 
     //week.OnShow();
