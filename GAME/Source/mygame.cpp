@@ -355,6 +355,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             line->GetLinePointXY(pointX, pointY);
             line->GetPassedStationNum(passedStation);
             line->GetLineColorRGB(R, G, B);
+
             Cabin c(pointX[0], pointY[0], R, G, B);
             c.SetLinePoint(pointX, pointY);
             c.SetPassedStation(passedStation);
@@ -366,6 +367,15 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                     redCabinList.push_back(c);
                     redCabinState = 1;
                 }
+				else
+				{
+					int sizeVec = redCabinList.size();
+					for (int i = 0; i < sizeVec; i++)
+					{
+						redCabinList[i].SetLinePoint(pointX, pointY);
+						redCabinList[i].SetPassedStation(passedStation);
+					}
+				}
             }
             else if (R == 255 && G == 144 && B == 0)
             {
@@ -374,6 +384,15 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                     orangCabinList.push_back(c);
                     orangCabinState = 1;
                 }
+				else
+				{
+					int sizeVec = orangCabinList.size();
+					for (int i = 0; i < sizeVec; i++)
+					{
+						orangCabinList[i].SetLinePoint(pointX, pointY);
+						orangCabinList[i].SetPassedStation(passedStation);
+					}
+				}
             }
             else if (R == 255 && G == 255 && B == 0)
             {
@@ -382,6 +401,15 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                     yellowCabinList.push_back(c);
                     yellowCabinState = 1;
                 }
+				else
+				{
+					int sizeVec = yellowCabinList.size();
+					for (int i = 0; i < sizeVec; i++)
+					{
+						yellowCabinList[i].SetLinePoint(pointX, pointY);
+						yellowCabinList[i].SetPassedStation(passedStation);
+					}
+				}
             }
             else if (R == 0 && G == 255 && B == 0)
             {
@@ -390,6 +418,15 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                     greenCabinList.push_back(c);
                     greenCabinState = 1;
                 }
+				else
+				{
+					int sizeVec = greenCabinList.size();
+					for (int i = 0; i < sizeVec; i++)
+					{
+						greenCabinList[i].SetLinePoint(pointX, pointY);
+						greenCabinList[i].SetPassedStation(passedStation);
+					}
+				}
             }
             else if (R == 0 && G == 138 && B == 255)
             {
@@ -398,6 +435,15 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                     blueCabinList.push_back(c);
                     blueCabinState = 1;
                 }
+				else
+				{
+					int sizeVec = blueCabinList.size();
+					for (int i = 0; i < sizeVec; i++)
+					{
+						blueCabinList[i].SetLinePoint(pointX, pointY);
+						blueCabinList[i].SetPassedStation(passedStation);
+					}
+				}
             }
             else if (R == 0 && G == 6 && B == 255)
             {
@@ -406,6 +452,15 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                     bblueCabinList.push_back(c);
                     bblueCabinState = 1;
                 }
+				else
+				{
+					int sizeVec = bblueCabinList.size();
+					for (int i = 0; i < sizeVec; i++)
+					{
+						bblueCabinList[i].SetLinePoint(pointX, pointY);
+						bblueCabinList[i].SetPassedStation(passedStation);
+					}
+				}
             }
             else if (R == 144 && G == 0 && B == 255)
             {
@@ -414,6 +469,15 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                     pupleCabinList.push_back(c);
                     pupleCabinState = 1;
                 }
+				else
+				{
+					int sizeVec = pupleCabinList.size();
+					for (int i = 0; i < sizeVec; i++)
+					{
+						pupleCabinList[i].SetLinePoint(pointX, pointY);
+						pupleCabinList[i].SetPassedStation(passedStation);
+					}
+				}
             }
         }
 

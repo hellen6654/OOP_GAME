@@ -16,10 +16,13 @@ Cabin::Cabin()
 { }
 Cabin::Cabin(int setX, int setY, int R, int G, int B)
 {
-    nextPoint = 0;
-    prePoint = 1;
+    nextPoint = 1;
+    prePoint = 0;
     leftTopX = setX;
     leftTopY = setY;
+	counter = CABIN_STOP_IN_STATION_TIME;
+	isStop = false;
+	isStopOnceInStation = false;
     rightDownX = setX + 42;
     rightDownY = setY + 28;
     movingDirection = "up";
@@ -87,14 +90,10 @@ void Cabin::SetMovingDirection(string s)
 }
 void Cabin::SetLinePoint(vector<int> x, vector<int> y)
 {
-    updateLinePointX.assign(x.begin(), x.end());
-    updateLinePointY.assign(y.begin(), y.end());
-
-    if (linePointX.empty() && linePointY.empty())
-    {
-        linePointX.assign(x.begin(), x.end());
-        linePointY.assign(y.begin(), y.end());
-    }
+ 
+    linePointX.assign(x.begin(), x.end());
+    linePointY.assign(y.begin(), y.end());
+    
 }
 void Cabin::SetPassedStation(vector<int> station)
 {
@@ -136,28 +135,36 @@ void Cabin::OnMove(vector<Station> totalStationList)
     // X座標相同 代表向上或向下移動
     // Y座標相同 代表向左或向右移動
 
-    if (startX == endX)
-    {
-        if (startY > endY) //向上移動
-        {
-            movingDirection = "up";
-        }
-        else if (startY < endY) //向下移動
-        {
-            movingDirection = "down";
-        }
-    }
-    else if (startY == endY)
-    {
-        if (startX > endX)// 向左移動
-        {
-            movingDirection = "left";
-        }
-        else if (startX < endX) //向右移動
-        {
-            movingDirection = "right";
-        }
-    }
+	if (startX == endX)
+	{
+		if (startY > endY) //向上移動
+		{
+			movingDirection = "up";
+			if ((startY+endY)/2 < nowPointY)
+				isStopOnceInStation = false;
+		}
+		else if (startY < endY) //向下移動
+		{
+			movingDirection = "down";
+			if ((startY + endY) / 2 > nowPointY)
+				isStopOnceInStation = false;
+		}
+	}
+	else if (startY == endY)
+	{
+		if (startX > endX)// 向左移動
+		{
+			movingDirection = "left";
+			if ((startX + endX) / 2 < nowPointX)
+				isStopOnceInStation = false;
+		}
+		else if (startX < endX) //向右移動
+		{
+			movingDirection = "right";
+			if ((startX + endX) / 2 > nowPointX)
+				isStopOnceInStation = false;
+		}
+	}
 
     if (movingDirection == "up")
     {
@@ -215,56 +222,179 @@ void Cabin::OnMove(vector<Station> totalStationList)
     }
     else if (movingDirection == "left")
     {
-        if (nowPointX > endX)
+        if (nowPointX > endX && !isStop)
             SetMovingCabin(movingDirection, velocity);
         else if (nowPointX <= endX)
         {
-            if (nextPoint >= sizeVecX - 1)
-            {
-                goingDirection = "back";
-            }
-            else if (nextPoint == 0)
-            {
-                goingDirection = "head";
-            }
+			if (IsInStation(endX, endY, totalStationList) && !isStopOnceInStation)//判斷是否為車站
+			{
+				//是車站 要停車
+				isStop = true;
+				if (isStop)
+				{
+					counter--;
+					/*
+					//乘客上下車 寫在這
+					//
 
-            if (goingDirection == "head")
-            {
-                prePoint = nextPoint;
-                nextPoint++;
-            }
-            else if (goingDirection == "back")
-            {
-                prePoint = nextPoint;
-                nextPoint--;
-            }
+
+					//
+					//
+					*/
+					if (counter == 0)
+					{
+						isStop = false;
+						isStopOnceInStation = true;
+					}
+				}
+			}
+			else
+			{
+				if (startX == endX)
+				{
+					if (startY > endY) //向上移動
+					{
+						movingDirection = "up";
+						if ((startY + endY) / 2 < nowPointY)
+							isStopOnceInStation = false;
+					}
+					else if (startY < endY) //向下移動
+					{
+						movingDirection = "down";
+						if ((startY + endY) / 2 > nowPointY)
+							isStopOnceInStation = false;
+					}
+				}
+				else if (startY == endY)
+				{
+					if (startX > endX)// 向左移動
+					{
+						movingDirection = "left";
+						if ((startX + endX) / 2 < nowPointX)
+							isStopOnceInStation = false;
+					}
+					else if (startX < endX) //向右移動
+					{
+						movingDirection = "right";
+						if ((startX + endX) / 2 > nowPointX)
+							isStopOnceInStation = false;
+					}
+				}
+				//判斷起訖站
+				if (nextPoint >= sizeVecX - 1)
+				{
+					goingDirection = "back";
+				}
+				else if (nextPoint == 0)
+				{
+					goingDirection = "head";
+				}
+
+				//移動到下一站
+				if (goingDirection == "head")
+				{
+					prePoint = nextPoint;
+					nextPoint++;
+
+				}
+				else if (goingDirection == "back")
+				{
+					prePoint = nextPoint;
+					nextPoint--;
+				}
+			}
         }
     }
     else if (movingDirection == "right")
     {
-        if (nowPointX < endX)
-            SetMovingCabin(movingDirection, velocity);
+		if (nowPointX < endX && !isStop)
+			SetMovingCabin(movingDirection, velocity);
         else if (nowPointX >= endX)
         {
-            if (nextPoint >= sizeVecX - 1)
-            {
-                goingDirection = "back";
-            }
-            else if (nextPoint == 0)
-            {
-                goingDirection = "head";
-            }
+			if (IsInStation(endX,endY,totalStationList)&& !isStopOnceInStation)//判斷是否為車站
+			{
+				//是車站 要停車
+				isStop = true;
+				if (isStop)
+				{
+					counter--;
+					/*
+					//乘客上下車 寫在這
+					//
 
-            if (goingDirection == "head")
-            {
-                prePoint = nextPoint;
-                nextPoint++;
-            }
-            else if (goingDirection == "back")
-            {
-                prePoint = nextPoint;
-                nextPoint--;
-            }
+
+					//
+					//
+					*/
+					if (counter == 0) 
+					{
+						isStop = false;
+						isStopOnceInStation = true;
+					}
+				}
+			}
+			else
+			{
+				counter = CABIN_STOP_IN_STATION_TIME;
+
+				if (startX == endX)
+				{
+					if (startY > endY) //向上移動
+					{
+						movingDirection = "up";
+						if ((startY + endY) / 2 < nowPointY)
+							isStopOnceInStation = false;
+					}
+					else if (startY < endY) //向下移動
+					{
+						movingDirection = "down";
+						if ((startY + endY) / 2 > nowPointY)
+							isStopOnceInStation = false;
+					}
+				}
+				else if (startY == endY)
+				{
+					if (startX > endX)// 向左移動
+					{
+						movingDirection = "left";
+						if ((startX + endX) / 2 < nowPointX)
+							isStopOnceInStation = false;
+					}
+					else if (startX < endX) //向右移動
+					{
+						movingDirection = "right";
+						if ((startX + endX) / 2 > nowPointX)
+							isStopOnceInStation = false;
+					}
+				}
+
+				//判斷起訖站
+				if ( nextPoint >= sizeVecX - 1)
+				{
+					goingDirection = "back";
+				}
+				else if (nextPoint == 0)
+				{
+					goingDirection = "head";
+				}
+
+				//移動到下一站
+				if (goingDirection == "head")
+				{
+					prePoint = nextPoint;
+					nextPoint++;
+					
+				}
+				else if (goingDirection == "back")
+				{
+					prePoint = nextPoint;
+					nextPoint--;
+				}
+
+				
+
+			}
+     
         }
     }
 }
@@ -280,6 +410,19 @@ void Cabin::OnShow()
     //pDC->SelectObject(pb);
     CDDraw::ReleaseBackCDC();
 }
+
+bool Cabin::IsInStation(int endX, int endY, vector<Station> totalStationList)
+{
+	int sizeVec = totalStationList.size();
+	for (int i = 0; i <sizeVec; i++) 
+		if (totalStationList[i].GetX() == endX && totalStationList[i].GetY() == endY) 
+			return true;
+	return false;
+	
+	
+}
+
+
 
 
 
