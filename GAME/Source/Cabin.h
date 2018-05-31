@@ -25,6 +25,7 @@ namespace game_framework
 		void OnMove(vector<Station>);
 		void OnShow();
 		bool IsInStation(int endX,int endY,vector<Station>);
+		void GetNextPreStation(int&, int&);
 
 		void SetPassengerPosition();
 		bool IsCabinFull();
@@ -49,6 +50,9 @@ namespace game_framework
 		string goingDirection="";
 		vector<int> linePointX;
 		vector<int> linePointY;
+
+		vector<int> updatelinePointX;
+		vector<int> updatelinePointY;
 
 		vector<int> passedStation;
 

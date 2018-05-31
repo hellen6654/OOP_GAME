@@ -141,7 +141,7 @@ class CGameStateRun : public CGameState
         int counter;
         int clickedX;
         int clickedY;
-
+		int preP, nextP;
         Line*    line;									//負責處理火車線路的指標
 
         Line    redLine;								//紅色線路
