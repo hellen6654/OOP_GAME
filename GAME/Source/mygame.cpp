@@ -352,6 +352,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             line->SetClickedStartStationNum(-1);
             line->SetClickedEndStationNum(-1);
             line->SetLinePointXY(stationList);
+
             line->GetLinePointXY(pointX, pointY);
             line->GetPassedStationNum(passedStation);
             line->GetLineColorRGB(R, G, B);
@@ -484,7 +485,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
         if (!redCabinList.empty())
         {
             int vecSize = redCabinList.size();
-
+			redCabinList[0].GetNextPreStation(preP, nextP);
             for (int i = 0; i < vecSize; i++)
             {
                 redCabinList[i].OnMove(stationList);
@@ -755,8 +756,9 @@ void CGameStateRun::OnShow()
     redLine.ShowLineIconBitmap();		//紅色
     //===============================================
 
-    // 如果有一個車站被選取 就要畫出來 //換句話說 就是線路要跟著滑鼠動啦
-    if (line->GetClickedStartStationNum() != -1 && (line->IsPassedStationEmpty() || line->GetClickedFirstStation() == line->GetClickedStartStationNum() || line->GetClickedLastStation() == line->GetClickedStartStationNum()))
+    // 如果有一個車站被選取 就要畫出來 //換句話說 就是線路要跟著滑鼠動
+    if (line->GetClickedStartStationNum() != -1 && 
+		(line->IsPassedStationEmpty() ||  line->GetClickedLastStation() == line->GetClickedStartStationNum()))
         line->DrawRailway(stationList[line->GetClickedStartStationNum()].GetX() + 5, stationList[line->GetClickedStartStationNum()].GetY() + 5, mouse_x, mouse_y);
 
     //顯示各顏色線路
@@ -839,7 +841,8 @@ void CGameStateRun::OnShow()
             pupleCabinList[i].OnShow();
         }
     }
-
+	int a = stationList.size();
+	int b = passengerList.size();
     // 顯示車站和乘客
     for (int i = 0; i < currentStationNum; i++)
     {
@@ -853,17 +856,17 @@ void CGameStateRun::OnShow()
 
     //week.OnShow();
     // 以下Debug 用
-    //CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
-    //CFont f, *fp;
-    //f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
-    //fp = pDC->SelectObject(&f);					// 選用 font f
-    ////pDC->SetBkColor(RGB(0, 0, 0));
-    //pDC->SetBkColor(RGB(241, 241, 241));
-    //pDC->SetTextColor(RGB(0, 0, 0));
-    //char str[80];								// Demo 數字對字串的轉換
-    //sprintf(str, "(%d,%d),(%d,%d),(%d,%d),(%d,%d)",  clickedX, clickedY,mouse_x, mouse_y ,line->GetClickedStartStationNum(),line->GetClickedEndStationNum(),cabin.GetX(),cabin.GetY());
-    //pDC->TextOut(10, 10, str);
-    //pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
-    //CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+    CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
+    CFont f, *fp;
+    f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
+    fp = pDC->SelectObject(&f);					// 選用 font f
+    //pDC->SetBkColor(RGB(0, 0, 0));
+    pDC->SetBkColor(RGB(241, 241, 241));
+    pDC->SetTextColor(RGB(0, 0, 0));
+    char str[80];								// Demo 數字對字串的轉換
+    sprintf(str, "(%d,%d),(%d,%d),(%d,%d),(%d,%d)",  clickedX, clickedY,mouse_x, mouse_y ,line->GetClickedStartStationNum(),line->GetClickedEndStationNum(),preP,nextP);
+    pDC->TextOut(10, 10, str);
+    pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
+    CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
 }
 }

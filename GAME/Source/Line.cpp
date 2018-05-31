@@ -84,11 +84,12 @@ namespace game_framework
 		}
 		else 
 		{
-			if (passedStation.front()==start)//從頭拉線路出去
-			{
-				passedStation.insert(passedStation.begin(), end);
-			}
-			else if (passedStation.back()==start)//從尾巴拉線路出去
+			//if (passedStation.front()==start)//從頭拉線路出去
+			//{
+			//	passedStation.insert(passedStation.begin(), end);
+			//}
+			//else 
+			if (passedStation.back()==start)//從尾巴拉線路出去
 			{
 				passedStation.push_back(end);
 			} 
@@ -99,6 +100,8 @@ namespace game_framework
 	void Line::SetLinePointXY(vector<Station> stationList)
 	{
 		int vecSize = passedStation.size();
+		vector<int> bufferLinePointX;
+		vector<int> bufferLinePointY;
 		for (int i = 0; i < vecSize - 1; i++)
 		{
 			int stationStartNum = passedStation[i];
@@ -107,33 +110,39 @@ namespace game_framework
 			int startY = stationList[stationStartNum].GetY();
 			int endX = stationList[stationEndNum].GetX();
 			int endY = stationList[stationEndNum].GetY();
-			if(linePointX.empty()) linePointX.push_back(startX);
-			if(linePointY.empty()) linePointY.push_back(startY);
+
+
+			if(bufferLinePointX.empty()) bufferLinePointX.push_back(startX);
+			if(bufferLinePointY.empty()) bufferLinePointY.push_back(startY);
+
 			if (endX >= startX && endY >= startY)  //結束點在右下
 			{
-				linePointX.push_back(startX);
-				linePointY.push_back(endY);
+				bufferLinePointX.push_back(startX);
+				bufferLinePointY.push_back(endY);
 			}
 			else if (endX < startX && endY > startY) //結束點在左下
 			{
-				linePointX.push_back(startX );
-				linePointY.push_back(endY);
+				bufferLinePointX.push_back(startX);
+				bufferLinePointY.push_back(endY);
 			}
 			else if (endX <= startX && endY <= startY) //結束點在左上
 			{
-				linePointX.push_back(endX);
-				linePointY.push_back(startY);
+				bufferLinePointX.push_back(endX);
+				bufferLinePointY.push_back(startY);
 			}
 			else if (endX > startX && endY < startY) //結束點在右上
 			{
-				linePointX.push_back(endX);
-				linePointY.push_back(startY);
+				bufferLinePointX.push_back(endX);
+				bufferLinePointY.push_back(startY);
 			}
-			linePointX.push_back(endX);
-			linePointY.push_back(endY);
+
+			bufferLinePointX.push_back(endX);
+			bufferLinePointY.push_back(endY);
+			
 		}
 		
-		
+		linePointX.assign(bufferLinePointX.begin(), bufferLinePointX.end());
+		linePointY.assign(bufferLinePointY.begin(), bufferLinePointY.end());
 		
 		//else if (endX > startX && endY < startY) //結束點在右上
 		//{
