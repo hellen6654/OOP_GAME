@@ -63,7 +63,8 @@ enum AUDIO_ID  				// 定義各種音效的編號
     AUDIO_SELECT2,			// 4
     AUDIO_APPEAR,			// 5
     AUDIO_STOP1,			// 6
-    AUDIO_STOP2				// 7
+    AUDIO_STOP2,			// 7
+    AUDIO_COLOR				// 8
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -141,8 +142,9 @@ class CGameStateRun : public CGameState
         int counter;
         int clickedX;
         int clickedY;
-		int preP, nextP;
+        int preP, nextP;
         Line*    line;									//負責處理火車線路的指標
+        int lineColor = 0;
 
         Line    redLine;								//紅色線路
         Line    orangeLine;								//橘色線路
@@ -151,6 +153,7 @@ class CGameStateRun : public CGameState
         Line    blueLine;								//藍色線路
         Line    bblueLine;								//靛色線路
         Line    purpleLine;								//紫色線路
+        Line    gray;								//灰色
 
         Clock   clock;									//會動的時鐘
         Week    week;									//會動的周次

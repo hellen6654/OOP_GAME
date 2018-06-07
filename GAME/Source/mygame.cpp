@@ -352,11 +352,9 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             line->SetClickedStartStationNum(-1);
             line->SetClickedEndStationNum(-1);
             line->SetLinePointXY(stationList);
-
             line->GetLinePointXY(pointX, pointY);
             line->GetPassedStationNum(passedStation);
             line->GetLineColorRGB(R, G, B);
-
             Cabin c(pointX[0], pointY[0], R, G, B);
             c.SetLinePoint(pointX, pointY);
             c.SetPassedStation(passedStation);
@@ -368,15 +366,16 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                     redCabinList.push_back(c);
                     redCabinState = 1;
                 }
-				else
-				{
-					int sizeVec = redCabinList.size();
-					for (int i = 0; i < sizeVec; i++)
-					{
-						redCabinList[i].SetLinePoint(pointX, pointY);
-						redCabinList[i].SetPassedStation(passedStation);
-					}
-				}
+                else
+                {
+                    int sizeVec = redCabinList.size();
+
+                    for (int i = 0; i < sizeVec; i++)
+                    {
+                        redCabinList[i].SetLinePoint(pointX, pointY);
+                        redCabinList[i].SetPassedStation(passedStation);
+                    }
+                }
             }
             else if (R == 255 && G == 144 && B == 0)
             {
@@ -385,15 +384,16 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                     orangCabinList.push_back(c);
                     orangCabinState = 1;
                 }
-				else
-				{
-					int sizeVec = orangCabinList.size();
-					for (int i = 0; i < sizeVec; i++)
-					{
-						orangCabinList[i].SetLinePoint(pointX, pointY);
-						orangCabinList[i].SetPassedStation(passedStation);
-					}
-				}
+                else
+                {
+                    int sizeVec = orangCabinList.size();
+
+                    for (int i = 0; i < sizeVec; i++)
+                    {
+                        orangCabinList[i].SetLinePoint(pointX, pointY);
+                        orangCabinList[i].SetPassedStation(passedStation);
+                    }
+                }
             }
             else if (R == 255 && G == 255 && B == 0)
             {
@@ -402,15 +402,16 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                     yellowCabinList.push_back(c);
                     yellowCabinState = 1;
                 }
-				else
-				{
-					int sizeVec = yellowCabinList.size();
-					for (int i = 0; i < sizeVec; i++)
-					{
-						yellowCabinList[i].SetLinePoint(pointX, pointY);
-						yellowCabinList[i].SetPassedStation(passedStation);
-					}
-				}
+                else
+                {
+                    int sizeVec = yellowCabinList.size();
+
+                    for (int i = 0; i < sizeVec; i++)
+                    {
+                        yellowCabinList[i].SetLinePoint(pointX, pointY);
+                        yellowCabinList[i].SetPassedStation(passedStation);
+                    }
+                }
             }
             else if (R == 0 && G == 255 && B == 0)
             {
@@ -419,15 +420,16 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                     greenCabinList.push_back(c);
                     greenCabinState = 1;
                 }
-				else
-				{
-					int sizeVec = greenCabinList.size();
-					for (int i = 0; i < sizeVec; i++)
-					{
-						greenCabinList[i].SetLinePoint(pointX, pointY);
-						greenCabinList[i].SetPassedStation(passedStation);
-					}
-				}
+                else
+                {
+                    int sizeVec = greenCabinList.size();
+
+                    for (int i = 0; i < sizeVec; i++)
+                    {
+                        greenCabinList[i].SetLinePoint(pointX, pointY);
+                        greenCabinList[i].SetPassedStation(passedStation);
+                    }
+                }
             }
             else if (R == 0 && G == 138 && B == 255)
             {
@@ -436,15 +438,16 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                     blueCabinList.push_back(c);
                     blueCabinState = 1;
                 }
-				else
-				{
-					int sizeVec = blueCabinList.size();
-					for (int i = 0; i < sizeVec; i++)
-					{
-						blueCabinList[i].SetLinePoint(pointX, pointY);
-						blueCabinList[i].SetPassedStation(passedStation);
-					}
-				}
+                else
+                {
+                    int sizeVec = blueCabinList.size();
+
+                    for (int i = 0; i < sizeVec; i++)
+                    {
+                        blueCabinList[i].SetLinePoint(pointX, pointY);
+                        blueCabinList[i].SetPassedStation(passedStation);
+                    }
+                }
             }
             else if (R == 0 && G == 6 && B == 255)
             {
@@ -453,15 +456,16 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                     bblueCabinList.push_back(c);
                     bblueCabinState = 1;
                 }
-				else
-				{
-					int sizeVec = bblueCabinList.size();
-					for (int i = 0; i < sizeVec; i++)
-					{
-						bblueCabinList[i].SetLinePoint(pointX, pointY);
-						bblueCabinList[i].SetPassedStation(passedStation);
-					}
-				}
+                else
+                {
+                    int sizeVec = bblueCabinList.size();
+
+                    for (int i = 0; i < sizeVec; i++)
+                    {
+                        bblueCabinList[i].SetLinePoint(pointX, pointY);
+                        bblueCabinList[i].SetPassedStation(passedStation);
+                    }
+                }
             }
             else if (R == 144 && G == 0 && B == 255)
             {
@@ -470,22 +474,24 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                     pupleCabinList.push_back(c);
                     pupleCabinState = 1;
                 }
-				else
-				{
-					int sizeVec = pupleCabinList.size();
-					for (int i = 0; i < sizeVec; i++)
-					{
-						pupleCabinList[i].SetLinePoint(pointX, pointY);
-						pupleCabinList[i].SetPassedStation(passedStation);
-					}
-				}
+                else
+                {
+                    int sizeVec = pupleCabinList.size();
+
+                    for (int i = 0; i < sizeVec; i++)
+                    {
+                        pupleCabinList[i].SetLinePoint(pointX, pointY);
+                        pupleCabinList[i].SetPassedStation(passedStation);
+                    }
+                }
             }
         }
 
         if (!redCabinList.empty())
         {
             int vecSize = redCabinList.size();
-			redCabinList[0].GetNextPreStation(preP, nextP);
+            redCabinList[0].GetNextPreStation(preP, nextP);
+
             for (int i = 0; i < vecSize; i++)
             {
                 redCabinList[i].OnMove(stationList);
@@ -573,6 +579,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     isStop = false;
     CAudio::Instance()->Load(AUDIO_STOP1, "sounds\\stop1.mp3");
     CAudio::Instance()->Load(AUDIO_STOP2, "sounds\\stop2.mp3");
+    CAudio::Instance()->Load(AUDIO_COLOR, "sounds\\odd.wav");
     /*red(255.0.0),orang(255.144.0),yellow(255.255.0),green(0.255.0),blue(0.138.255),bblue(0.6.255),puple(144.0.255)*/
     redLine.SetLineColor(255, 0, 0);
     orangeLine.SetLineColor(255, 144, 0);
@@ -581,14 +588,17 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     blueLine.SetLineColor(0, 138, 255);
     bblueLine.SetLineColor(0, 6, 255);
     purpleLine.SetLineColor(144, 0, 255);
+    gray.SetLineColor(131, 131, 131);
     ShowInitProgress(40);
     redLine.LoadBitmap();
+    redLine.SetLineState(1);
     orangeLine.LoadBitmap();
     yellowLine.LoadBitmap();
     greenLine.LoadBitmap();
     blueLine.LoadBitmap();
     bblueLine.LoadBitmap();
     purpleLine.LoadBitmap();
+    gray.LoadBitmap();
     s->RandomBuildStation(stationList);					//建立隨機車站列表
     s->CheckedOverLappingStation(stationList);			//檢查車站列表是否有重疊的車站
     p->RandomMadePassenger(passengerList, stationList, MAXIUM_STATION, MAXIUM_STATION_TYPE, MAXIUM_PASSANGER);
@@ -647,7 +657,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)
     {
         if (start == -1) //沒有任何車站被選取
         {
-            if (line->IsClickedStation(point.x, point.y, stationList, currentStationNum) ) //檢查是否有點到車站
+            if (line->IsClickedStationStart(point.x, point.y, stationList, currentStationNum) ) //檢查是否有點到車站
             {
                 CAudio::Instance()->Play(AUDIO_SELECT1);
                 start = line->GetMouseClickedStationNum(point.x, point.y, stationList, currentStationNum);
@@ -667,11 +677,70 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)
         }
         else //如果起點車站已經被選取
         {
-            if (line->IsClickedStation(point.x, point.y, stationList, currentStationNum)) //檢查是否有點到車站
+            if (line->IsClickedStationEnd(point.x, point.y, stationList, currentStationNum, start)) //檢查是否有點到車站
             {
                 CAudio::Instance()->Play(AUDIO_SELECT2);
                 end = line->GetMouseClickedStationNum(point.x, point.y, stationList, currentStationNum);
                 line->SetClickedEndStationNum(end);
+
+                if (lineColor == 0)
+                {
+                    redLine.SetLineState(2);
+
+                    if (orangeLine.GetLineState() == 0)
+                    {
+                        orangeLine.SetLineState(1);
+                    }
+                }
+                else if (lineColor == 1)
+                {
+                    orangeLine.SetLineState(2);
+
+                    if (yellowLine.GetLineState() == 0)
+                    {
+                        yellowLine.SetLineState(1);
+                    }
+                }
+                else if (lineColor == 2)
+                {
+                    yellowLine.SetLineState(2);
+
+                    if (greenLine.GetLineState() == 0)
+                    {
+                        greenLine.SetLineState(1);
+                    }
+                }
+                else if (lineColor == 3)
+                {
+                    greenLine.SetLineState(2);
+
+                    if (blueLine.GetLineState() == 0)
+                    {
+                        blueLine.SetLineState(1);
+                    }
+                }
+                else if (lineColor == 4)
+                {
+                    blueLine.SetLineState(2);
+
+                    if (bblueLine.GetLineState() == 0)
+                    {
+                        bblueLine.SetLineState(1);
+                    }
+                }
+                else if (lineColor == 5)
+                {
+                    bblueLine.SetLineState(2);
+
+                    if (purpleLine.GetLineState() == 0)
+                    {
+                        purpleLine.SetLineState(1);
+                    }
+                }
+                else if (lineColor == 6)
+                {
+                    purpleLine.SetLineState(2);
+                }
             }
             else
             {
@@ -705,19 +774,47 @@ void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作
 {
     //換鐵軌的顏色
     if (redLine.IsMouseClickedLineColorBMP(point.x, point.y))
+    {
+        CAudio::Instance()->Play(AUDIO_COLOR);
         line = &redLine;
+        lineColor = 0;
+    }
     else if (orangeLine.IsMouseClickedLineColorBMP(point.x, point.y))
+    {
+        CAudio::Instance()->Play(AUDIO_COLOR);
         line = &orangeLine;
+        lineColor = 1;
+    }
     else if (yellowLine.IsMouseClickedLineColorBMP(point.x, point.y))
+    {
+        CAudio::Instance()->Play(AUDIO_COLOR);
         line = &yellowLine;
+        lineColor = 2;
+    }
     else if (greenLine.IsMouseClickedLineColorBMP(point.x, point.y))
+    {
+        CAudio::Instance()->Play(AUDIO_COLOR);
         line = &greenLine;
+        lineColor = 3;
+    }
     else if (blueLine.IsMouseClickedLineColorBMP(point.x, point.y))
+    {
+        CAudio::Instance()->Play(AUDIO_COLOR);
         line = &blueLine;
+        lineColor = 4;
+    }
     else if (bblueLine.IsMouseClickedLineColorBMP(point.x, point.y))
+    {
+        CAudio::Instance()->Play(AUDIO_COLOR);
         line = &bblueLine;
+        lineColor = 5;
+    }
     else if (purpleLine.IsMouseClickedLineColorBMP(point.x, point.y))
+    {
+        CAudio::Instance()->Play(AUDIO_COLOR);
         line = &purpleLine;
+        lineColor = 6;
+    }
 }
 
 void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作 移動
@@ -747,18 +844,67 @@ void CGameStateRun::OnShow()
     map.ShowBitmap();		//把地圖顯示出來
     clock.OnShow();			//顯示時鐘
     //===============顯示各顏色的路線===================
-    purpleLine.ShowLineIconBitmap();	//紫色
-    bblueLine.ShowLineIconBitmap();		//靛色
-    blueLine.ShowLineIconBitmap();		//藍色
-    greenLine.ShowLineIconBitmap();		//綠色
-    yellowLine.ShowLineIconBitmap();	//黃色
-    orangeLine.ShowLineIconBitmap();	//橘色
     redLine.ShowLineIconBitmap();		//紅色
+
+    if (redLine.GetLineState() == 2)
+    {
+        orangeLine.ShowLineIconBitmap();	//橘色
+    }
+    else
+    {
+        gray.ShowIconBitmap(1);
+    }
+
+    if (orangeLine.GetLineState() == 2)
+    {
+        yellowLine.ShowLineIconBitmap();	//黃色
+    }
+    else
+    {
+        gray.ShowIconBitmap(2);
+    }
+
+    if (yellowLine.GetLineState() == 2)
+    {
+        greenLine.ShowLineIconBitmap();		//綠色
+    }
+    else
+    {
+        gray.ShowIconBitmap(3);
+    }
+
+    if (greenLine.GetLineState() == 2)
+    {
+        blueLine.ShowLineIconBitmap();		//藍色
+    }
+    else
+    {
+        gray.ShowIconBitmap(4);
+    }
+
+    if (blueLine.GetLineState() == 2)
+    {
+        bblueLine.ShowLineIconBitmap();		//靛色
+    }
+    else
+    {
+        gray.ShowIconBitmap(5);
+    }
+
+    if (bblueLine.GetLineState() == 2)
+    {
+        purpleLine.ShowLineIconBitmap();	//紫色
+    }
+    else
+    {
+        gray.ShowIconBitmap(6);
+    }
+
     //===============================================
 
     // 如果有一個車站被選取 就要畫出來 //換句話說 就是線路要跟著滑鼠動
-    if (line->GetClickedStartStationNum() != -1 && 
-		(line->IsPassedStationEmpty() ||  line->GetClickedLastStation() == line->GetClickedStartStationNum()))
+    if (line->GetClickedStartStationNum() != -1 &&
+            (line->IsPassedStationEmpty() ||  line->GetClickedLastStation() == line->GetClickedStartStationNum()))
         line->DrawRailway(stationList[line->GetClickedStartStationNum()].GetX() + 5, stationList[line->GetClickedStartStationNum()].GetY() + 5, mouse_x, mouse_y);
 
     //顯示各顏色線路
@@ -841,8 +987,10 @@ void CGameStateRun::OnShow()
             pupleCabinList[i].OnShow();
         }
     }
-	int a = stationList.size();
-	int b = passengerList.size();
+
+    int a = stationList.size();
+    int b = passengerList.size();
+
     // 顯示車站和乘客
     for (int i = 0; i < currentStationNum; i++)
     {
@@ -864,7 +1012,7 @@ void CGameStateRun::OnShow()
     pDC->SetBkColor(RGB(241, 241, 241));
     pDC->SetTextColor(RGB(0, 0, 0));
     char str[80];								// Demo 數字對字串的轉換
-    sprintf(str, "(%d,%d),(%d,%d),(%d,%d),(%d,%d)",  clickedX, clickedY,mouse_x, mouse_y ,line->GetClickedStartStationNum(),line->GetClickedEndStationNum(),preP,nextP);
+    sprintf(str, "(%d,%d),(%d,%d),(%d,%d),(%d,%d)",  clickedX, clickedY, mouse_x, mouse_y, line->GetClickedStartStationNum(), line->GetClickedEndStationNum(), preP, nextP);
     pDC->TextOut(10, 10, str);
     pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
     CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
