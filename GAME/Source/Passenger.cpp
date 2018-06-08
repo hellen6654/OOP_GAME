@@ -70,19 +70,24 @@ namespace game_framework
 		for (int i = 0; i < totalPassenagerNum; i++)
 		{
 			start = rand() % stationMaxium;
-			end = rand() % stationMaxium;
-			//start = 0;
-			//end = 3;
-			//type = 0;
+			if (stationList[start].GetPassenagerNum() < 5) {
+				end = rand() % stationMaxium;
+				//start = 0;
+				//end = 3;
+				//type = 0;
 
-			type = rand() % stationTypeNum;
-			
-			stationList[start].SetAddPassenagerNum(1);
-			x = stationList[start].GetX();
-			y = stationList[start].GetY();
-			int width = 15 * (stationList[start].GetPassenagerNum()-1);
-			Passenger buf(type,start,end,x+27+width,y);
-			passengerList.push_back(buf);
+				type = rand() % stationTypeNum;
+
+				stationList[start].SetAddPassenagerNum(1);
+				x = stationList[start].GetX();
+				y = stationList[start].GetY();
+				int width = 15 * (stationList[start].GetPassenagerNum() - 1);
+				Passenger buf(type, start, end, x + 27 + width, y);
+				passengerList.push_back(buf);
+			}
+			else {
+				i--;
+			}
 		}
 	}
 
