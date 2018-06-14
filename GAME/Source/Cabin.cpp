@@ -34,7 +34,17 @@ namespace game_framework
 		color[2] = B;
 	}
 	Cabin::~Cabin()
-	{ }
+	{ 
+		
+		for (unsigned i = 0; i < passengerOnCabinList.size(); i++)
+		{
+			if (passengerOnCabinList[i] != nullptr)
+			{
+				delete passengerOnCabinList[i];
+			}
+		}
+		
+	}
 	void Cabin::SetXY(int setX, int setY)
 	{
 		leftTopX = setX;

@@ -60,7 +60,8 @@ enum AUDIO_ID  				// 定義各種音效的編號
     AUDIO_SELECT2,			// 4
     AUDIO_APPEAR,			// 5
     AUDIO_STOP1,			// 6
-    AUDIO_STOP2				// 7
+    AUDIO_STOP2,			// 7
+	AUDIO_COLOR				// 8
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -79,7 +80,7 @@ class CGameStateInit : public CGameState
         void OnLButtonUp(UINT nFlags, CPoint point);	// 處理滑鼠的動作
         void OnMouseMove(UINT nFlags, CPoint point);	// 處理滑鼠的動作
     protected:
-        void OnMove();									// 移動遊戲元素
+		void OnMove();									// 移動遊戲元素
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
         CMovingBitmap start;							//遊戲開始的按鈕圖
@@ -87,30 +88,28 @@ class CGameStateInit : public CGameState
         CMovingBitmap end;								//遊戲結束的按鈕圖
         CMovingBitmap endInvert;						//遊戲結束的顏色反相按鈕圖
         CMovingBitmap logo;								//遊戲的logo
+		CMovingBitmap red;								//封面的紅色鐵軌
+		CMovingBitmap orange;							//封面的橘色鐵軌
+		CMovingBitmap blue;								//封面的藍色鐵軌
+		CMovingBitmap bblue;							//封面的深藍色鐵軌
 
-        CMovingBitmap red;								//封面的紅色鐵軌
-        CMovingBitmap orange;							//封面的橘色鐵軌
-        CMovingBitmap blue;								//封面的藍色鐵軌
-        CMovingBitmap bblue;							//封面的深藍色鐵軌
+		CMovingBitmap redCabin;							//封面的紅色車廂
+		CMovingBitmap redCabin2;						//封面的紅色車廂
+		CMovingBitmap orangeCabin;						//封面的橘色車廂
+		CMovingBitmap orangeCabin2;						//封面的橘色車廂
+		CMovingBitmap blueCabin;						//封面的藍色車廂
+		CMovingBitmap blueCabin2;						//封面的藍色車廂
+		CMovingBitmap bblueCabin;						//封面的深藍色車廂
+		CMovingBitmap bblueCabin2;						//封面的深藍色車廂
 
-        CMovingBitmap redCabin;							//封面的紅色車廂
-        CMovingBitmap redCabin2;						//封面的紅色車廂
-        CMovingBitmap orangeCabin;						//封面的橘色車廂
-        CMovingBitmap orangeCabin2;						//封面的橘色車廂
-        CMovingBitmap blueCabin;						//封面的藍色車廂
-        CMovingBitmap blueCabin2;						//封面的藍色車廂
-        CMovingBitmap bblueCabin;						//封面的深藍色車廂
-        CMovingBitmap bblueCabin2;						//封面的深藍色車廂
-
-        int redCabinX = -50;
-        int redCabinY = 270;
-        int orangeCabinX = 38;
-        int orangeCabinY = 800;
-        int blueCabinX = 694;
-        int blueCabinY = 600;
-        int bblueCabinX = 675;
-        int bblueCabinY = 1000;
-
+		int redCabinX = -50;
+		int redCabinY = 270;
+		int orangeCabinX = 38;
+		int orangeCabinY = 800;
+		int blueCabinX = 694;
+		int blueCabinY = 600;
+		int bblueCabinX = 675;
+		int bblueCabinY = 1000;
 
         bool isMouseInStartBtn;							//滑鼠在開始按鈕
         bool isMouseInEndBtn;							//滑鼠在結束按鈕
@@ -148,12 +147,13 @@ class CGameStateRun : public CGameState
         const int MAXIUM_STATION = 6;					//會出現在地圖上車站總數
         const int MAXIUM_STATION_TYPE = 6;				//車站樣式總共有6個 00~05
         const int LINE_COLOR_NUM = 7;					//線路樣式總共有7個 00~06
-        const int MAXIUM_PASSANGER = MAXIUM_STATION * 2; //乘客總個數
-        const int MAX_PASSENGER_NUM = 6; //最多六個乘客
-        //station.h裡面也有相同的屬性要改
-        const int MAX_GAME_MAP_SIDE_X = 770 - 135;			//實際上的遊戲邊界X軸只有到770
+        const int INIT_PASSANGER = MAXIUM_STATION * 2;	//乘客初始個數
+		const int MAX_PASSENGER_NUM = 6;				//車廂最多六個乘客
+		const int LINE_CAN_USE_TIME = 5;				//可以拉出其他顏色的時間
+		//station.h裡面也有相同的屬性要改
+        const int MAX_GAME_MAP_SIDE_X = 770-135;		//實際上的遊戲邊界X軸只有到770
         const int MIN_GAME_MAP_SIDE_X = 30;			    //實際上的遊戲邊界X軸從30開始
-        const int MAX_GAME_MAP_SIDE_Y = 560 - 25;			//實際上的遊戲邊界Y軸只有到560
+        const int MAX_GAME_MAP_SIDE_Y = 560-25;			//實際上的遊戲邊界Y軸只有到560
         const int MIN_GAME_MAP_SIDE_Y = 60;			    //實際上的遊戲邊界Y軸從60開始
 
         bool isStop;
@@ -161,12 +161,11 @@ class CGameStateRun : public CGameState
         int currentStationNum;							//目前出現到哪個車站
         int currentPassenagerNum;						//目前有幾個乘客出現
         int counter;
-
+		
         int clickedX;
         int clickedY;
-        int preP = 0, nextP = 0, nextS = 0;
+		int preP=0, nextP=0,nextS=0;
         Line*    line;									//負責處理火車線路的指標
-
         Line    redLine;								//紅色線路
         Line    orangeLine;								//橘色線路
         Line    yellowLine;								//黃色線路
@@ -174,7 +173,7 @@ class CGameStateRun : public CGameState
         Line    blueLine;								//藍色線路
         Line    bblueLine;								//靛色線路
         Line    purpleLine;								//紫色線路
-
+		vector<CMovingBitmap> garyIcon;					//負責蓋住其他顏色的圖標
         Clock   clock;									//會動的時鐘
 
         vector<Station> stationList;					//一堆的車站
@@ -182,7 +181,7 @@ class CGameStateRun : public CGameState
 
 
 
-        vector<Cabin> cabinList;
+		vector<Cabin> cabinList;
 
 
 

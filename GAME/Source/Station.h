@@ -20,6 +20,7 @@ namespace game_framework
 		void RandomBuildStation(vector<Station>&);
 		void CheckedOverLappingStation(vector<Station>&);
 		void SetPassengerToStationPosition(Passenger* p);
+		void RefreshPassengerPosition();
 		void ErasePassenger(Passenger* p);
 		void OnShowStation();				//將圖形貼到畫面
 		void OnShowPassengerInStation();

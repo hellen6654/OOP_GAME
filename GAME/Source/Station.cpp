@@ -128,6 +128,15 @@ namespace game_framework
 		passengerInStationList.push_back(p);
 	}
 
+	void Station::RefreshPassengerPosition()
+	{
+		passenagerNum =(int)passengerInStationList.size();
+		for (unsigned i = 0; i < passengerInStationList.size(); i++)
+		{
+			passengerInStationList[i]->SetXY(x + 25 + i * 10 + i * 1,y);
+		}
+	}
+
 	void Station::ErasePassenger(Passenger * p)
 	{
 		for (unsigned i = passengerInStationList.size()-1; i >=0 ; i--)

@@ -9,6 +9,8 @@ namespace game_framework
 		void LoadBitmap();									//¸ü¤J¹Ï§Î
 		void SetType(int);
 		void SetXY(int,int);
+		void SetX(int n);
+		void SetY(int n);
 		int GetStartStation();
 		int GetFinalStation();
 		int GetPassengerType();

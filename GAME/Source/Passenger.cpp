@@ -46,6 +46,16 @@ namespace game_framework
 		x = xP;
 		y = yP;
 	}
+
+	void Passenger::SetX(int n)
+	{
+		x = n;
+	}
+
+	void Passenger::SetY(int n)
+	{
+		y = n;
+	}
 	
 	int Passenger::GetStartStation()
 	{
@@ -118,6 +128,6 @@ namespace game_framework
 
 	Passenger::~Passenger()
 	{
-
+		
 	}
 }
