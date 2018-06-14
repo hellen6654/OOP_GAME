@@ -38,16 +38,13 @@
  *      3. Use ShowInitProgress(percent) to display loading progress.
 */
 
-#include "CEraser.h"
-#include "CBall.h"
-#include "CBouncingBall.h"
 #include "Station.h"
 #include "Clock.h"
-#include "Week.h"
 #include "Timer.h"
 #include "Line.h"
 #include "Passenger.h"
 #include "Cabin.h"
+
 namespace game_framework
 {
 /////////////////////////////////////////////////////////////////////////////
@@ -63,8 +60,7 @@ enum AUDIO_ID  				// 定義各種音效的編號
     AUDIO_SELECT2,			// 4
     AUDIO_APPEAR,			// 5
     AUDIO_STOP1,			// 6
-    AUDIO_STOP2,			// 7
-    AUDIO_COLOR				// 8
+    AUDIO_STOP2				// 7
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -120,20 +116,18 @@ class CGameStateRun : public CGameState
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
         CMovingBitmap  map;
-		CMovingBitmap  person;
         CMovingBitmap  color[7];
         const int STATION_APPERAED_TIME = 5;			//車站出現的秒數
         const int PASSENAGER_APPERAED_TIME = 3;			//乘客出現的秒數
-        const int MAXIUM_STATION = 10;					//會出現在地圖上車站總數
-        const int MAXIUM_STATION_TYPE = 7;				//車站樣式總共有7個 00~06
-        const int LINE_COLOR_NUM = 7;					//車站樣式總共有7個 00~06
-
-        const int MAXIUM_PASSANGER = MAXIUM_STATION * 5; //乘客總個數
-
+        const int MAXIUM_STATION = 6;					//會出現在地圖上車站總數
+        const int MAXIUM_STATION_TYPE = 6;				//車站樣式總共有6個 00~05
+        const int LINE_COLOR_NUM = 7;					//線路樣式總共有7個 00~06
+        const int MAXIUM_PASSANGER = MAXIUM_STATION * 2; //乘客總個數
+		const int MAX_PASSENGER_NUM = 6; //最多六個乘客
         //station.h裡面也有相同的屬性要改
-        const int MAX_GAME_MAP_SIDE_X = 770;			//實際上的遊戲邊界X軸只有到770
+        const int MAX_GAME_MAP_SIDE_X = 770-135;			//實際上的遊戲邊界X軸只有到770
         const int MIN_GAME_MAP_SIDE_X = 30;			    //實際上的遊戲邊界X軸從30開始
-        const int MAX_GAME_MAP_SIDE_Y = 560;			//實際上的遊戲邊界Y軸只有到560
+        const int MAX_GAME_MAP_SIDE_Y = 560-25;			//實際上的遊戲邊界Y軸只有到560
         const int MIN_GAME_MAP_SIDE_Y = 60;			    //實際上的遊戲邊界Y軸從60開始
 
         bool isStop;
@@ -141,11 +135,11 @@ class CGameStateRun : public CGameState
         int currentStationNum;							//目前出現到哪個車站
         int currentPassenagerNum;						//目前有幾個乘客出現
         int counter;
+		
         int clickedX;
         int clickedY;
-        int preP, nextP;
+		int preP=0, nextP=0,nextS=0;
         Line*    line;									//負責處理火車線路的指標
-        int lineColor = 0;
 
         Line    redLine;								//紅色線路
         Line    orangeLine;								//橘色線路
@@ -154,20 +148,17 @@ class CGameStateRun : public CGameState
         Line    blueLine;								//藍色線路
         Line    bblueLine;								//靛色線路
         Line    purpleLine;								//紫色線路
-        Line    gray;								//灰色
 
         Clock   clock;									//會動的時鐘
-        Week    week;									//會動的周次
 
         vector<Station> stationList;					//一堆的車站
-        vector<Passenger> passengerList;				//一堆的乘客
-        vector<Cabin> redCabinList;
-        vector<Cabin> orangCabinList;
-        vector<Cabin> yellowCabinList;
-        vector<Cabin> greenCabinList;
-        vector<Cabin> blueCabinList;
-        vector<Cabin> bblueCabinList;
-        vector<Cabin> pupleCabinList;
+        vector<Passenger*> passengerList;				//一堆的乘客
+
+
+
+		vector<Cabin> cabinList;
+
+
 
         int redCabinState = 0;
         int orangCabinState = 0;

@@ -31,10 +31,8 @@ namespace game_framework
 		else if (stationType == 3)
 			stationAnimation.LoadBitmap(".\\RES\\Station\\Station_Diamond.bmp", RGB(255, 255, 255));
 		else if (stationType == 4)
-			stationAnimation.LoadBitmap(".\\RES\\Station\\Station_Rectangle.bmp", RGB(255, 255, 255));
-		else if (stationType == 5)
 			stationAnimation.LoadBitmap(".\\RES\\Station\\Station_Pentagon.bmp", RGB(255, 255, 255));
-		else if (stationType == 6)
+		else if (stationType == 5)
 			stationAnimation.LoadBitmap(".\\RES\\Station\\Station_Hexagon.bmp", RGB(255, 255, 255));
 	}
 
@@ -93,7 +91,8 @@ namespace game_framework
 		srand((unsigned)time(NULL));
 		for (int i = 0; i < MAXIUM_STATION; i++)
 		{
-			type = rand() % MAXIUM_STATION_TYPE; //隨機選擇車站的形狀
+			//type = rand() % MAXIUM_STATION_TYPE; //隨機選擇車站的形狀
+			type = i; 
 			x = MIN_GAME_MAP_SIDE_X + rand() % (MAX_GAME_MAP_SIDE_X - MIN_GAME_MAP_SIDE_X);// 隨機選車站的X位置
 			y = MIN_GAME_MAP_SIDE_Y + rand() % (MAX_GAME_MAP_SIDE_Y - MIN_GAME_MAP_SIDE_Y);// 隨機選車站的Y位置
 			Station buf(type, x, y);
@@ -123,10 +122,45 @@ namespace game_framework
 		}
 	}
 
-	void Station::OnShow()
+	void Station::SetPassengerToStationPosition(Passenger* p)
+	{
+		p->SetXY(x +25+(passenagerNum - 1)*10+passenagerNum*1, y);
+		passengerInStationList.push_back(p);
+	}
+
+	void Station::ErasePassenger(Passenger * p)
+	{
+		for (unsigned i = passengerInStationList.size()-1; i >=0 ; i--)
+		{
+			if (i >= 6)
+			{
+				break;
+			}
+			else if (passengerInStationList[i]->GetStartStation() == p->GetStartStation() &&
+				passengerInStationList[i]->GetFinalStation() == p->GetFinalStation())
+			{
+				passengerInStationList.erase(passengerInStationList.begin() + i);
+				return;
+			}
+			
+		}
+		passenagerNum = (int)passengerInStationList.size();
+	}
+
+	void Station::OnShowStation()
 	{
 		stationAnimation.SetTopLeft(x, y);
-		stationAnimation.ShowBitmap();
+		stationAnimation.ShowBitmap();	
+		
+	}
+
+	void Station::OnShowPassengerInStation()
+	{
+		
+		for (unsigned i = 0; i < passengerInStationList.size(); i++)
+		{
+			passengerInStationList[i]->OnShow();
+		}
 	}
 
 	Station::~Station()
