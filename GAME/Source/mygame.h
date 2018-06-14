@@ -120,6 +120,7 @@ class CGameStateRun : public CGameState
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
         CMovingBitmap  map;
+		CMovingBitmap  person;
         CMovingBitmap  color[7];
         const int STATION_APPERAED_TIME = 5;			//車站出現的秒數
         const int PASSENAGER_APPERAED_TIME = 3;			//乘客出現的秒數

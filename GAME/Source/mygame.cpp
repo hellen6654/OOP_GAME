@@ -576,6 +576,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     clock.LoadBitmap();
     week.LoadBitmap();
     map.LoadBitmap(".\\RES\\map.bmp");
+	person.LoadBitmap(".\\RES\\people.bmp");
     isStop = false;
     CAudio::Instance()->Load(AUDIO_STOP1, "sounds\\stop1.mp3");
     CAudio::Instance()->Load(AUDIO_STOP2, "sounds\\stop2.mp3");
@@ -843,6 +844,8 @@ void CGameStateRun::OnShow()
     map.SetTopLeft(0, 0);	//設置地圖位置
     map.ShowBitmap();		//把地圖顯示出來
     clock.OnShow();			//顯示時鐘
+	person.SetTopLeft(680, 7);
+	person.ShowBitmap();
     //===============顯示各顏色的路線===================
     redLine.ShowLineIconBitmap();		//紅色
 
