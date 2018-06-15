@@ -85,6 +85,8 @@ namespace game_framework
 
 	void Station::RandomBuildStation(vector<Station> &stationList)
 	{
+		vector<Station> a;
+		stationList.assign(a.begin(), a.end());
 		int x = -1;
 		int y = -1;
 		int type = -1;
@@ -97,6 +99,7 @@ namespace game_framework
 			y = MIN_GAME_MAP_SIDE_Y + rand() % (MAX_GAME_MAP_SIDE_Y - MIN_GAME_MAP_SIDE_Y);// 隨機選車站的Y位置
 			Station buf(type, x, y);
 			stationList.push_back(buf);
+			stationList[i].LoadBitmap();
 		}
 		return;
 	}

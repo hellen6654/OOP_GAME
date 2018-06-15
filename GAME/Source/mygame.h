@@ -141,7 +141,12 @@ class CGameStateRun : public CGameState
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
         CMovingBitmap  map;
+		CMovingBitmap  backGround;
         CMovingBitmap  color[7];
+		CMovingBitmap restart;							//遊戲重新開始的按鈕圖
+		CMovingBitmap restartInvert;					//遊戲重新開始的顏色反相按鈕圖
+		CMovingBitmap end;							//遊戲結束的按鈕圖
+		CMovingBitmap endInvert;					//遊戲結束的顏色反相按鈕圖
         const int STATION_APPERAED_TIME = 5;			//車站出現的秒數
         const int PASSENAGER_APPERAED_TIME = 3;			//乘客出現的秒數
         const int MAXIUM_STATION = 6;					//會出現在地圖上車站總數
@@ -157,10 +162,15 @@ class CGameStateRun : public CGameState
         const int MIN_GAME_MAP_SIDE_Y = 60;			    //實際上的遊戲邊界Y軸從60開始
 
         bool isStop;
+		bool isStop2;
+		bool isMouseInRestartBtn;						//滑鼠在重新開始按鈕
+		bool isMouseInEndBtn;							//滑鼠在結束按鈕
+		
 
         int currentStationNum;							//目前出現到哪個車站
         int currentPassenagerNum;						//目前有幾個乘客出現
-        int counter;
+		int counter;
+        int mouse_state=1;
 		
         int clickedX;
         int clickedY;

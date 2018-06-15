@@ -138,7 +138,7 @@ namespace game_framework
 		const char KEY_ESC = 27;
 		const char KEY_SPACE = ' ';
 
-		if (nChar == KEY_SPACE)
+		if (nChar == KEY_SPACE) 
 			GotoGameState(GAME_STATE_RUN);						// 切換至GAME_STATE_RUN
 		else if (nChar == KEY_ESC)								// Demo 關閉遊戲的方法
 			PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
@@ -394,15 +394,15 @@ namespace game_framework
 
 	void CGameStateOver::OnMove()
 	{
-		counter--;
+		//counter--;
 
-		if (counter < 0)
-			GotoGameState(GAME_STATE_INIT);
+		//if (counter < 0)
+		GotoGameState(GAME_STATE_INIT);
 	}
 
 	void CGameStateOver::OnBeginState()
 	{
-		counter = 30 * 5; // 5 seconds
+		//counter = 30 * 5; // 5 seconds
 	}
 
 	void CGameStateOver::OnInit()
@@ -424,7 +424,7 @@ namespace game_framework
 
 	void CGameStateOver::OnShow()
 	{
-		CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
+		/*CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
 		CFont f, *fp;
 		f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
 		fp = pDC->SelectObject(&f);					// 選用 font f
@@ -434,7 +434,7 @@ namespace game_framework
 		sprintf(str, "Game Over ! (%d)", counter / 30);
 		pDC->TextOut(240, 210, str);
 		pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
-		CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+		CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC*/
 	}
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -460,7 +460,53 @@ namespace game_framework
 
 	void CGameStateRun::OnBeginState()
 	{
+		redLine.Reset();
+		orangeLine.Reset();
+		yellowLine.Reset();
+		greenLine.Reset();
+		blueLine.Reset();
+		bblueLine.Reset();
+		purpleLine.Reset();
+		redLine.SetLineColor(255, 0, 0);
+		redLine.SetIsCanbeClicked(true);
+		orangeLine.SetLineColor(255, 144, 0);
+		yellowLine.SetLineColor(255, 255, 0);
+		greenLine.SetLineColor(0, 255, 0);
+		blueLine.SetLineColor(0, 138, 255);
+		bblueLine.SetLineColor(0, 6, 255);
+		purpleLine.SetLineColor(144, 0, 255);
+		vector <Cabin> a;
+		cabinList.assign(a.begin(), a.end());
+		
+
+		Station* s = new Station;										//用來建立隨機車站列表 及 檢查車站 列表 是否重疊
+		Passenger* p = new Passenger;									//用來建立隨機乘客個數 及 隨機列表
+		line = &redLine;
 		counter = 0;
+		//建立隨機車站列表
+		s->RandomBuildStation(stationList);
+
+		//檢查車站列表是否有重疊的車站
+		s->CheckedOverLappingStation(stationList);
+
+		//建立乘客列表
+		p->RandomMadePassenger(passengerList, stationList, MAXIUM_STATION, MAXIUM_STATION_TYPE, INIT_PASSANGER);
+		garyIcon[0].SetTopLeft(285, 570);
+
+		garyIcon[1].SetTopLeft(330, 570);
+
+		garyIcon[2].SetTopLeft(375, 570);
+
+		garyIcon[3].SetTopLeft(420, 570);
+
+		garyIcon[4].SetTopLeft(465, 570);
+
+		garyIcon[5].SetTopLeft(510, 570);
+		currentStationNum = 3;								//現有車站為三個 遊戲開始 有三個車站
+		currentPassenagerNum = 0;							//一開始出現的乘客數為0
+		clickedX = clickedY = -1;
+		delete s;
+		delete p;
 	}
 
 	void CGameStateRun::OnMove()							// 移動遊戲元素
@@ -599,11 +645,21 @@ namespace game_framework
 		// 開始載入資料
 		//
 		Station* s = new Station;										//用來建立隨機車站列表 及 檢查車站 列表 是否重疊
-		Passenger* p = new Passenger;									//用來建立隨機乘客個數 及 隨機列表
-		line = &redLine;
 		clock.LoadBitmap();
 		map.LoadBitmap(".\\RES\\map.bmp");
+		backGround.LoadBitmap(".\\RES\\background.bmp");
+		restart.LoadBitmap(".\\RES\\button\\restart.bmp");
+		restartInvert.LoadBitmap(".\\RES\\button\\restartInvert.bmp");
+		restart.SetTopLeft((SIZE_X / 2) - (restart.Width() / 2), SIZE_Y / 8 * 2);
+		restartInvert.SetTopLeft((SIZE_X / 2) - (restart.Width() / 2), SIZE_Y / 8 * 2);
+		end.LoadBitmap(".\\RES\\button\\end.bmp");
+		endInvert.LoadBitmap(".\\RES\\button\\endInvert.bmp");
+		end.SetTopLeft((SIZE_X / 2) - (end.Width() / 2), SIZE_Y / 8 * 3);
+		endInvert.SetTopLeft((SIZE_X / 2) - (end.Width() / 2), SIZE_Y / 8 * 3);
 		isStop = false;
+		isStop2 = false;
+		isMouseInRestartBtn = false;
+		isMouseInEndBtn = false;
 		CAudio::Instance()->Load(AUDIO_STOP1, "sounds\\stop1.mp3");
 		CAudio::Instance()->Load(AUDIO_STOP2, "sounds\\stop2.mp3");
 		CAudio::Instance()->Load(AUDIO_COLOR, "sounds\\odd.wav");
@@ -625,49 +681,28 @@ namespace game_framework
 		bblueLine.LoadBitmap();
 		purpleLine.LoadBitmap();
 
-		//建立隨機車站列表
-		s->RandomBuildStation(stationList);
-
-		//檢查車站列表是否有重疊的車站
-		s->CheckedOverLappingStation(stationList);
-
-		//建立乘客列表
-		p->RandomMadePassenger(passengerList, stationList, MAXIUM_STATION, MAXIUM_STATION_TYPE, INIT_PASSANGER);
-
+		
 		for (unsigned i = 0; i < 6; i++)
 		{
 			CMovingBitmap a;
 			a.LoadBitmap(".\\RES\\color\\gray.bmp", RGB(255, 255, 255));
 			garyIcon.push_back(a);
 		}
+		//建立隨機車站列表
+		s->RandomBuildStation(stationList);
 
-
-		garyIcon[0].SetTopLeft(285, 570);
-
-		garyIcon[1].SetTopLeft(330, 570);
-
-		garyIcon[2].SetTopLeft(375, 570);
-
-		garyIcon[3].SetTopLeft(420, 570);
-
-		garyIcon[4].SetTopLeft(465, 570);
-
-		garyIcon[5].SetTopLeft(510, 570);
-
-
+		//檢查車站列表是否有重疊的車站
+		s->CheckedOverLappingStation(stationList);
 		//載入各車站圖片
-		for (int i = 0; i < MAXIUM_STATION; i++)
-			stationList[i].LoadBitmap();
+		
+			
 
-		currentStationNum = 3;								//現有車站為三個 遊戲開始 有三個車站
-		currentPassenagerNum = 0;							//一開始出現的乘客數為0
-		clickedX = clickedY = -1;
+
 		ShowInitProgress(50);
 		CAudio::Instance()->Load(AUDIO_SELECT1, "sounds\\select1.mp3");
 		CAudio::Instance()->Load(AUDIO_SELECT2, "sounds\\select2.mp3");
 		CAudio::Instance()->Load(AUDIO_APPEAR, "sounds\\appear.mp3");
 		delete s;
-		delete p;
 		//Sleep(300); // 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
 		//
 		// 繼續載入其他資料
@@ -691,6 +726,12 @@ namespace game_framework
 		const char KEY_UP = 0x26; // keyboard上箭頭
 		const char KEY_RIGHT = 0x27; // keyboard右箭頭
 		const char KEY_DOWN = 0x28; // keyboard下箭頭
+		const char KEY_ESC = 27;
+		if (nChar == KEY_ESC) {
+			isStop2 = !isStop2;
+			isStop = !isStop;
+		}
+
 	}
 
 	void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)
@@ -736,22 +777,24 @@ namespace game_framework
 				}
 			}
 		}
-
-		if (point.x >= 750 && point.y >= 10 && point.x <= 790 && point.y <= 50)
-		{
-			CAudio::Instance()->Play(AUDIO_SLIP);
-
-			if (isStop)
+		if (!isStop2) {
+			if (point.x >= 750 && point.y >= 10 && point.x <= 790 && point.y <= 50)
 			{
-				CAudio::Instance()->Play(AUDIO_STOP1);
-			}
-			else
-			{
-				CAudio::Instance()->Play(AUDIO_STOP2);
-			}
+				CAudio::Instance()->Play(AUDIO_SLIP);
 
-			isStop = !isStop;
+				if (isStop)
+				{
+					CAudio::Instance()->Play(AUDIO_STOP1);
+				}
+				else
+				{
+					CAudio::Instance()->Play(AUDIO_STOP2);
+				}
+
+				isStop = !isStop;
+			}
 		}
+		
 
 		clickedX = point.x;	//用來debug
 		clickedY = point.y; //用來debug
@@ -797,7 +840,22 @@ namespace game_framework
 			line = &purpleLine;
 			CAudio::Instance()->Play(AUDIO_COLOR);
 		}
+		if (isStop2) {
+			if (restart.IsBitmapLoaded() && restartInvert.IsBitmapLoaded())
+			{
+				if (isMouseInRestartBtn)
+				{
 
+					isStop = !isStop;
+					isStop2 = !isStop2;
+					GotoGameState(GAME_STATE_OVER);
+				}
+				else if (isMouseInEndBtn) {
+					PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
+				}
+				
+			}
+		}
 	}
 
 	void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作 移動
@@ -806,6 +864,36 @@ namespace game_framework
 		if (point.x > MIN_GAME_MAP_SIDE_X && point.x < MAX_GAME_MAP_SIDE_X + 135) mouse_x = point.x;
 
 		if (point.y > MIN_GAME_MAP_SIDE_Y && point.y < MAX_GAME_MAP_SIDE_Y) mouse_y = point.y;
+
+		if (restart.IsBitmapLoaded() && restartInvert.IsBitmapLoaded())
+		{
+			if (mouse_x > restart.Left() && mouse_x < restart.Left() + restart.Width() &&
+				mouse_y > restart.Top() && mouse_y < restart.Top() + restart.Height())
+			{
+				if (mouse_state == 1)
+				{
+					isMouseInRestartBtn = true;
+					CAudio::Instance()->Play(AUDIO_SLIP);
+					mouse_state = 0;
+				}
+			}
+			else if(mouse_x > end.Left() && mouse_x < end.Left() + end.Width() &&
+				mouse_y > end.Top() && mouse_y < end.Top() + end.Height())
+			{
+				if (mouse_state == 1)
+				{
+					isMouseInEndBtn = true;
+					CAudio::Instance()->Play(AUDIO_SLIP);
+					mouse_state = 0;
+				}
+			}
+			else
+			{
+				mouse_state = 1;
+				isMouseInEndBtn = false;
+				isMouseInRestartBtn = false;
+			}
+		}
 	}
 
 	void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
@@ -874,13 +962,22 @@ namespace game_framework
 			for (unsigned i = 0; i < cabinList.size(); i++)
 				cabinList[i].OnShow();
 
-
-		// 顯示車站和乘客
-
-
-		/*for (unsigned i = 0; i < passengerList.size(); i++)
-			passengerList[i]->OnShow();*/
-
+		if (isStop2) {
+			
+			backGround.ShowBitmap();
+			restart.ShowBitmap();
+			end.ShowBitmap();
+			if (isMouseInRestartBtn) {
+				restartInvert.ShowBitmap();
+			}
+			
+			else if (isMouseInEndBtn) {
+				endInvert.ShowBitmap();
+			}
+			
+		}
+		
+		
 			// 以下Debug 用
 		CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
 		CFont f, *fp;

@@ -25,6 +25,7 @@ namespace game_framework
 		void GetLinePointXY(vector<int>&,vector<int>&);
 		void GetPassedStationNum(vector<int>&);
 		void GetTotalPassedStation(int(&num)[6]);
+		void Reset();
 
 		bool IsClickedStation(int, int, vector<Station>, int);			//檢查是否點到車站 有就回傳ture 如果沒有則回傳false
 		bool IsClickedTwoStation();										//檢查是否已經點了兩個車站了

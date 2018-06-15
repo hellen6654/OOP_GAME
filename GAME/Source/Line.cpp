@@ -218,6 +218,24 @@ namespace game_framework
 		}
 	}
 
+	void Line::Reset()
+	{
+		vector<int> a;
+		passedStation.assign(a.begin(), a.end());
+		linePointX.assign(a.begin(), a.end());
+		linePointY.assign(a.begin(), a.end());
+		for (int i = 0; i < 6; i++) {
+			totalPassedStationNum[i] = 0;
+		}
+		for (int i = 0; i < 3; i++) {
+			lineColor[i] = 0;
+		}
+		
+		clickedStartStationNum = -1;
+		clickedEndStationNum = -1;
+
+	}
+
 	bool Line::IsClickedStation(int x, int y, vector<Station> stationList, int currentStation)
 	{
 		for (int i = 0; i < currentStation; i++)
