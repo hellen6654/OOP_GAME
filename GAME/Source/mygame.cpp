@@ -392,15 +392,15 @@ namespace game_framework
 
 	void CGameStateOver::OnMove()
 	{
-		//counter--;
-		//if (counter < 0)
-		//GotoGameState(GAME_STATE_INIT);
+		counter--;
+		if (counter < 0)
+		GotoGameState(GAME_STATE_INIT);
 
 	}
 
 	void CGameStateOver::OnBeginState()
 	{
-		//counter = 30 * 5; // 5 seconds
+		counter = 30 * 10; // 5 seconds
 	}
 
 	void CGameStateOver::OnInit()
@@ -415,7 +415,6 @@ namespace game_framework
 		//
 		Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
 		endl.LoadBitmap(".\\RES\\Gameover\\gameover.bmp");
-
 		//
 		// 最終進度為100%
 		//
@@ -489,6 +488,10 @@ namespace game_framework
 		blueLine.SetLineColor(0, 138, 255);
 		bblueLine.SetLineColor(0, 6, 255);
 		purpleLine.SetLineColor(144, 0, 255);
+		for (int i = 0; i < 7; i++)
+		{
+			passengerListOnCabin[i].clear();
+		}
 		vector <Cabin> a;
 		cabinList.assign(a.begin(), a.end());
 		Station* s = new Station;										//用來建立隨機車站列表 及 檢查車站 列表 是否重疊
@@ -652,7 +655,7 @@ namespace game_framework
 					stationList[i].RefreshPassengerPosition();
 				}
 			}
-			if (counter==30*30)
+			if (counter==60*30)
 			{
 				personss = totalper;
 				GotoGameState(GAME_STATE_OVER);
@@ -1118,16 +1121,17 @@ namespace game_framework
 		}
 
 		//// 以下Debug 用
-		//CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
-		//CFont f, *fp;
-		//f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
-		//fp = pDC->SelectObject(&f);					// 選用 font f
-		//pDC->SetBkColor(RGB(241, 241, 241));
-		//pDC->SetTextColor(RGB(0, 0, 0));
-		//char str[80];								// Demo 數字對字串的轉換
+		CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
+		CFont f, *fp;
+		f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
+		fp = pDC->SelectObject(&f);					// 選用 font f
+		pDC->SetBkColor(RGB(241, 241, 241));
+		pDC->SetTextColor(RGB(0, 0, 0));
+		char str[80];								// Demo 數字對字串的轉換
 		//sprintf(str, "(%d,%d),(%d,%d),(%d,%d),(%d,%d)(%d)", clickedX, clickedY, mouse_x, mouse_y, line->GetClickedStartStationNum(), line->GetClickedEndStationNum(), preP, nextP, nextS);
-		//pDC->TextOut(10, 10, str);
-		//pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
-		//CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+		sprintf(str, "遊戲時間：%d",60-counter/30);
+		pDC->TextOut(10, 10, str);
+		pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
+		CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
 	}
 }

@@ -200,8 +200,7 @@ class CGameStateRun : public CGameState
 
 		vector<Passenger*> passengerListOnCabin[7];
 
-        CInteger passengerTotalNumber;					//乘客人數
-
+        CInteger passengerTotalNumber;					//乘客人數								
         vector<Cabin> cabinList;
 
 
@@ -233,13 +232,7 @@ class CGameStateOver : public CGameState
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
         int counter;	// 倒數之計數器
-		bool isMouseInRestartBtn;						//滑鼠在重新開始按鈕
-		bool isMouseInEndBtn;							//滑鼠在結束按鈕
 		CMovingBitmap endl;
-		CMovingBitmap restart;							//遊戲重新開始的按鈕圖
-		CMovingBitmap restartInvert;					//遊戲重新開始的顏色反相按鈕圖
-		CMovingBitmap end;							//遊戲結束的按鈕圖
-		CMovingBitmap endInvert;					//遊戲結束的顏色反相按鈕圖
 };
 
 }

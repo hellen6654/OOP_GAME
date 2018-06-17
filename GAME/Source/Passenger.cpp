@@ -74,6 +74,7 @@ namespace game_framework
 
 	void Passenger::RandomMadePassenger(vector<Passenger*>& passengerList,vector<Station>& stationList,int stationMaxium,int stationTypeNum,int totalPassenagerNum)
 	{ 
+		passengerList.clear();
 		int start = -1;
 		int end = -1;
 		int x = -1;
