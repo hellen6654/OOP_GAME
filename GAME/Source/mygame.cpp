@@ -455,6 +455,13 @@ CGameStateRun::~CGameStateRun()
 
 void CGameStateRun::OnBeginState()
 {
+    red = true;
+    orange = false;
+    yellow = false;
+    green = false;
+    blue = false;
+    bblue = false;
+    purple = false;
     const int HITS_LEFT = 0;
     const int HITS_LEFT_X = 680;
     const int HITS_LEFT_Y = 20;
@@ -493,6 +500,7 @@ void CGameStateRun::OnBeginState()
     garyIcon[3].SetTopLeft(420, 570);
     garyIcon[4].SetTopLeft(465, 570);
     garyIcon[5].SetTopLeft(510, 570);
+    chooseColor.SetTopLeft(235, 565);
     currentStationNum = 3;								//現有車站為三個 遊戲開始 有三個車站
     currentPassenagerNum = 0;							//一開始出現的乘客數為0
     clickedX = clickedY = -1;
@@ -683,6 +691,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     blueLine.LoadBitmap();
     bblueLine.LoadBitmap();
     purpleLine.LoadBitmap();
+    chooseColor.LoadBitmap(".\\RES\\color\\choosecolor.bmp", RGB(255, 255, 255));
 
     for (unsigned i = 0; i < 6; i++)
     {
@@ -807,36 +816,85 @@ void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作
     {
         line = &redLine;
         CAudio::Instance()->Play(AUDIO_COLOR);
+        red = true;
+        orange = false;
+        yellow = false;
+        green = false;
+        blue = false;
+        bblue = false;
+        purple = false;
     }
     else if (orangeLine.IsMouseClickedLineColorBMP(point.x, point.y))
     {
         line = &orangeLine;
         CAudio::Instance()->Play(AUDIO_COLOR);
+        red = false;
+        orange = true;
+        yellow = false;
+        green = false;
+        blue = false;
+        bblue = false;
+        purple = false;
     }
     else if (yellowLine.IsMouseClickedLineColorBMP(point.x, point.y))
     {
         line = &yellowLine;
         CAudio::Instance()->Play(AUDIO_COLOR);
+        red = false;
+        orange = false;
+        yellow = true;
+        green = false;
+        blue = false;
+        bblue = false;
+        purple = false;
     }
     else if (greenLine.IsMouseClickedLineColorBMP(point.x, point.y))
     {
         line = &greenLine;
         CAudio::Instance()->Play(AUDIO_COLOR);
+        red = false;
+        orange = false;
+        yellow = false;
+        green = true;
+        blue = false;
+        bblue = false;
+        purple = false;
     }
     else if (blueLine.IsMouseClickedLineColorBMP(point.x, point.y))
     {
         line = &blueLine;
         CAudio::Instance()->Play(AUDIO_COLOR);
+        red = false;
+        orange = false;
+        yellow = false;
+        green = false;
+        blue = true;
+        bblue = false;
+        purple = false;
     }
     else if (bblueLine.IsMouseClickedLineColorBMP(point.x, point.y))
     {
         line = &bblueLine;
         CAudio::Instance()->Play(AUDIO_COLOR);
+        red = false;
+        orange = false;
+        yellow = false;
+        green = false;
+        blue = false;
+        bblue = true;
+        purple = false;
     }
     else if (purpleLine.IsMouseClickedLineColorBMP(point.x, point.y))
     {
         line = &purpleLine;
         CAudio::Instance()->Play(AUDIO_COLOR);
+        red = false;
+        orange = false;
+        yellow = false;
+        green = false;
+        blue = false;
+        bblue = false;
+        purple = true;
     }
 
     if (isStop2)
@@ -939,6 +997,48 @@ void CGameStateRun::OnShow()
 
     if (!purpleLine.IsIconCanBeClicked())
         garyIcon[5].ShowBitmap();
+
+    if (red)
+    {
+        chooseColor.SetTopLeft(235, 565);
+        chooseColor.ShowBitmap();
+    }
+
+    if (orange)
+    {
+        chooseColor.SetTopLeft(280, 565);
+        chooseColor.ShowBitmap();
+    }
+
+    if (yellow)
+    {
+        chooseColor.SetTopLeft(325, 565);
+        chooseColor.ShowBitmap();
+    }
+
+    if (green)
+    {
+        chooseColor.SetTopLeft(370, 565);
+        chooseColor.ShowBitmap();
+    }
+
+    if (blue)
+    {
+        chooseColor.SetTopLeft(415, 565);
+        chooseColor.ShowBitmap();
+    }
+
+    if (bblue)
+    {
+        chooseColor.SetTopLeft(460, 565);
+        chooseColor.ShowBitmap();
+    }
+
+    if (purple)
+    {
+        chooseColor.SetTopLeft(505, 565);
+        chooseColor.ShowBitmap();
+    }
 
     //===============================================
 

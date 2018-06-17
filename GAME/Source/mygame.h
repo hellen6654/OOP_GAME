@@ -143,6 +143,7 @@ class CGameStateRun : public CGameState
 
         CMovingBitmap  map;
         CMovingBitmap  person;
+        CMovingBitmap chooseColor;
         CMovingBitmap  backGround;
         CMovingBitmap  color[7];
         CMovingBitmap restart;							//遊戲重新開始的按鈕圖
@@ -167,7 +168,13 @@ class CGameStateRun : public CGameState
         bool isStop2;
         bool isMouseInRestartBtn;						//滑鼠在重新開始按鈕
         bool isMouseInEndBtn;							//滑鼠在結束按鈕
-
+        bool red;
+        bool orange;
+        bool yellow;
+        bool green;
+        bool blue;
+        bool bblue;
+        bool purple;
 
         int currentStationNum;							//目前出現到哪個車站
         int currentPassenagerNum;						//目前有幾個乘客出現
