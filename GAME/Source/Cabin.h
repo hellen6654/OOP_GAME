@@ -29,15 +29,16 @@ class Cabin
         int	 GetNextStation();
         void SetLineStationNum(int num[6]);
         void GetLineStationNum(int (&num)[6]);
-        void SetPassengerPosition();
+        void SetPassengerPosition(vector<Passenger*> passengerOnCabin);
         int  GetPassengerNum();
         void SetPassengerNum(int);
         void AddPassengerNum(int);
         bool IsCabinColorRepeat(vector<Cabin> cabinList, int R, int G, int B);
         int GetCabinPointer(vector<Cabin> cabinList, int R, int G, int B);
         bool IsCabinFull();
-        void PassengerGetOn(Passenger* p, int nowStation);
+        void PassengerGetOn(Passenger* p);
         int  PassengerGetOut(int);
+		int  PassengerGetOut(vector<Passenger*>& passengerOnCabin, int nowStation);
         bool IsStop();
         void SetIsStop(bool);
         void SetAddCounter(int n);

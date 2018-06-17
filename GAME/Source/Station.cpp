@@ -134,13 +134,13 @@ namespace game_framework
 	void Station::RefreshPassengerPosition()
 	{
 		passenagerNum =(int)passengerInStationList.size();
-		for (unsigned i = 0; i < passengerInStationList.size(); i++)
+		for (int i = 0; i < passenagerNum; i++)
 		{
 			passengerInStationList[i]->SetXY(x + 25 + i * 10 + i * 1,y);
 		}
 	}
 
-	void Station::ErasePassenger(Passenger * p)
+	void Station::ErasePassenger(Passenger* p)
 	{
 		for (unsigned i = passengerInStationList.size()-1; i >=0 ; i--)
 		{
@@ -155,6 +155,7 @@ namespace game_framework
 				return;
 			}
 			
+			
 		}
 		passenagerNum = (int)passengerInStationList.size();
 	}
@@ -163,7 +164,6 @@ namespace game_framework
 	{
 		stationAnimation.SetTopLeft(x, y);
 		stationAnimation.ShowBitmap();	
-		
 	}
 
 	void Station::OnShowPassengerInStation()

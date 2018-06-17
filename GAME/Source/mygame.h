@@ -175,7 +175,7 @@ class CGameStateRun : public CGameState
         bool blue;
         bool bblue;
         bool purple;
-
+		int totalper = 0;
         int currentStationNum;							//目前出現到哪個車站
         int currentPassenagerNum;						//目前有幾個乘客出現
         int counter;
@@ -197,6 +197,8 @@ class CGameStateRun : public CGameState
 
         vector<Station> stationList;					//一堆的車站
         vector<Passenger*> passengerList;				//一堆的乘客
+
+		vector<Passenger*> passengerListOnCabin[7];
 
         CInteger passengerTotalNumber;					//乘客人數
 
@@ -231,6 +233,13 @@ class CGameStateOver : public CGameState
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
         int counter;	// 倒數之計數器
+		bool isMouseInRestartBtn;						//滑鼠在重新開始按鈕
+		bool isMouseInEndBtn;							//滑鼠在結束按鈕
+		CMovingBitmap endl;
+		CMovingBitmap restart;							//遊戲重新開始的按鈕圖
+		CMovingBitmap restartInvert;					//遊戲重新開始的顏色反相按鈕圖
+		CMovingBitmap end;							//遊戲結束的按鈕圖
+		CMovingBitmap endInvert;					//遊戲結束的顏色反相按鈕圖
 };
 
 }
