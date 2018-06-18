@@ -1,5 +1,5 @@
 /*
- * gamelib.cpp: 本檔案儲存支援遊戲相關的class的implementation
+ * gamelb.cpp: 本檔案儲存支援遊戲相關的class的implementation
  * Copyright (C) 2002-2012 Woei-Kae Chen <wkc@csie.ntut.edu.tw>
  *
  * This file is part of game, a free game development framework for windows.
@@ -245,7 +245,7 @@ int CAnimation::Width()
 // 2. 自己寫到運用CMovingBitmap的程式時，可以參考下列程式的寫法
 /////////////////////////////////////////////////////////////////////////////
 
-CMovingBitmap CInteger::digit[11];
+CMovingBitmap CInteger::digit[21];
 
 CInteger::CInteger(int digits)
     : NUMDIGITS(digits)
@@ -280,6 +280,16 @@ void CInteger::LoadBitmap()
         digit[7].LoadBitmap(".\\RES\\number\\7.bmp", RGB(255, 255, 255));
         digit[8].LoadBitmap(".\\RES\\number\\8.bmp", RGB(255, 255, 255));
         digit[9].LoadBitmap(".\\RES\\number\\9.bmp", RGB(255, 255, 255));
+        digit[10].LoadBitmap(".\\RES\\number\\0n.bmp", RGB(0, 0, 0));
+        digit[11].LoadBitmap(".\\RES\\number\\1n.bmp", RGB(0, 0, 0));
+        digit[12].LoadBitmap(".\\RES\\number\\2n.bmp", RGB(0, 0, 0));
+        digit[13].LoadBitmap(".\\RES\\number\\3n.bmp", RGB(0, 0, 0));
+        digit[14].LoadBitmap(".\\RES\\number\\4n.bmp", RGB(0, 0, 0));
+        digit[15].LoadBitmap(".\\RES\\number\\5n.bmp", RGB(0, 0, 0));
+        digit[16].LoadBitmap(".\\RES\\number\\6n.bmp", RGB(0, 0, 0));
+        digit[17].LoadBitmap(".\\RES\\number\\7n.bmp", RGB(0, 0, 0));
+        digit[18].LoadBitmap(".\\RES\\number\\8n.bmp", RGB(0, 0, 0));
+        digit[19].LoadBitmap(".\\RES\\number\\9n.bmp", RGB(0, 0, 0));
         isBmpLoaded = true;
     }
 }
@@ -288,7 +298,10 @@ void CInteger::SetInteger(int i)
 {
     n = i;
 }
-
+void CInteger::SetIsNight(bool z)
+{
+    isNight = z;
+}
 void CInteger::SetTopLeft(int nx, int ny)		// 將動畫的左上角座標移至 (x,y)
 {
     x = nx;
@@ -316,8 +329,18 @@ void CInteger::ShowBitmap()
     {
         int d = MSB % 10;
         MSB /= 10;
-        digit[d].SetTopLeft(nx, y);
-        digit[d].ShowBitmap();
+
+        if (isNight)
+        {
+            digit[d + 10].SetTopLeft(nx, y);
+            digit[d + 10].ShowBitmap();
+        }
+        else
+        {
+            digit[d].SetTopLeft(nx, y);
+            digit[d].ShowBitmap();
+        }
+
         nx -= digit[d].Width();
     }
 

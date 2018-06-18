@@ -83,11 +83,17 @@ class CGameStateInit : public CGameState
         void OnMove();									// 移動遊戲元素
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
+        CMovingBitmap nightMap;
         CMovingBitmap start;							//遊戲開始的按鈕圖
         CMovingBitmap startInvert;						//遊戲開始的顏色反相按鈕圖
+        CMovingBitmap night;							//夜間模式的按鈕圖
+        CMovingBitmap nightInvert;						//夜間模式的顏色反相按鈕圖
+        CMovingBitmap morning;							//日間模式的按鈕圖
+        CMovingBitmap morningInvert;					//日間模式的顏色反相按鈕圖
         CMovingBitmap end;								//遊戲結束的按鈕圖
         CMovingBitmap endInvert;						//遊戲結束的顏色反相按鈕圖
         CMovingBitmap logo;								//遊戲的logo
+        CMovingBitmap logoNight;						//遊戲的logo
         CMovingBitmap red;								//封面的紅色鐵軌
         CMovingBitmap orange;							//封面的橘色鐵軌
         CMovingBitmap blue;								//封面的藍色鐵軌
@@ -113,6 +119,7 @@ class CGameStateInit : public CGameState
 
         bool isMouseInStartBtn;							//滑鼠在開始按鈕
         bool isMouseInEndBtn;							//滑鼠在結束按鈕
+        bool isMouseInNightBtn;							//滑鼠在模式按鈕
         int mouse_x = 0, mouse_y = 0;					//滑鼠位置
         int mouse_state = 1;
 };
@@ -140,14 +147,23 @@ class CGameStateRun : public CGameState
         void OnMove();									// 移動遊戲元素
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
-
+        CMovingBitmap nightMap;
+        CMovingBitmap mapnight;
         CMovingBitmap  map;
         CMovingBitmap  person;
+        CMovingBitmap  personNight;
         CMovingBitmap chooseColor;
+        CMovingBitmap chooseColorNight;
         CMovingBitmap  backGround;
         CMovingBitmap  color[7];
+        CMovingBitmap continu;							//繼續的按鈕圖
+        CMovingBitmap continuInvert;					//繼續的顏色反相按鈕圖
         CMovingBitmap restart;							//遊戲重新開始的按鈕圖
         CMovingBitmap restartInvert;					//遊戲重新開始的顏色反相按鈕圖
+        CMovingBitmap night;							//夜間模式的按鈕圖
+        CMovingBitmap nightInvert;						//夜間模式的顏色反相按鈕圖
+        CMovingBitmap morning;							//日間模式的按鈕圖
+        CMovingBitmap morningInvert;					//日間模式的顏色反相按鈕圖
         CMovingBitmap end;							//遊戲結束的按鈕圖
         CMovingBitmap endInvert;					//遊戲結束的顏色反相按鈕圖
         const int STATION_APPERAED_TIME = 5;			//車站出現的秒數
@@ -168,6 +184,8 @@ class CGameStateRun : public CGameState
         bool isStop2;
         bool isMouseInRestartBtn;						//滑鼠在重新開始按鈕
         bool isMouseInEndBtn;							//滑鼠在結束按鈕
+        bool isMouseInNightBtn;							//滑鼠在模式按鈕
+        bool isMouseInContinuBtn;
         bool red;
         bool orange;
         bool yellow;
@@ -175,7 +193,7 @@ class CGameStateRun : public CGameState
         bool blue;
         bool bblue;
         bool purple;
-		int totalper = 0;
+        int totalper = 0;
         int currentStationNum;							//目前出現到哪個車站
         int currentPassenagerNum;						//目前有幾個乘客出現
         int counter;
@@ -198,9 +216,9 @@ class CGameStateRun : public CGameState
         vector<Station> stationList;					//一堆的車站
         vector<Passenger*> passengerList;				//一堆的乘客
 
-		vector<Passenger*> passengerListOnCabin[7];
+        vector<Passenger*> passengerListOnCabin[7];
 
-        CInteger passengerTotalNumber;					//乘客人數								
+        CInteger passengerTotalNumber;					//乘客人數
         vector<Cabin> cabinList;
 
 
@@ -232,7 +250,15 @@ class CGameStateOver : public CGameState
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
         int counter;	// 倒數之計數器
-		CMovingBitmap endl;
+        CMovingBitmap endl;
+        CMovingBitmap mapNight;
+        CMovingBitmap endlNight;
+        CMovingBitmap sp4;
+        CMovingBitmap sp4Night;
+        CMovingBitmap good;
+        CMovingBitmap goodNight;
+        CMovingBitmap bad;
+        CMovingBitmap badNight;
 };
 
 }
