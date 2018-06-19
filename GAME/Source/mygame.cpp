@@ -840,7 +840,7 @@ void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
             }
         }
 
-        if (counter == 60 * 30)
+        if (counter == 120 * 30)
         {
             personss = totalper;
             GotoGameState(GAME_STATE_OVER);
