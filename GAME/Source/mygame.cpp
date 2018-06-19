@@ -1017,7 +1017,7 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
     {
         if (!isStop && !isStop2)
         {
-            counter = 60 * 30 - 1;
+            counter = 120 * 30 - 1;
         }
     }
 }
@@ -1179,31 +1179,34 @@ void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作
 
     if (isStop2)
     {
-        if (restart.IsBitmapLoaded() && restartInvert.IsBitmapLoaded())
+        if (!isInInstructions)
         {
-            if (isMouseInRestartBtn)
+            if (restart.IsBitmapLoaded() && restartInvert.IsBitmapLoaded())
             {
-                isStop = !isStop;
-                isStop2 = !isStop2;
-                GotoGameState(GAME_STATE_INIT);
-            }
-            else if (isMouseInEndBtn)
-            {
-                PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
-            }
-            else if (isMouseInNightBtn)
-            {
-                isNight = !isNight;
-            }
-            else if (isMouseInContinuBtn)
-            {
-                isStop = !isStop;
-                isStop2 = !isStop2;
-            }
-            else if (isMouseInInstructionsBtn)
-            {
-                isInInstructions = !isInInstructions;
-                page = 1;
+                if (isMouseInRestartBtn)
+                {
+                    isStop = !isStop;
+                    isStop2 = !isStop2;
+                    GotoGameState(GAME_STATE_INIT);
+                }
+                else if (isMouseInEndBtn)
+                {
+                    PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
+                }
+                else if (isMouseInNightBtn)
+                {
+                    isNight = !isNight;
+                }
+                else if (isMouseInContinuBtn)
+                {
+                    isStop = !isStop;
+                    isStop2 = !isStop2;
+                }
+                else if (isMouseInInstructionsBtn)
+                {
+                    isInInstructions = !isInInstructions;
+                    page = 1;
+                }
             }
         }
     }
@@ -1526,7 +1529,7 @@ void CGameStateRun::OnShow()
 
     char str[80];								// Demo 數字對字串的轉換
     //sprintf(str, "(%d,%d),(%d,%d),(%d,%d),(%d,%d)(%d)", clickedX, clickedY, mouse_x, mouse_y, line->GetClickedStartStationNum(), line->GetClickedEndStationNum(), preP, nextP, nextS);
-    sprintf(str, "遊戲時間：%d", 60 - counter / 30);
+    sprintf(str, "遊戲時間：%d", 120 - counter / 30);
     pDC->TextOut(10, 10, str);
     pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
     CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
