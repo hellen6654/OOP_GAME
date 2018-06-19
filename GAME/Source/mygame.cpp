@@ -105,12 +105,16 @@ void CGameStateInit::OnInit()
     logo.LoadBitmap(".\\RES\\title.bmp");
     logoNight.LoadBitmap(".\\RES\\titlenight.bmp", RGB(0, 0, 0));
     nightMap.LoadBitmap(".\\RES\\backgroundnight.bmp");
+    page1.LoadBitmap(".\\RES\\Instruction.bmp");
+    page2.LoadBitmap(".\\RES\\Instruction2.bmp");
     start.LoadBitmap(".\\RES\\button\\start.bmp");
     startInvert.LoadBitmap(".\\RES\\button\\startInvert.bmp");
     night.LoadBitmap(".\\RES\\button\\night.bmp");
     nightInvert.LoadBitmap(".\\RES\\button\\nightInvert.bmp");
     morning.LoadBitmap(".\\RES\\button\\morning.bmp");
     morningInvert.LoadBitmap(".\\RES\\button\\morningInvert.bmp");
+    instructions.LoadBitmap(".\\RES\\button\\Instructions.bmp");
+    instructionsInvert.LoadBitmap(".\\RES\\button\\InstructionsInvert.bmp");
     end.LoadBitmap(".\\RES\\button\\end.bmp");
     endInvert.LoadBitmap(".\\RES\\button\\endInvert.bmp");
     red.LoadBitmap(".\\RES\\Cover\\red.bmp", RGB(255, 255, 255));
@@ -128,7 +132,10 @@ void CGameStateInit::OnInit()
     //設定參數
     CAudio::Instance()->Play(AUDIO_MUSIC);
     isMouseInStartBtn = false;
+    isMouseInNightBtn = false;
+    isMouseInInstructionsBtn = false;
     isMouseInEndBtn = false;
+    isInInstructions = false;
     Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
     //
     // 此OnInit動作會接到CGameStaterRun::OnInit()，所以進度還沒到100%
@@ -137,17 +144,36 @@ void CGameStateInit::OnInit()
 
 void CGameStateInit::OnBeginState()
 {
+    isInInstructions = false;
+    page = 0;
 }
 
 void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     const char KEY_ESC = 27;
     const char KEY_SPACE = ' ';
+    const char KEY_RIGHT = 0x27; // keyboard右箭頭
 
-    if (nChar == KEY_SPACE)
+    if (nChar == KEY_RIGHT)
+    {
+        if (isInInstructions)
+        {
+            if (page == 2)
+            {
+                page = 0;
+                isInInstructions = !isInInstructions;
+            }
+            else
+            {
+                page++;
+            }
+        }
+    }
+
+    /*if (nChar == KEY_SPACE)
         GotoGameState(GAME_STATE_RUN);						// 切換至GAME_STATE_RUN
     else if (nChar == KEY_ESC)								// Demo 關閉遊戲的方法
-        PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
+        PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲*/
 }
 
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
@@ -167,19 +193,30 @@ void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CGameStateInit::OnLButtonUp(UINT nFlags, CPoint point)
 {
-    if (start.IsBitmapLoaded() && end.IsBitmapLoaded())
+    if (isInInstructions)
     {
-        if (isMouseInStartBtn)
+    }
+    else
+    {
+        if (start.IsBitmapLoaded() && end.IsBitmapLoaded())
         {
-            GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
-        }
-        else if (isMouseInEndBtn)
-        {
-            PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
-        }
-        else if (isMouseInNightBtn)
-        {
-            isNight = !isNight;
+            if (isMouseInStartBtn)
+            {
+                GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
+            }
+            else if (isMouseInEndBtn)
+            {
+                PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
+            }
+            else if (isMouseInNightBtn)
+            {
+                isNight = !isNight;
+            }
+            else if (isMouseInInstructionsBtn)
+            {
+                page = 1;
+                isInInstructions = !isInInstructions;
+            }
         }
     }
 }
@@ -189,44 +226,58 @@ void CGameStateInit::OnMouseMove(UINT nFlags, CPoint point)
     mouse_x = point.x;
     mouse_y = point.y;
 
-    if (start.IsBitmapLoaded() && end.IsBitmapLoaded())
+    if (!isInInstructions)
     {
-        if (mouse_x > start.Left() && mouse_x < start.Left() + start.Width() &&
-                mouse_y > start.Top() && mouse_y < start.Top() + start.Height())
+        if (start.IsBitmapLoaded() && end.IsBitmapLoaded())
         {
-            if (mouse_state == 1)
+            if (mouse_x > start.Left() && mouse_x < start.Left() + start.Width() &&
+                    mouse_y > start.Top() && mouse_y < start.Top() + start.Height())
             {
-                isMouseInStartBtn = true;
-                CAudio::Instance()->Play(AUDIO_SLIP);
-                mouse_state = 0;
+                if (mouse_state == 1)
+                {
+                    isMouseInStartBtn = true;
+                    CAudio::Instance()->Play(AUDIO_SLIP);
+                    mouse_state = 0;
+                }
             }
-        }
-        else if (mouse_x > end.Left() && mouse_x < end.Left() + end.Width() &&
-                 mouse_y > end.Top() && mouse_y < end.Top() + end.Height())
-        {
-            if (mouse_state == 1)
+            else if (mouse_x > end.Left() && mouse_x < end.Left() + end.Width() &&
+                     mouse_y > end.Top() && mouse_y < end.Top() + end.Height())
             {
-                isMouseInEndBtn = true;
-                CAudio::Instance()->Play(AUDIO_SLIP);
-                mouse_state = 0;
+                if (mouse_state == 1)
+                {
+                    isMouseInEndBtn = true;
+                    CAudio::Instance()->Play(AUDIO_SLIP);
+                    mouse_state = 0;
+                }
             }
-        }
-        else if (mouse_x > night.Left() && mouse_x < night.Left() + night.Width() &&
-                 mouse_y > night.Top() && mouse_y < night.Top() + night.Height())
-        {
-            if (mouse_state == 1)
+            else if (mouse_x > night.Left() && mouse_x < night.Left() + night.Width() &&
+                     mouse_y > night.Top() && mouse_y < night.Top() + night.Height())
             {
-                isMouseInNightBtn = true;
-                CAudio::Instance()->Play(AUDIO_SLIP);
-                mouse_state = 0;
+                if (mouse_state == 1)
+                {
+                    isMouseInNightBtn = true;
+                    CAudio::Instance()->Play(AUDIO_SLIP);
+                    mouse_state = 0;
+                }
             }
-        }
-        else
-        {
-            mouse_state = 1;
-            isMouseInNightBtn = false;
-            isMouseInStartBtn = false;
-            isMouseInEndBtn = false;
+            else if (mouse_x > instructions.Left() && mouse_x < instructions.Left() + instructions.Width() &&
+                     mouse_y > instructions.Top() && mouse_y < instructions.Top() + instructions.Height())
+            {
+                if (mouse_state == 1)
+                {
+                    isMouseInInstructionsBtn = true;
+                    CAudio::Instance()->Play(AUDIO_SLIP);
+                    mouse_state = 0;
+                }
+            }
+            else
+            {
+                mouse_state = 1;
+                isMouseInNightBtn = false;
+                isMouseInStartBtn = false;
+                isMouseInInstructionsBtn = false;
+                isMouseInEndBtn = false;
+            }
         }
     }
 }
@@ -300,14 +351,16 @@ void CGameStateInit::OnShow()
     logo.SetTopLeft((SIZE_X / 2) - (logo.Width() / 2), SIZE_Y / 8 * 1);
     logoNight.SetTopLeft((SIZE_X / 2) - (logo.Width() / 2), SIZE_Y / 8 * 1);
     //開始按鈕 結束按鈕的位置
-    start.SetTopLeft((SIZE_X / 2) - (start.Width() / 2), SIZE_Y / 8 * 4);
-    night.SetTopLeft((SIZE_X / 2) - (start.Width() / 2), SIZE_Y / 8 * 5);
-    morning.SetTopLeft((SIZE_X / 2) - (start.Width() / 2), SIZE_Y / 8 * 5);
+    start.SetTopLeft((SIZE_X / 2) - (start.Width() / 2), SIZE_Y / 8 * 3);
+    night.SetTopLeft((SIZE_X / 2) - (start.Width() / 2), SIZE_Y / 8 * 4);
+    morning.SetTopLeft((SIZE_X / 2) - (start.Width() / 2), SIZE_Y / 8 * 4);
+    instructions.SetTopLeft((SIZE_X / 2) - (end.Width() / 2), SIZE_Y / 8 * 5);
     end.SetTopLeft((SIZE_X / 2) - (end.Width() / 2), SIZE_Y / 8 * 6);
     //反相 開始按鈕 結束按鈕的位置
-    startInvert.SetTopLeft((SIZE_X / 2) - (start.Width() / 2), SIZE_Y / 8 * 4);
-    nightInvert.SetTopLeft((SIZE_X / 2) - (start.Width() / 2), SIZE_Y / 8 * 5);
-    morningInvert.SetTopLeft((SIZE_X / 2) - (start.Width() / 2), SIZE_Y / 8 * 5);
+    startInvert.SetTopLeft((SIZE_X / 2) - (start.Width() / 2), SIZE_Y / 8 * 3);
+    nightInvert.SetTopLeft((SIZE_X / 2) - (start.Width() / 2), SIZE_Y / 8 * 4);
+    morningInvert.SetTopLeft((SIZE_X / 2) - (start.Width() / 2), SIZE_Y / 8 * 4);
+    instructionsInvert.SetTopLeft((SIZE_X / 2) - (end.Width() / 2), SIZE_Y / 8 * 5);
     endInvert.SetTopLeft((SIZE_X / 2) - (end.Width() / 2), SIZE_Y / 8 * 6);
     //顯示 開始按鈕 結束按鈕
 
@@ -324,6 +377,7 @@ void CGameStateInit::OnShow()
     }
 
     start.ShowBitmap();
+    instructions.ShowBitmap();
     end.ShowBitmap();
     //設定鐵軌位置 和顯示
     orange.SetTopLeft(0, 280);
@@ -401,6 +455,24 @@ void CGameStateInit::OnShow()
     else if (isMouseInNightBtn && isNight)
     {
         morningInvert.ShowBitmap();
+    }
+    else if (isMouseInInstructionsBtn)
+    {
+        instructionsInvert.ShowBitmap();
+    }
+
+    if (isInInstructions)
+    {
+        if (page == 1)
+        {
+            page1.SetTopLeft(0, 0);
+            page1.ShowBitmap();
+        }
+        else if (page == 2)
+        {
+            page2.SetTopLeft(0, 0);
+            page2.ShowBitmap();
+        }
     }
 
     //
@@ -563,6 +635,9 @@ CGameStateRun::~CGameStateRun()
 
 void CGameStateRun::OnBeginState()
 {
+    isInInstructions = false;
+    isMouseInInstructionsBtn = false;
+    page = 0;
     totalper = 0;
     passengerTotalNumber.SetIsNight(isNight);
     red = true;
@@ -784,6 +859,10 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     // 開始載入資料
     //
     Station* s = new Station;										//用來建立隨機車站列表 及 檢查車站 列表 是否重疊
+    instructions.LoadBitmap(".\\RES\\button\\Instructions.bmp");
+    instructionsInvert.LoadBitmap(".\\RES\\button\\InstructionsInvert.bmp");
+    page1.LoadBitmap(".\\RES\\Instruction.bmp");
+    page2.LoadBitmap(".\\RES\\Instruction2.bmp");
     clock.LoadBitmap();
     passengerTotalNumber.LoadBitmap();
     mapnight.LoadBitmap(".\\RES\\backgroundnight.bmp");
@@ -810,8 +889,10 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     continuInvert.SetTopLeft((SIZE_X / 2) - (restart.Width() / 2), SIZE_Y / 8 * 2);
     end.LoadBitmap(".\\RES\\button\\end.bmp");
     endInvert.LoadBitmap(".\\RES\\button\\endInvert.bmp");
-    end.SetTopLeft((SIZE_X / 2) - (end.Width() / 2), SIZE_Y / 8 * 5);
-    endInvert.SetTopLeft((SIZE_X / 2) - (end.Width() / 2), SIZE_Y / 8 * 5);
+    instructions.SetTopLeft((SIZE_X / 2) - (end.Width() / 2), SIZE_Y / 8 * 5);
+    instructionsInvert.SetTopLeft((SIZE_X / 2) - (end.Width() / 2), SIZE_Y / 8 * 5);
+    end.SetTopLeft((SIZE_X / 2) - (end.Width() / 2), SIZE_Y / 8 * 6);
+    endInvert.SetTopLeft((SIZE_X / 2) - (end.Width() / 2), SIZE_Y / 8 * 6);
     isStop = false;
     isStop2 = false;
     isMouseInRestartBtn = false;
@@ -822,6 +903,12 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     /*red(255.0.0),orang(255.144.0),yellow(255.255.0),green(0.255.0),blue(0.138.255),bblue(0.6.255),puple(144.0.255)*/
     redLine.SetLineColor(255, 0, 0);
     redLine.SetIsCanbeClicked(true);
+    orangeLine.SetIsCanbeClicked(true);
+    yellowLine.SetIsCanbeClicked(true);
+    greenLine.SetIsCanbeClicked(true);
+    blueLine.SetIsCanbeClicked(true);
+    bblueLine.SetIsCanbeClicked(true);
+    purpleLine.SetIsCanbeClicked(true);
     orangeLine.SetLineColor(255, 144, 0);
     yellowLine.SetLineColor(255, 255, 0);
     greenLine.SetLineColor(0, 255, 0);
@@ -902,6 +989,25 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
                 {
                     totalper += 10;
                     passengerTotalNumber.Add(10);
+                }
+            }
+        }
+    }
+
+    if (isInInstructions)
+    {
+        if (nChar == KEY_RIGHT)
+        {
+            if (isInInstructions)
+            {
+                if (page == 2)
+                {
+                    page = 0;
+                    isInInstructions = !isInInstructions;
+                }
+                else
+                {
+                    page++;
                 }
             }
         }
@@ -1094,6 +1200,11 @@ void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作
                 isStop = !isStop;
                 isStop2 = !isStop2;
             }
+            else if (isMouseInInstructionsBtn)
+            {
+                isInInstructions = !isInInstructions;
+                page = 1;
+            }
         }
     }
 }
@@ -1105,55 +1216,69 @@ void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作
 
     if (point.y > MIN_GAME_MAP_SIDE_Y && point.y < MAX_GAME_MAP_SIDE_Y) mouse_y = point.y;
 
-    if (restart.IsBitmapLoaded() && restartInvert.IsBitmapLoaded())
+    if (!isInInstructions)
     {
-        if (mouse_x > restart.Left() && mouse_x < restart.Left() + restart.Width() &&
-                mouse_y > restart.Top() && mouse_y < restart.Top() + restart.Height())
+        if (restart.IsBitmapLoaded() && restartInvert.IsBitmapLoaded())
         {
-            if (mouse_state == 1)
+            if (mouse_x > restart.Left() && mouse_x < restart.Left() + restart.Width() &&
+                    mouse_y > restart.Top() && mouse_y < restart.Top() + restart.Height())
             {
-                isMouseInRestartBtn = true;
-                CAudio::Instance()->Play(AUDIO_SLIP);
-                mouse_state = 0;
+                if (mouse_state == 1)
+                {
+                    isMouseInRestartBtn = true;
+                    CAudio::Instance()->Play(AUDIO_SLIP);
+                    mouse_state = 0;
+                }
             }
-        }
-        else if (mouse_x > end.Left() && mouse_x < end.Left() + end.Width() &&
-                 mouse_y > end.Top() && mouse_y < end.Top() + end.Height())
-        {
-            if (mouse_state == 1)
+            else if (mouse_x > end.Left() && mouse_x < end.Left() + end.Width() &&
+                     mouse_y > end.Top() && mouse_y < end.Top() + end.Height())
             {
-                isMouseInEndBtn = true;
-                CAudio::Instance()->Play(AUDIO_SLIP);
-                mouse_state = 0;
+                if (mouse_state == 1)
+                {
+                    isMouseInEndBtn = true;
+                    CAudio::Instance()->Play(AUDIO_SLIP);
+                    mouse_state = 0;
+                }
             }
-        }
-        else if (mouse_x > night.Left() && mouse_x < night.Left() + night.Width() &&
-                 mouse_y > night.Top() && mouse_y < night.Top() + night.Height())
-        {
-            if (mouse_state == 1)
+            else if (mouse_x > night.Left() && mouse_x < night.Left() + night.Width() &&
+                     mouse_y > night.Top() && mouse_y < night.Top() + night.Height())
             {
-                isMouseInNightBtn = true;
-                CAudio::Instance()->Play(AUDIO_SLIP);
-                mouse_state = 0;
+                if (mouse_state == 1)
+                {
+                    isMouseInNightBtn = true;
+                    CAudio::Instance()->Play(AUDIO_SLIP);
+                    mouse_state = 0;
+                }
             }
-        }
-        else if (mouse_x > continu.Left() && mouse_x < continu.Left() + continu.Width() &&
-                 mouse_y > continu.Top() && mouse_y < continu.Top() + continu.Height())
-        {
-            if (mouse_state == 1)
+            else if (mouse_x > continu.Left() && mouse_x < continu.Left() + continu.Width() &&
+                     mouse_y > continu.Top() && mouse_y < continu.Top() + continu.Height())
             {
-                isMouseInContinuBtn = true;
-                CAudio::Instance()->Play(AUDIO_SLIP);
-                mouse_state = 0;
+                if (mouse_state == 1)
+                {
+                    isMouseInContinuBtn = true;
+                    CAudio::Instance()->Play(AUDIO_SLIP);
+                    mouse_state = 0;
+                }
             }
-        }
-        else
-        {
-            mouse_state = 1;
-            isMouseInContinuBtn = false;
-            isMouseInNightBtn = false;
-            isMouseInEndBtn = false;
-            isMouseInRestartBtn = false;
+            else if (mouse_x > instructions.Left() && mouse_x < instructions.Left() + instructions.Width() &&
+                     mouse_y > instructions.Top() && mouse_y < instructions.Top() + instructions.Height())
+            {
+                if (mouse_state == 1)
+                {
+                    isMouseInInstructionsBtn = true;
+                    CAudio::Instance()->Play(AUDIO_SLIP);
+                    mouse_state = 0;
+                }
+            }
+            else
+            {
+                mouse_state = 1;
+                isMouseInContinuBtn = false;
+                isMouseInNightBtn = false;
+                isMouseInEndBtn = false;
+                isMouseInInstructionsBtn = false;
+                isMouseInRestartBtn = false;
+            }
         }
     }
 }
@@ -1289,6 +1414,13 @@ void CGameStateRun::OnShow()
     orangeLine.ShowRailway(stationList);
     redLine.ShowRailway(stationList);
 
+    if (!cabinList.empty())
+        for (unsigned i = 0; i < cabinList.size(); i++)
+        {
+            cabinList[i].OnShow();
+            cabinList[i].SetPassengerPosition(passengerListOnCabin[i]);
+        }
+
     for (int i = 0; i < MAXIUM_STATION; i++)
     {
         stationList[i].SetIsNight(isNight);
@@ -1300,13 +1432,6 @@ void CGameStateRun::OnShow()
         passengerList[i]->SetIsNight(isNight);
         passengerList[i]->OnShow();
     }
-
-    if (!cabinList.empty())
-        for (unsigned i = 0; i < cabinList.size(); i++)
-        {
-            cabinList[i].OnShow();
-            cabinList[i].SetPassengerPosition(passengerListOnCabin[i]);
-        }
 
     for (int i = 0; i < 7; i++)
     {
@@ -1332,6 +1457,7 @@ void CGameStateRun::OnShow()
         restart.ShowBitmap();
         end.ShowBitmap();
         continu.ShowBitmap();
+        instructions.ShowBitmap();
 
         if (isMouseInRestartBtn)
         {
@@ -1353,6 +1479,24 @@ void CGameStateRun::OnShow()
         {
             nightInvert.ShowBitmap();
         }
+        else if (isMouseInInstructionsBtn)
+        {
+            instructionsInvert.ShowBitmap();
+        }
+
+        if (isInInstructions)
+        {
+            if (page == 1)
+            {
+                page1.SetTopLeft(0, 0);
+                page1.ShowBitmap();
+            }
+            else if (page == 2)
+            {
+                page2.SetTopLeft(0, 0);
+                page2.ShowBitmap();
+            }
+        }
     }
 
     //// 以下Debug 用
@@ -1360,8 +1504,26 @@ void CGameStateRun::OnShow()
     CFont f, *fp;
     f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
     fp = pDC->SelectObject(&f);					// 選用 font f
-    pDC->SetBkColor(RGB(241, 241, 241));
-    pDC->SetTextColor(RGB(0, 0, 0));
+
+    if (isNight)
+    {
+        pDC->SetBkColor(RGB(45, 45, 45));
+        pDC->SetTextColor(RGB(255, 255, 255));
+    }
+    else
+    {
+        if (isStop2)
+        {
+            pDC->SetBkColor(RGB(255, 255, 255));
+        }
+        else
+        {
+            pDC->SetBkColor(RGB(241, 241, 241));
+        }
+
+        pDC->SetTextColor(RGB(0, 0, 0));
+    }
+
     char str[80];								// Demo 數字對字串的轉換
     //sprintf(str, "(%d,%d),(%d,%d),(%d,%d),(%d,%d)(%d)", clickedX, clickedY, mouse_x, mouse_y, line->GetClickedStartStationNum(), line->GetClickedEndStationNum(), preP, nextP, nextS);
     sprintf(str, "遊戲時間：%d", 60 - counter / 30);

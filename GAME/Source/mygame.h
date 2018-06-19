@@ -90,6 +90,8 @@ class CGameStateInit : public CGameState
         CMovingBitmap nightInvert;						//夜間模式的顏色反相按鈕圖
         CMovingBitmap morning;							//日間模式的按鈕圖
         CMovingBitmap morningInvert;					//日間模式的顏色反相按鈕圖
+        CMovingBitmap instructions;						//遊戲說明的按鈕圖
+        CMovingBitmap instructionsInvert;				//遊戲說明的顏色反相按鈕圖
         CMovingBitmap end;								//遊戲結束的按鈕圖
         CMovingBitmap endInvert;						//遊戲結束的顏色反相按鈕圖
         CMovingBitmap logo;								//遊戲的logo
@@ -98,7 +100,8 @@ class CGameStateInit : public CGameState
         CMovingBitmap orange;							//封面的橘色鐵軌
         CMovingBitmap blue;								//封面的藍色鐵軌
         CMovingBitmap bblue;							//封面的深藍色鐵軌
-
+        CMovingBitmap page1;							//遊戲說明1
+        CMovingBitmap page2;							//遊戲說明2
         CMovingBitmap redCabin;							//封面的紅色車廂
         CMovingBitmap redCabin2;						//封面的紅色車廂
         CMovingBitmap orangeCabin;						//封面的橘色車廂
@@ -120,8 +123,11 @@ class CGameStateInit : public CGameState
         bool isMouseInStartBtn;							//滑鼠在開始按鈕
         bool isMouseInEndBtn;							//滑鼠在結束按鈕
         bool isMouseInNightBtn;							//滑鼠在模式按鈕
+        bool isMouseInInstructionsBtn;					//滑鼠在模式按鈕
+        bool isInInstructions;							//
         int mouse_x = 0, mouse_y = 0;					//滑鼠位置
         int mouse_state = 1;
+        int page = 0;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -166,6 +172,10 @@ class CGameStateRun : public CGameState
         CMovingBitmap morningInvert;					//日間模式的顏色反相按鈕圖
         CMovingBitmap end;							//遊戲結束的按鈕圖
         CMovingBitmap endInvert;					//遊戲結束的顏色反相按鈕圖
+        CMovingBitmap page1;							//遊戲說明1
+        CMovingBitmap page2;							//遊戲說明2
+        CMovingBitmap instructions;						//遊戲說明的按鈕圖
+        CMovingBitmap instructionsInvert;				//遊戲說明的顏色反相按鈕圖
         const int STATION_APPERAED_TIME = 5;			//車站出現的秒數
         const int PASSENAGER_APPERAED_TIME = 3;			//乘客出現的秒數
         const int MAXIUM_STATION = 6;					//會出現在地圖上車站總數
@@ -193,12 +203,15 @@ class CGameStateRun : public CGameState
         bool blue;
         bool bblue;
         bool purple;
+        bool isMouseInInstructionsBtn;					//滑鼠在模式按鈕
+        bool isInInstructions;							//
         int totalper = 0;
         int currentStationNum;							//目前出現到哪個車站
         int currentPassenagerNum;						//目前有幾個乘客出現
         int counter;
         int mouse_state = 1;
 
+        int page = 0;
         int clickedX;
         int clickedY;
         int preP = 0, nextP = 0, nextS = 0;
