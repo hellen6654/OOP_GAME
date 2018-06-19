@@ -864,6 +864,10 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     page1.LoadBitmap(".\\RES\\Instruction.bmp");
     page2.LoadBitmap(".\\RES\\Instruction2.bmp");
     clock.LoadBitmap();
+    esc.LoadBitmap(".\\RES\\esc.bmp", RGB(255, 255, 255));
+    esc.SetTopLeft(700, 565);
+    escNight.LoadBitmap(".\\RES\\escnight.bmp", RGB(0, 0, 0));
+    escNight.SetTopLeft(700, 565);
     passengerTotalNumber.LoadBitmap();
     mapnight.LoadBitmap(".\\RES\\backgroundnight.bmp");
     map.LoadBitmap(".\\RES\\map.bmp");
@@ -970,8 +974,11 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
     if (nChar == KEY_ESC)
     {
-        isStop2 = !isStop2;
-        isStop = !isStop;
+        if (!isStop2 && !isStop)
+        {
+            isStop2 = !isStop2;
+            isStop = !isStop;
+        }
     }
 
     if (nChar == KEY_UP)//人數加十
@@ -1219,7 +1226,7 @@ void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// 處理滑鼠左鍵的動作
 
     if (point.y > MIN_GAME_MAP_SIDE_Y && point.y < MAX_GAME_MAP_SIDE_Y) mouse_y = point.y;
 
-    if (!isInInstructions)
+    if (!isInInstructions && isStop2)
     {
         if (restart.IsBitmapLoaded() && restartInvert.IsBitmapLoaded())
         {
@@ -1390,6 +1397,7 @@ void CGameStateRun::OnShow()
         personNight.ShowBitmap();
         passengerTotalNumber.ShowBitmap();
         chooseColorNight.ShowBitmap();
+        escNight.ShowBitmap();
     }
     else
     {
@@ -1397,6 +1405,7 @@ void CGameStateRun::OnShow()
         person.SetTopLeft(640, 10);
         person.ShowBitmap();
         passengerTotalNumber.ShowBitmap();
+        esc.ShowBitmap();
     }
 
     //===============================================

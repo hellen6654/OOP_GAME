@@ -156,6 +156,8 @@ class CGameStateRun : public CGameState
         CMovingBitmap nightMap;
         CMovingBitmap mapnight;
         CMovingBitmap  map;
+        CMovingBitmap  esc;
+        CMovingBitmap  escNight;
         CMovingBitmap  person;
         CMovingBitmap  personNight;
         CMovingBitmap chooseColor;
