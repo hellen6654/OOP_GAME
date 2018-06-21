@@ -126,9 +126,6 @@
     <ClCompile Include="Source\Station.cpp">
       <Filter>MyGame</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Timer.cpp">
-      <Filter>MyGame</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Line.cpp">
       <Filter>MyGame</Filter>
     </ClCompile>
@@ -171,9 +168,6 @@
       <Filter>MyGame</Filter>
     </ClInclude>
     <ClInclude Include="Source\Station.h">
-      <Filter>MyGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Timer.h">
       <Filter>MyGame</Filter>
     </ClInclude>
     <ClInclude Include="Source\Line.h">
