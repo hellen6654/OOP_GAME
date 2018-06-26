@@ -443,6 +443,13 @@ namespace game_framework
 			if (RR = R && GG == G && BB == B)
 				return true;
 		}
+		/*for (unsigned i = 0; i < cabinList.size(); i++)
+		{
+			int RR, GG, BB;
+			cabinList[i].GetRGB(RR, GG, BB);
+			if (RR = R && GG == G && BB == B)
+				return true;
+		}*/
 
 		return false;
 	}
@@ -454,7 +461,7 @@ namespace game_framework
 			int RR, GG, BB;
 			cabinList[i].GetRGB(RR, GG, BB);
 
-			if (RR = R && GG == G && BB == B)
+			if (RR == R && GG == G && BB == B)
 				return i;
 		}
 

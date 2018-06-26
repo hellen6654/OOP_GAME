@@ -760,13 +760,14 @@ void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
             line->CountTotalPassedStation();
             line->GetTotalPassedStation(countPassedStation);
 
-            if (!c.IsCabinColorRepeat(cabinList, R, G, B))
+            if ((!c.IsCabinColorRepeat(cabinList, R, G, B))&&(!line->IsClicked()))
             {
                 Cabin buf(pointX[0], pointY[0], R, G, B);
                 buf.SetLinePoint(pointX, pointY);
                 buf.SetPassedStation(passedStation);
                 buf.SetLineStationNum(countPassedStation);
                 cabinList.push_back(buf);
+				line->SetIsClicked(true);
             }
             else
             {
@@ -1431,6 +1432,10 @@ void CGameStateRun::OnShow()
         {
             cabinList[i].OnShow();
             cabinList[i].SetPassengerPosition(passengerListOnCabin[i]);
+			for (unsigned j = 0; j < passengerListOnCabin[i].size(); j++)
+			{
+				passengerListOnCabin[i][j]->OnShow();
+			}
         }
 
     for (int i = 0; i < MAXIUM_STATION; i++)
@@ -1445,13 +1450,13 @@ void CGameStateRun::OnShow()
         passengerList[i]->OnShow();
     }
 
-    for (int i = 0; i < 7; i++)
+    /*for (int i = 0; i < 7; i++)
     {
         for (unsigned j = 0; j < passengerListOnCabin[i].size(); j++)
         {
             passengerListOnCabin[i][j]->OnShow();
         }
-    }
+    }*/
 
     if (isStop2)
     {

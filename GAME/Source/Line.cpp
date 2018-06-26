@@ -343,5 +343,15 @@ void Line::SetIsCanbeClicked(bool b)
     isCanBeClicked = b;
 }
 
+bool Line::IsClicked()
+{
+	return isClicked;
+}
+
+void Line::SetIsClicked(bool b)
+{
+	isClicked = b;
+}
+
 
 }

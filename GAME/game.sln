@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game", "game.vcxproj", "{DDD280D7-4B85-4B03-BBC4-C46CA9BECCCB}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MiniMetro", "..\MiniMetro\MiniMetro.vdproj", "{F8F67BD4-F17D-41A0-9371-0B44DCCB077C}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup1", "..\Setup1\Setup1.vdproj", "{C122DBB4-0E8C-4BC4-8D64-3E8C893A6F33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,8 +17,8 @@ Global
 		{DDD280D7-4B85-4B03-BBC4-C46CA9BECCCB}.Debug|Win32.Build.0 = Debug|Win32
 		{DDD280D7-4B85-4B03-BBC4-C46CA9BECCCB}.Release|Win32.ActiveCfg = Release|Win32
 		{DDD280D7-4B85-4B03-BBC4-C46CA9BECCCB}.Release|Win32.Build.0 = Release|Win32
-		{F8F67BD4-F17D-41A0-9371-0B44DCCB077C}.Debug|Win32.ActiveCfg = Debug
-		{F8F67BD4-F17D-41A0-9371-0B44DCCB077C}.Release|Win32.ActiveCfg = Release
+		{C122DBB4-0E8C-4BC4-8D64-3E8C893A6F33}.Debug|Win32.ActiveCfg = Debug
+		{C122DBB4-0E8C-4BC4-8D64-3E8C893A6F33}.Release|Win32.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -38,12 +38,15 @@ namespace game_framework
 		void ShowRailway(vector<Station>);								//劃出線路
 		bool IsIconCanBeClicked();
 		void SetIsCanbeClicked(bool b);
+		bool IsClicked();
+		void SetIsClicked(bool b);
 	private:
 		CMovingBitmap lineColorBMP;
 		int clickedStartStationNum;
 		int clickedEndStationNum;
 		int lineColor[3];
 		bool isCanBeClicked;
+		bool isClicked = false;
 		int totalPassedStationNum[6] = {0};							//線路所經過的車站類型
 		vector<int> passedStation;									//經過的車站的編號
 		vector<int> linePointX;										//劃出線路點的X座標 與lineYPoint連動
